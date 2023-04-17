@@ -3,9 +3,9 @@ package com.example.projectdeploy.User.Model;
 import java.util.UUID;
 
 public class LoginResponse {
-    UUID userId;
-    String token;
-    String role;
+    public UUID userId;
+    public String token;
+    public String role;
 
     public LoginResponse(UUID userId, String token,String role) {
         this.userId = userId;

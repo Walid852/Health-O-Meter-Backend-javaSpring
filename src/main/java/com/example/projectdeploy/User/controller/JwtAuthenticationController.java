@@ -11,6 +11,7 @@ import com.example.projectdeploy.User.security.JwtUserDetailsService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,22 +38,31 @@ public class JwtAuthenticationController {
     @Autowired
     private UserRepo userRepo;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        User user=userRepo.findByUsername(authenticationRequest.getUsername());
-        if(user!=null)
-        authenticate(user.getId().toString(), authenticationRequest.getPassword());
-        else
-            return ResponseEntity.badRequest().body(new res("error","User not found"));
+    @PostMapping(path="/authenticate",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public  @ResponseBody
+    Response createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        try {
+            User user=userRepo.findByUsername(authenticationRequest.getUsername());
+            Response response=new Response(false, "Username not found");
+            if(user!=null) {
+                authenticate(user.getId().toString(), authenticationRequest.getPassword());
+            }
+            else {
+                return response;
 
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(user.getId().toString());
+            }
+            final UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(user.getId().toString());
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        Response response=new Response(true, "Sucess Login in",new LoginResponse(user.getId(),token,user.getRoles().getName()));
+            final String token = jwtTokenUtil.generateToken(userDetails);
+            return new Response(true, "Success Login in",new LoginResponse(user.getId(),token,user.getRoles().getName()));
+        }catch (Exception error){
+            return new Response(false, "Something wrong please try again ");
+        }
 
-        return ResponseEntity.ok().body(gson.toJson(response));
     }
 
     private void authenticate(String username, String password) throws Exception {
