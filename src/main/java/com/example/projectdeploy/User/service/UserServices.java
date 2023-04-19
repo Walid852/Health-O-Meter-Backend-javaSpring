@@ -1,9 +1,12 @@
 package com.example.projectdeploy.User.service;
+import com.example.projectdeploy.User.Model.Response;
 import com.example.projectdeploy.User.Model.Role;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Model.res;
 import com.example.projectdeploy.User.Repo.RoleRepo;
 import com.example.projectdeploy.User.Repo.UserRepo;
+import com.example.projectdeploy.User.controller.JwtAuthenticationController;
+import com.example.projectdeploy.User.dto.JwtRequest;
 import com.example.projectdeploy.User.dto.RegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +20,8 @@ import java.util.UUID;
 @Service
 public class UserServices {
 
-
+    @Autowired
+    private JwtAuthenticationController jwtAuthenticationController;
     @Autowired
     private UserRepo userRepo;
     @Autowired
@@ -26,28 +30,33 @@ public class UserServices {
     private PasswordEncoder bcryptEncoder;
 
     public ResponseEntity<?> register(RegisterDto registerDto) {
-        if (userRepo.findByUsername(registerDto.getUsername())!=null ) {
-            return ResponseEntity.badRequest().body(new res("error","userName is taken!"));
+        try {
+            if (userRepo.findByUsername(registerDto.getUsername()) != null) {
+                return ResponseEntity.badRequest().body(new Response(false, "userName is taken!"));
+            }
+            if (userRepo.findByEmail(registerDto.getEmail()) != null) {
+                return ResponseEntity.badRequest().body(new Response(false, "You have already have an email do you forget password?"));
+            }
+            User user = new User();
+            if (registerDto.getMemberId() != null)
+                user.setId(registerDto.getMemberId());
+            user.setUserName(registerDto.getUsername());
+            user.setPassword(bcryptEncoder.encode((registerDto.getPassword())));
+            //all is user at first
+            Role roles = roleRepo.findByName("User");
+            user.setRoles(roles);
+            user.setAge(registerDto.getAge());
+            user.setEmail(registerDto.getEmail());
+            user.setGender(registerDto.getGender());
+            user.setNationalId(registerDto.getNationalId());
+            user.setPhoneNumber(registerDto.getPhoneNumber());
+            user.setName(registerDto.getName());
+            userRepo.save(user);
+            Response response=jwtAuthenticationController.createAuthenticationToken(new JwtRequest(registerDto.getUsername(),registerDto.getPassword()));
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new Response(false, "Something wrong Make Ensure do Correct process and try agin"));
         }
-        if (userRepo.findByEmail(registerDto.getEmail())!=null ) {
-            return ResponseEntity.badRequest().body(new res("error","You have already have an email do you forget password?"));
-        }
-        User user = new User();
-        if(registerDto.getMemberId()!=null)
-            user.setId(registerDto.getMemberId());
-        user.setUserName(registerDto.getUsername());
-        user.setPassword(bcryptEncoder.encode((registerDto.getPassword())));
-        //all is user at first
-        Role roles = roleRepo.findByName("User");
-        user.setRoles(roles);
-        user.setAge(registerDto.getAge());
-        user.setEmail(registerDto.getEmail());
-        user.setGender(registerDto.getGender());
-        user.setNationalId(registerDto.getNationalId());
-        user.setPhoneNumber(registerDto.getPhoneNumber());
-        user.setName(registerDto.getName());
-        userRepo.save(user);
-        return ResponseEntity.ok(user);
     }
 
     public User getUserInfo(UUID userId){

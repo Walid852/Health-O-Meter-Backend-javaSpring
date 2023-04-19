@@ -52,7 +52,6 @@ public class JwtAuthenticationController {
             }
             else {
                 return response;
-
             }
             final UserDetails userDetails = userDetailsService
                     .loadUserByUsername(user.getId().toString());

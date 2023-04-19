@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/userService/auth")
 public class AuthController {
-
     @Autowired
     UserServices userServices;
-
-
 
     @PostMapping("register")
     @ResponseBody
