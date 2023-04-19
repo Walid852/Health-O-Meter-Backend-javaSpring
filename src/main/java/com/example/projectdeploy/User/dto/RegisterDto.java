@@ -14,7 +14,7 @@ public class RegisterDto {
     private String name;
     private int age;
     private Gender gender;
-    private int nationalId;
+    private String nationalId;
     private String role;
     private UUID memberId;
     private String Lating;

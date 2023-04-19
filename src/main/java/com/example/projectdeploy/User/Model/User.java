@@ -34,7 +34,7 @@ public class User implements Serializable {
     private Gender gender;
     @ManyToOne(fetch = EAGER,cascade = CascadeType.ALL)
     private Role roles ;
-    private int nationalId;
+    private String nationalId;
     @ManyToOne
     @JoinColumn(name = "location_id")
     private UserLocation location ;
