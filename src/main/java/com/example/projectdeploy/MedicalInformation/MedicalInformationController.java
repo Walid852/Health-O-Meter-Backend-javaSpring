@@ -1,5 +1,6 @@
 package com.example.projectdeploy.MedicalInformation;
 
+import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,22 +17,22 @@ public class MedicalInformationController {
     FetchServiceMedicalInformation fetchServiceMedicalInformation;
     @PostMapping(path="/createMedicalInformation")
     public @ResponseBody
-    MedicalInformation createMedicalInformation(@RequestBody CreateMedicalInformation createMedicalInformation){
+    Response<MedicalInformation> createMedicalInformation(@RequestBody CreateMedicalInformation createMedicalInformation){
         return crudServiceMedicalInformation.createMedicalInformation(createMedicalInformation);
     }
     @PatchMapping(path="/UpdateMedicalInformation")
     public @ResponseBody
-    MedicalInformation UpdateMedicalInformation(@RequestBody UpdateMedicalInformation updateMedicalInformation){
+    Response<MedicalInformation> UpdateMedicalInformation(@RequestBody UpdateMedicalInformation updateMedicalInformation){
         return crudServiceMedicalInformation.UpdateMedicalInformation(updateMedicalInformation);
     }
     @DeleteMapping(path="/DeleteMedicalInformation")
     public @ResponseBody
-    String DeleteMedicalInformation(@RequestParam UUID MedicalInfoId){
+    Response<MedicalInformation> DeleteMedicalInformation(@RequestParam UUID MedicalInfoId){
         return crudServiceMedicalInformation.DeleteMedicalInformation(MedicalInfoId);
     }
     @GetMapping(path="/GetMedicalInformationById")
     public @ResponseBody
-    MedicalInformation GetMedicalInformationById(@RequestParam UUID MedicalInfoId){
+    Response<MedicalInformation> GetMedicalInformationById(@RequestParam UUID MedicalInfoId){
         return fetchServiceMedicalInformation.GetMedicalInformationById(MedicalInfoId);
     }
     @GetMapping(path="/GivenAndReceiveForBloodType")
@@ -46,37 +47,32 @@ public class MedicalInformationController {
     }
     @GetMapping(path="/GetMedicalInformationByUserId")
     public @ResponseBody
-    MedicalInformation GetMedicalInformationByUserId(@RequestParam UUID UserId){
+    Response<MedicalInformation> GetMedicalInformationByUserId(@RequestParam UUID UserId){
         return fetchServiceMedicalInformation.GetMedicalInformationByUserId(UserId);
     }
     @GetMapping(path="/GetMedicalInformationByMemberId")
     public @ResponseBody
-    MedicalInformation GetMedicalInformationByMemberId(@RequestParam UUID MemberId){
+    Response<MedicalInformation> GetMedicalInformationByMemberId(@RequestParam UUID MemberId){
         return fetchServiceMedicalInformation.GetMedicalInformationByMemberId(MemberId);
     }
     @GetMapping(path="/GetAllMedicalInformation")
     public @ResponseBody
-    List<MedicalInformation> GetAllMedicalInformation(){
+    Response<MedicalInformation> GetAllMedicalInformation(){
         return fetchServiceMedicalInformation.GetAllMedicalInformation();
     }
     @GetMapping(path="/GetAllMedicalInformationForHeight")
     public @ResponseBody
-    List<MedicalInformation> GetAllMedicalInformationForHeight(@RequestParam int height){
+    Response<MedicalInformation> GetAllMedicalInformationForHeight(@RequestParam int height){
         return fetchServiceMedicalInformation.GetAllMedicalInformationForHeight(height);
     }
     @GetMapping(path="/GetAllMedicalInformationForWeight")
     public @ResponseBody
-    List<MedicalInformation> GetAllMedicalInformationForWeight(@RequestParam int weight){
+    Response<MedicalInformation> GetAllMedicalInformationForWeight(@RequestParam int weight){
         return fetchServiceMedicalInformation.GetAllMedicalInformationForWeight(weight);
-    }
-    @GetMapping(path="/GetAllMedicalInformationForNumOfCubs")
-    public @ResponseBody    
-    List<MedicalInformation> GetAllMedicalInformationForNumOfCubs(@RequestParam int numOfCup){
-        return fetchServiceMedicalInformation.GetAllMedicalInformationForNumOfCubs(numOfCup);
     }
     @GetMapping(path="/findAllMedicalInformationForBloodType")
     public @ResponseBody
-    List<MedicalInformation> findAllMedicalInformationForBloodType(@RequestParam BloodType bloodType){
+    Response<MedicalInformation> findAllMedicalInformationForBloodType(@RequestParam BloodType bloodType){
         return fetchServiceMedicalInformation.findAllMedicalInformationForBloodType(bloodType);
     }
 

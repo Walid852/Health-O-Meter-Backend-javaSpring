@@ -11,7 +11,6 @@ public class CreateMedicalInformation {
     private @NotNull UUID UserId;
     private UUID memberId;
     private BloodType bloodType;
-    private int numOfCubs;
     public int CurrentWeight;
     public int CurrentHeight;
 

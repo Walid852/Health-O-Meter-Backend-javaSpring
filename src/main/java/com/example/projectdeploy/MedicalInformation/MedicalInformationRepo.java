@@ -23,8 +23,6 @@ public interface MedicalInformationRepo extends JpaRepository<MedicalInformation
     public List<MedicalInformation>  findAllMedicalInformationForHeight(int height);
     @Query("select M from MedicalInformation M where M.CurrentWeight>=?1")
     public List<MedicalInformation>  findAllMedicalInformationForWeight(int weight);
-    @Query("select M from MedicalInformation M where M.numOfCubs>=?1")
-    public List<MedicalInformation>  findAllMedicalInformationForNumOfCubs(int numOfCub);
     @Query("select M from MedicalInformation M where M.bloodType in?1 and M.CurrentWeight>50" +
             " and M.haveAids=false and M.haveCancer=false and M.haveDiabetes=false and M.haveGeneticBloodDiseases=false " +
             "and M.haveAbilityToDonate=false and M.haveHighBloodPressure=false and M.haveMalaria=false " +

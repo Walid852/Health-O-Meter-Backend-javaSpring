@@ -93,7 +93,4 @@ public class SugarBloodTestService {
     public List<SugarBloodTest> filterTestByDateUser(UUID medicalInformationId, Date start,Date end){
         return testRepo.filterTestByDateUser(medicalInformationId,start,end);
     }
-
-
-
 }

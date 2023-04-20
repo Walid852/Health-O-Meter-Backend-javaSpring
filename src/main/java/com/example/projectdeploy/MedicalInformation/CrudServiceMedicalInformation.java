@@ -2,6 +2,8 @@ package com.example.projectdeploy.MedicalInformation;
 
 import com.example.projectdeploy.Member.Model.Member;
 import com.example.projectdeploy.Member.Repo.MemberRepo;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -25,25 +28,31 @@ public class CrudServiceMedicalInformation {
     @Autowired
     MemberRepo memberRepo;
     @Transactional
-    public MedicalInformation createMedicalInformation(CreateMedicalInformation createMedicalInformation){
-        MedicalInformation medicalInformation=new MedicalInformation();
-        MedicalInformation MM=medicalInformationRepo.findMedicalInformationByUserId(createMedicalInformation.getUserId());
-        if(MM!=null)return null;
-        if(createMedicalInformation.getUserId()!=null) {
-            User user = userRepo.findByUserId(createMedicalInformation.getUserId());
-            medicalInformation.setUser(user);
+    public Response<MedicalInformation> createMedicalInformation(CreateMedicalInformation createMedicalInformation){
+        try {
+            MedicalInformation medicalInformation = new MedicalInformation();
+            MedicalInformation MM = medicalInformationRepo.findMedicalInformationByUserId(createMedicalInformation.getUserId());
+            if (MM != null) return new Response<>(false, StaticsText.MessageForTest("you have medical information", ""));
+            if (createMedicalInformation.getUserId() != null) {
+                User user = userRepo.findByUserId(createMedicalInformation.getUserId());
+                medicalInformation.setUser(user);
+            }
+            if (createMedicalInformation.getMemberId() != null) {
+                Member member = memberRepo.findMemberById(createMedicalInformation.getMemberId());
+                medicalInformation.setMember(member);
+            }
+            medicalInformation.setBloodType(createMedicalInformation.getBloodType());
+            medicalInformation.setCurrentWeight(createMedicalInformation.CurrentWeight);
+            System.out.println(createMedicalInformation.CurrentHeight + createMedicalInformation.CurrentWeight);
+            medicalInformation.setCurrentHeight(createMedicalInformation.CurrentHeight);
+            medicalInformationRepo.save(medicalInformation);
+            List<MedicalInformation> result = new ArrayList<>();
+            result.add(medicalInformation);
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Created"), result);
         }
-        if(createMedicalInformation.getMemberId()!=null){
-            Member member=memberRepo.findMemberById(createMedicalInformation.getMemberId());
-            medicalInformation.setMember(member);
+        catch (Exception e){
+            return new Response<>(false,StaticsText.MessageForTestError());
         }
-        medicalInformation.setBloodType(createMedicalInformation.getBloodType());
-        medicalInformation.setCurrentWeight(createMedicalInformation.CurrentWeight);
-        System.out.println(createMedicalInformation.CurrentHeight+createMedicalInformation.CurrentWeight);
-        medicalInformation.setCurrentHeight(createMedicalInformation.CurrentHeight);
-        medicalInformation.setNumOfCubs(createMedicalInformation.getNumOfCubs());
-        medicalInformationRepo.save(medicalInformation);
-        return medicalInformation;
     }
     public List<MedicalInformation> ValidateToDonate(BloodType bloodType,String government){
         List<BloodType> bloodTypeList=GivenAndReceiveForBloodType(bloodType);
@@ -78,14 +87,21 @@ public class CrudServiceMedicalInformation {
         return result;
     }
     @Transactional
-    public MedicalInformation UpdateMedicalInformation(UpdateMedicalInformation updateMedicalInformation){
-        MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(updateMedicalInformation.getMedicalInfoId());
-        if(updateMedicalInformation.getBloodType()!=null) medicalInformation.setBloodType(updateMedicalInformation.getBloodType());
-        if(updateMedicalInformation.CurrentWeight!=0) medicalInformation.setCurrentWeight(updateMedicalInformation.CurrentWeight);
-        if(updateMedicalInformation.CurrentHeight!=0) medicalInformation.setCurrentHeight(updateMedicalInformation.CurrentHeight);
-        if(updateMedicalInformation.getNumOfCubs()!=0)medicalInformation.setNumOfCubs(updateMedicalInformation.getNumOfCubs());
-        medicalInformationRepo.save(medicalInformation);
-        return medicalInformation;
+    public Response<MedicalInformation> UpdateMedicalInformation(UpdateMedicalInformation updateMedicalInformation){
+        try {
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(updateMedicalInformation.getMedicalInfoId());
+            if(medicalInformation==null)return new Response<>(false, StaticsText.MessageForTest("medical information", "not found"));
+            if(updateMedicalInformation.getBloodType()!=null) medicalInformation.setBloodType(updateMedicalInformation.getBloodType());
+            if(updateMedicalInformation.CurrentWeight!=0) medicalInformation.setCurrentWeight(updateMedicalInformation.CurrentWeight);
+            if(updateMedicalInformation.CurrentHeight!=0) medicalInformation.setCurrentHeight(updateMedicalInformation.CurrentHeight);
+            medicalInformationRepo.save(medicalInformation);
+            List<MedicalInformation> result = new ArrayList<>();
+            result.add(medicalInformation);
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Updated"), result);
+        }
+        catch (Exception e){
+            return new Response<>(false,StaticsText.MessageForTestError());
+        }
     }
     @Transactional
     public List<BloodType> GivenAndReceiveForBloodType(BloodType bloodType){
@@ -127,10 +143,19 @@ public class CrudServiceMedicalInformation {
         return bloodTypeList;
     }
     @Transactional
-    public String DeleteMedicalInformation(UUID MedicalInfoId){
-        MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(MedicalInfoId);
-        medicalInformationRepo.delete(medicalInformation);
-        return "medicalInformation deleted";
+    public Response<MedicalInformation> DeleteMedicalInformation(UUID MedicalInfoId){
+        try {
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(MedicalInfoId);
+            if(medicalInformation==null)return new Response<>(false, StaticsText.MessageForTest("medical information", "not found"));
+            medicalInformationRepo.delete(medicalInformation);
+            List<MedicalInformation> result = new ArrayList<>();
+            result.add(medicalInformation);
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Updated"), result);
+        }
+        catch (Exception e){
+            return new Response<>(false,StaticsText.MessageForTestError());
+        }
+
     }
 
 

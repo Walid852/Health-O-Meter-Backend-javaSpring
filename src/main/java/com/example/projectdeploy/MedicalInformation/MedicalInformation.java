@@ -40,7 +40,6 @@ public class MedicalInformation implements Serializable {
     Boolean haveHighBloodPressure=false;
     Boolean haveGeneticBloodDiseases=false;
     Boolean haveAbilityToDonate=false;
-    private int numOfCubs;
 
     @Enumerated(EnumType.STRING)
     private BloodType bloodType;

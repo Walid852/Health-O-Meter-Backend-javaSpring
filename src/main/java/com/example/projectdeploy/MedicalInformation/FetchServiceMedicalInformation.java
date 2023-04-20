@@ -1,11 +1,14 @@
 package com.example.projectdeploy.MedicalInformation;
 
 import com.example.projectdeploy.Member.Repo.MemberRepo;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,35 +21,81 @@ public class FetchServiceMedicalInformation {
     @Autowired
     MemberRepo memberRepo;
     @Transactional
-    public MedicalInformation GetMedicalInformationById(UUID MedicalInfoId){
-        return medicalInformationRepo.findMedicalInformationById(MedicalInfoId);
+    public Response<MedicalInformation> GetMedicalInformationById(UUID MedicalInfoId){
+        try{
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(MedicalInfoId);
+            List<MedicalInformation> result=new ArrayList<>();
+            if(medicalInformation!=null)result.add(medicalInformation);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Medical Information", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public MedicalInformation GetMedicalInformationByUserId(UUID UserId){
-        return medicalInformationRepo.findMedicalInformationByUserId(UserId);
+    public Response<MedicalInformation> GetMedicalInformationByUserId(UUID UserId){
+        try{
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationByUserId(UserId);
+            List<MedicalInformation> result=new ArrayList<>();
+            if(medicalInformation!=null)result.add(medicalInformation);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Medical Information", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public MedicalInformation GetMedicalInformationByMemberId(UUID MemberId){
-        return medicalInformationRepo.findMedicalInformationByMemberId(MemberId);
+    public Response<MedicalInformation> GetMedicalInformationByMemberId(UUID MemberId){
+        try{
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationByMemberId(MemberId);
+            List<MedicalInformation> result=new ArrayList<>();
+            if(medicalInformation!=null)result.add(medicalInformation);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Medical Information", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<MedicalInformation> GetAllMedicalInformation(){
-        return medicalInformationRepo.findAllMedicalInformation();
+    public Response<MedicalInformation> GetAllMedicalInformation(){
+        try{
+
+            List<MedicalInformation> result=medicalInformationRepo.findAllMedicalInformation();
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Medical Information", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<MedicalInformation> GetAllMedicalInformationForHeight(int height){
-        return medicalInformationRepo.findAllMedicalInformationForHeight(height);
+    public Response<MedicalInformation> GetAllMedicalInformationForHeight(int height){
+        try{
+            List<MedicalInformation> result=medicalInformationRepo.findAllMedicalInformationForHeight(height);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Medical Information", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<MedicalInformation> GetAllMedicalInformationForWeight(int weight){
-        return medicalInformationRepo.findAllMedicalInformationForWeight(weight);
+    public Response<MedicalInformation> GetAllMedicalInformationForWeight(int weight){
+        try{
+            List<MedicalInformation> result=medicalInformationRepo.findAllMedicalInformationForWeight(weight);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Medical Information", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<MedicalInformation> GetAllMedicalInformationForNumOfCubs(int numOfCup){
-        return medicalInformationRepo.findAllMedicalInformationForNumOfCubs(numOfCup);
-    }
-    @Transactional
-    public List<MedicalInformation> findAllMedicalInformationForBloodType(BloodType bloodType){
-        return medicalInformationRepo.findAllMedicalInformationForBloodType(bloodType);
+    public Response<MedicalInformation> findAllMedicalInformationForBloodType(BloodType bloodType){
+        try{
+            List<MedicalInformation> result=medicalInformationRepo.findAllMedicalInformationForBloodType(bloodType);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Medical Information", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Medical Information", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
 }
