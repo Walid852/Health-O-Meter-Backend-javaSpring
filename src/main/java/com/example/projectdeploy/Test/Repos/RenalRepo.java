@@ -24,7 +24,7 @@ public interface RenalRepo extends JpaRepository<Renal,UUID> {
     @Query("select R from Renal R ")
     public List<Test> getAllTestForSpecificType();
 
-    @Query("select R from Renal R where R.date>=?1")
-    public List<Test> TestByDate(Date date);
+    @Query("select R from Renal R where R.date>=?1 and R.date<=?2")
+    public List<Test> TestByDate(Date startDate,Date endDate);
 
 }

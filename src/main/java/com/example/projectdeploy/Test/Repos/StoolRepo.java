@@ -22,6 +22,6 @@ public interface StoolRepo extends JpaRepository<Stool, UUID> {
     @Query("select R from Stool R ")
     public List<Test> getAllTestForSpecificType();
 
-    @Query("select R from Stool R where R.date>=?1")
-    public List<Test> TestByDate(Date date);
+    @Query("select R from Stool R where R.date>=?1 and R.date<=?2")
+    public List<Test> TestByDate(Date startDate,Date endDate);
 }

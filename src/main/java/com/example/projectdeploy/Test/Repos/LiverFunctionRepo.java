@@ -23,6 +23,6 @@ public interface LiverFunctionRepo  extends JpaRepository<LiverFunction, UUID> {
     @Query("select R from LiverFunction R ")
     public List<Test> getAllTestForSpecificType();
 
-    @Query("select R from LiverFunction R where R.date>=?1")
-    public List<Test> TestByDate(Date date);
+    @Query("select R from LiverFunction R where R.date>=?1 and R.date<=?2")
+    public List<Test> TestByDate(Date startDate,Date endDate);
 }

@@ -1,5 +1,6 @@
 package com.example.projectdeploy.Test.Services;
 
+import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Test.Models.Test;
 import com.example.projectdeploy.Test.Models.TypesTest;
 import com.example.projectdeploy.Test.TestRequests.Request;
@@ -11,12 +12,12 @@ import java.util.UUID;
 
 @Service
 public interface BaseTest {
-    Test AddTest(Request test);
-    Test UpdateTest(Request test);
-    String DeleteTest(UUID id);
-    List<Test> RetrieveAllTest();
-    List<Test> RetrieveAllTestByMedicalInformationId(UUID id);
-    List<Test> testDeletedByMedicalInformationId(UUID id);
-    List<Test> TestByDate(Date date);
+    Response<Test> AddTest(Request test);
+    Response<Test> UpdateTest(Request test);
+    Response<Test> DeleteTest(UUID id);
+    Response<Test> RetrieveAllTest();
+    Response<Test> RetrieveAllTestByMedicalInformationId(UUID id);
+    Response<Test> testDeletedByMedicalInformationId(UUID id);
+    Response<Test> TestByDate(Date startDate,Date endDate);
     TypesTest GetType();
 }

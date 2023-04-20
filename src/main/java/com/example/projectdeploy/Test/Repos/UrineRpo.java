@@ -20,6 +20,6 @@ public interface UrineRpo extends JpaRepository<Urine, UUID> {
     public List<Test> urineDeletedByMedicalInformationId(UUID medicalInformationId);
     @Query("select R from Urine R ")
     public List<Test> getAllTestForSpecificType();
-    @Query("select R from Urine R where R.date>=?1")
-    public List<Test> TestByDate(Date date);
+    @Query("select R from Urine R where R.date>=?1 and R.date<=?2")
+    public List<Test> TestByDate(Date startDate,Date endDate);
 }
