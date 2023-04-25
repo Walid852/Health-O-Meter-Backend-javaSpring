@@ -6,11 +6,15 @@ import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarBl
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Repo.SugarBloodTestRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Requset.SugarTestRequest;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.TestPeriod;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
+import com.example.projectdeploy.Test.Models.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,73 +28,143 @@ public class SugarBloodTestService {
     MedicalInformationRepo medicalInformationRepo;
 
     @Transactional
-    public SugarBloodTest addRead(SugarTestRequest testRequest){
-        SugarBloodTest test=new SugarBloodTest();
-        MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(testRequest.getMedicalInformationId());
-        if(medicalInformation==null||testRequest.getRead()==-1)return null;
-        test.setMedicalInformation(medicalInformation);
-        test.setReadd(testRequest.getRead());
-        test.setDate(testRequest.getDate());
-        test.setTime(testRequest.getTime());
-        test.setTestPeriod(testRequest.getPeriod());
-        System.out.println(test);
-        testRepo.save(test);
-        return test;
-    }
-
-    @Transactional
-    public SugarBloodTest updateRead(SugarTestRequest testRequest){
-        SugarBloodTest updatedTest=new SugarBloodTest();
-
-        if(testRepo.findById(testRequest.getTestId()).isPresent()){
-            updatedTest=testRepo.findById(testRequest.getTestId()).get();
-            if(testRequest.getPeriod()!=null)updatedTest.setTestPeriod(testRequest.getPeriod());
-            if(testRequest.getRead()!=-1)updatedTest.setReadd(testRequest.getRead());
-            if(testRequest.getDate()!=null)updatedTest.setDate(testRequest.getDate());
-            if(testRequest.getTime()!=null)updatedTest.setTime(testRequest.getTime());
-            testRepo.save(updatedTest);
+    public Response<SugarBloodTest>  addRead(SugarTestRequest testRequest){
+        try{
+            SugarBloodTest test=new SugarBloodTest();
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(testRequest.getMedicalInformationId());
+            if(medicalInformation==null||testRequest.getRead()==-1)return null;
+            test.setMedicalInformation(medicalInformation);
+            test.setReadd(testRequest.getRead());
+            test.setDate(testRequest.getDate());
+            test.setTime(testRequest.getTime());
+            test.setTestPeriod(testRequest.getPeriod());
+            System.out.println(test);
+            testRepo.save(test);
+            List<SugarBloodTest> result = new ArrayList<>();
+            result.add(test);
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "added"), result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
         }
-        return updatedTest;
     }
 
     @Transactional
-    public String deleteRead(UUID id){
-        SugarBloodTest deletedTest =new SugarBloodTest();
+    public Response<SugarBloodTest> updateRead(SugarTestRequest testRequest){
+        try{
+            SugarBloodTest updatedTest=new SugarBloodTest();
 
-        if(testRepo.findById(id).isPresent()){
-            deletedTest =testRepo.findById(id).get();
-            deletedTest.setDeleted(true);
-            testRepo.save(deletedTest);
+            if(testRepo.findById(testRequest.getTestId()).isPresent()){
+                updatedTest=testRepo.findById(testRequest.getTestId()).get();
+                if(testRequest.getPeriod()!=null)updatedTest.setTestPeriod(testRequest.getPeriod());
+                if(testRequest.getRead()!=-1)updatedTest.setReadd(testRequest.getRead());
+                if(testRequest.getDate()!=null)updatedTest.setDate(testRequest.getDate());
+                if(testRequest.getTime()!=null)updatedTest.setTime(testRequest.getTime());
+                testRepo.save(updatedTest);
+            }
+            List<SugarBloodTest> result = new ArrayList<>();
+            result.add(updatedTest);
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Updated"), result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
         }
-        return "deleted Test";
     }
 
     @Transactional
-    public List<SugarBloodTest> getSugarBloodTestByMedicalInformationId(UUID medicalInformationId){
-        return testRepo.getSugarBloodTestByMedicalInformationId(medicalInformationId);
+    public Response<SugarBloodTest> deleteRead(UUID id){
+        try{
+
+            SugarBloodTest deletedTest =new SugarBloodTest();
+
+            if(testRepo.findById(id).isPresent()){
+                deletedTest =testRepo.findById(id).get();
+                deletedTest.setDeleted(true);
+                testRepo.save(deletedTest);
+            }
+            List<SugarBloodTest> result = new ArrayList<>();
+            result.add(deletedTest);
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Deleted"), result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+    }
+
+    @Transactional
+    public Response<SugarBloodTest> getSugarBloodTestByMedicalInformationId(UUID medicalInformationId){
+        try{
+            List<SugarBloodTest> result=testRepo.getSugarBloodTestByMedicalInformationId(medicalInformationId);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Sugar Blood Test", "not Found"));
+
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<SugarBloodTest> getDeletedSugarBloodTestByMedicalInformationId(UUID medicalInformationId){
-        return testRepo.getDeletedSugarBloodTestByMedicalInformationId(medicalInformationId);
+    public Response<SugarBloodTest> getDeletedSugarBloodTestByMedicalInformationId(UUID medicalInformationId){
+        try{
+            List<SugarBloodTest> result=testRepo.getDeletedSugarBloodTestByMedicalInformationId(medicalInformationId);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Sugar Blood Test", "not Found"));
+
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<SugarBloodTest> getAllSugarBloodTest(){
-        return testRepo.getAllSugarBloodTest();
+    public Response<SugarBloodTest> getAllSugarBloodTest(){
+        try{
+            List<SugarBloodTest> result=testRepo.getAllSugarBloodTest();
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Sugar Blood Test", "not Found"));
+
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public SugarBloodTest getSugarBloodTestById(UUID id){
-        return testRepo.getSugarBloodTestById(id);
+    public Response<SugarBloodTest> getSugarBloodTestById(UUID id){
+        SugarBloodTest sugarBloodTest= testRepo.getSugarBloodTestById(id);
+        try{
+
+            if(sugarBloodTest==null)return new Response<>(false, StaticsText.MessageForTest("Sugar Blood Test", "not Found"));
+            List<SugarBloodTest> result = new ArrayList<>();
+            result.add(sugarBloodTest);
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<SugarBloodTest> getSugarBloodTestByTestPeriod(TestPeriod testPeriod){
-        return testRepo.getSugarBloodTestByTestPeriod(testPeriod);
+    public Response<SugarBloodTest> getSugarBloodTestByTestPeriod(TestPeriod testPeriod){
+        try{
+            List<SugarBloodTest> result=testRepo.getSugarBloodTestByTestPeriod(testPeriod);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Sugar Blood Test", "not Found"));
+
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<SugarBloodTest> getSugarBloodTestByRead(int read){
-        return testRepo.getSugarBloodTestByRead(read);
+    public Response<SugarBloodTest> getSugarBloodTestByRead(int read){
+        try{
+            List<SugarBloodTest> result=testRepo.getSugarBloodTestByRead(read);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Sugar Blood Test", "not Found"));
+
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<SugarBloodTest> filterTestByDateUser(UUID medicalInformationId, Date start,Date end){
-        return testRepo.filterTestByDateUser(medicalInformationId,start,end);
+    public Response<SugarBloodTest> filterTestByDateUser(UUID medicalInformationId, Date start,Date end){
+        try{
+            List<SugarBloodTest> result=testRepo.filterTestByDateUser(medicalInformationId,start,end);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Sugar Blood Test", "not Found"));
+
+            return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
 }
