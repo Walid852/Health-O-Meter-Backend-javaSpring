@@ -32,7 +32,7 @@ public class SugarBloodTestService {
         try{
             SugarBloodTest test=new SugarBloodTest();
             MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(testRequest.getMedicalInformationId());
-            if(medicalInformation==null||testRequest.getRead()==-1)return null;
+            if(medicalInformation==null||testRequest.getRead()==-1)return new Response<>(false, StaticsText.MessageForTest("error not have medical Information", "or error in read"));
             test.setMedicalInformation(medicalInformation);
             test.setReadd(testRequest.getRead());
             test.setDate(testRequest.getDate());
@@ -68,13 +68,10 @@ public class SugarBloodTestService {
             return new Response<>(false, StaticsText.MessageForTestError());
         }
     }
-
     @Transactional
     public Response<SugarBloodTest> deleteRead(UUID id){
         try{
-
             SugarBloodTest deletedTest =new SugarBloodTest();
-
             if(testRepo.findById(id).isPresent()){
                 deletedTest =testRepo.findById(id).get();
                 deletedTest.setDeleted(true);
