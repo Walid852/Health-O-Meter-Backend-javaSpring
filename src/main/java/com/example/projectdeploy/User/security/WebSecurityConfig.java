@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/userService/auth").permitAll()
+                .requestMatchers("/userService/auth/register").permitAll()
                 .requestMatchers("/MedicalInformation/createMedicalInformation").permitAll()
                 .requestMatchers("/Disease").permitAll()
                 .requestMatchers("/authenticate").permitAll()
