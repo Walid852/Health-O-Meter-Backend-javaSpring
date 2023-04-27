@@ -50,9 +50,11 @@ public class CrudServiceBloodPressure {
             BloodPressure bloodPressure=new BloodPressure();
             MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(createBloodPressure.getMedicalInfoId());
             bloodPressure.setMedicalInformation(medicalInformation);
-            if(createBloodPressure.getSystolic()==-1||createBloodPressure.getDiastolic()==-1)return null;
+            if(createBloodPressure.getSystolic()==-1||createBloodPressure.getDiastolic()==-1)return new Response<>(false, StaticsText.MessageForTest("Blood Pressure Test", "not added"));
             bloodPressure.setSystolic(createBloodPressure.getSystolic());
             bloodPressure.setDiastolic(createBloodPressure.getDiastolic());
+            bloodPressure.setDate(createBloodPressure.getDate());
+            bloodPressure.setTime(createBloodPressure.getTime());
             bloodPressure.setBloodPressureCategory(CalculateCategory(createBloodPressure.getSystolic(),createBloodPressure.getDiastolic()));
             bloodPressureRepo.save(bloodPressure);
             List<BloodPressure> result = new ArrayList<>();

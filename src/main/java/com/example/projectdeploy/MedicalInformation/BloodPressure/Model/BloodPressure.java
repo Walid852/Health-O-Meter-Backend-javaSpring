@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.UUID;
 
 @Entity
@@ -39,6 +40,8 @@ public class BloodPressure implements Serializable {
     @Column(name = "date", nullable = false, updatable = false)
     @CreationTimestamp
     private Date date;
+
+    private Time time;
 
     @Enumerated(EnumType.STRING)
     private BloodPressureCategory bloodPressureCategory;
