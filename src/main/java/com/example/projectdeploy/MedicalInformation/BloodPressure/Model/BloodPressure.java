@@ -3,6 +3,7 @@ package com.example.projectdeploy.MedicalInformation.BloodPressure.Model;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.AM_PM;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class BloodPressure implements Serializable {
     private UUID id;
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
+    @JsonIgnore
     @Autowired
     MedicalInformation medicalInformation;
 
