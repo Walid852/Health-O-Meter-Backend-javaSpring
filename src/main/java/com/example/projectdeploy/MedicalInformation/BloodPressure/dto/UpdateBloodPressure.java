@@ -13,4 +13,5 @@ public class UpdateBloodPressure {
     private int diastolic=-1;
     private Date date;
     private Time time;
+    private AM_PM am_pm;
 }

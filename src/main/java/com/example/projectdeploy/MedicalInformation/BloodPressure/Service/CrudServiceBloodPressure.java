@@ -55,6 +55,7 @@ public class CrudServiceBloodPressure {
             bloodPressure.setDiastolic(createBloodPressure.getDiastolic());
             bloodPressure.setDate(createBloodPressure.getDate());
             bloodPressure.setTime(createBloodPressure.getTime());
+            bloodPressure.setAm_pm(createBloodPressure.getAm_pm());
             bloodPressure.setBloodPressureCategory(CalculateCategory(createBloodPressure.getSystolic(),createBloodPressure.getDiastolic()));
             bloodPressureRepo.save(bloodPressure);
             List<BloodPressure> result = new ArrayList<>();
@@ -71,6 +72,7 @@ public class CrudServiceBloodPressure {
             if(updateBloodPressure.getSystolic()!=-1)bloodPressure.setSystolic(updateBloodPressure.getSystolic());
             if(updateBloodPressure.getDiastolic()!=-1)bloodPressure.setDiastolic(updateBloodPressure.getDiastolic());
             bloodPressure.setBloodPressureCategory(CalculateCategory(bloodPressure.getSystolic(),bloodPressure.getDiastolic()));
+            bloodPressure.setAm_pm(bloodPressure.getAm_pm());
             bloodPressureRepo.save(bloodPressure);
             List<BloodPressure> result = new ArrayList<>();
             result.add(bloodPressure);

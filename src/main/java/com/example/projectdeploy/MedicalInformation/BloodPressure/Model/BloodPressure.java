@@ -1,5 +1,6 @@
 package com.example.projectdeploy.MedicalInformation.BloodPressure.Model;
 
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.AM_PM;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import jakarta.persistence.*;
@@ -42,6 +43,9 @@ public class BloodPressure implements Serializable {
     private Date date;
 
     private Time time;
+
+    @Enumerated(EnumType.STRING)
+    private AM_PM am_pm;
 
     @Enumerated(EnumType.STRING)
     private BloodPressureCategory bloodPressureCategory;

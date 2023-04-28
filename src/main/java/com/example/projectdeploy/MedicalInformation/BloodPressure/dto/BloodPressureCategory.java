@@ -6,4 +6,4 @@ public enum BloodPressureCategory {
     HIGH_BLOOD_PRESSURE_STAGE_1,
     HIGH_BLOOD_PRESSURE_STAGE_2,
     HYPERTENSIVE_CRISIS,
-}
+};
