@@ -76,7 +76,7 @@ public class CrudServiceBloodPressure {
             bloodPressureRepo.save(bloodPressure);
             List<BloodPressure> result = new ArrayList<>();
             result.add(bloodPressure);
-            return new Response<>(true, StaticsText.MessageForTest("Blood Pressure Test", "added"), result);
+            return new Response<>(true, StaticsText.MessageForTest("Blood Pressure Test", "Updated"), result);
         }catch (Exception e){
             return new Response<>(false, StaticsText.MessageForTestError());
         }
@@ -89,7 +89,7 @@ public class CrudServiceBloodPressure {
             bloodPressureRepo.save(bloodPressure);
             List<BloodPressure> result = new ArrayList<>();
             result.add(bloodPressure);
-            return new Response<>(true, StaticsText.MessageForTest("Blood Pressure Test", "added"), result);
+            return new Response<>(true, StaticsText.MessageForTest("Blood Pressure Test", "deleted"), result);
         }catch (Exception e){
             return new Response<>(false, StaticsText.MessageForTestError());
         }
