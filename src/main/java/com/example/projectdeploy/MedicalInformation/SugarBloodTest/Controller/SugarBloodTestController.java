@@ -26,7 +26,7 @@ public class SugarBloodTestController {
         return testService.addRead(testRequest);
     }
 
-    @PutMapping(value = "/updateRead")
+    @PatchMapping(value = "/updateRead")
     public @ResponseBody
     Response<SugarBloodTest> updateRead(@RequestBody SugarTestRequest testRequest) {
         return testService.updateRead(testRequest);
