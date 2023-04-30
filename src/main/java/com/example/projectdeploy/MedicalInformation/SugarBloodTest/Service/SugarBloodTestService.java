@@ -38,6 +38,7 @@ public class SugarBloodTestService {
             test.setDate(testRequest.getDate());
             test.setTime(testRequest.getTime());
             test.setTestPeriod(testRequest.getPeriod());
+            test.setAm_pm(testRequest.getAm_pm());
             System.out.println(test);
             testRepo.save(test);
             List<SugarBloodTest> result = new ArrayList<>();
@@ -59,6 +60,7 @@ public class SugarBloodTestService {
                 if(testRequest.getRead()!=-1)updatedTest.setReadd(testRequest.getRead());
                 if(testRequest.getDate()!=null)updatedTest.setDate(testRequest.getDate());
                 if(testRequest.getTime()!=null)updatedTest.setTime(testRequest.getTime());
+                updatedTest.setAm_pm(testRequest.getAm_pm());
                 testRepo.save(updatedTest);
             }
             List<SugarBloodTest> result = new ArrayList<>();
