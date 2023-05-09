@@ -6,6 +6,7 @@ import com.example.projectdeploy.User.Model.res;
 import com.example.projectdeploy.User.Repo.RoleRepo;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import com.example.projectdeploy.User.controller.JwtAuthenticationController;
+import com.example.projectdeploy.User.dto.ChangePasswordDto;
 import com.example.projectdeploy.User.dto.JwtRequest;
 import com.example.projectdeploy.User.dto.RegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,25 @@ public class UserServices {
             return ResponseEntity.badRequest().body(new Response(false, "Something wrong Make Ensure do Correct process and try agin"));
         }
     }
+    public ResponseEntity<?> ChangePassword(ChangePasswordDto changePasswordDto) {
+        try {
+            User user=userRepo.findByUserId(changePasswordDto.getUid());
+            if (user== null) {
+                return ResponseEntity.badRequest().body(new Response(false, "user not found"));
+            }
+            if (user.getPassword().equals(bcryptEncoder.encode((changePasswordDto.getOldPassword())))){
+                user.setPassword(bcryptEncoder.encode((changePasswordDto.getNewPassword())));
+            }
+            else {
+                return ResponseEntity.badRequest().body(new Response(false, "old Password is wrong"));
+            }
+            userRepo.save(user);
+            return ResponseEntity.accepted().body(new Response(true, "Password changed"));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new Response(false, "Something wrong Make Ensure do Correct process and try agin"));
+        }
+    }
+
 
     public User getUserInfo(UUID userId){
         if(userRepo.findById(userId).isPresent())
