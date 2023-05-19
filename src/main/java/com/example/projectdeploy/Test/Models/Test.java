@@ -1,6 +1,7 @@
 package com.example.projectdeploy.Test.Models;
 
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Test{
     @Column(name = "id", nullable = false)
     @GeneratedValue
      UUID id;
+    @JsonIgnore
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired

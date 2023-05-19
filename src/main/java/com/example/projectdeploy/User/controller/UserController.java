@@ -1,10 +1,12 @@
 package com.example.projectdeploy.User.controller;
 
 import com.example.projectdeploy.User.Model.User;
+import com.example.projectdeploy.User.dto.ChangePasswordDto;
 import com.example.projectdeploy.User.dto.RegisterDto;
 import com.example.projectdeploy.User.service.UserServices;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,11 @@ public class UserController {
     @PutMapping(value = "/updateUser")
     public @ResponseBody User updateUserInfo(@RequestBody RegisterDto registerDto){
         return userServices.updateUserInfo(registerDto);
+    }
+    @PutMapping(value = "/ChangePassword")
+    public @ResponseBody
+    ResponseEntity<?> ChangePassword(@RequestBody ChangePasswordDto changePasswordDto){
+        return userServices.ChangePassword(changePasswordDto);
     }
 
     @DeleteMapping(value = "/deletUser")

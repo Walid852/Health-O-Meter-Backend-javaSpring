@@ -6,6 +6,7 @@ import com.example.projectdeploy.MedicalInformation.BloodPressure.Service.FetchS
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.CreateBloodPressure;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.UpdateBloodPressure;
+import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,58 +24,58 @@ public class BloodPressureController {
     FetchServiceBloodPressure fetchServiceBloodPressure;
     @PostMapping(path="/AddBloodPressure")
     public @ResponseBody
-    BloodPressure AddBloodPressure(@RequestBody CreateBloodPressure createBloodPressure){
+    Response<BloodPressure> AddBloodPressure(@RequestBody CreateBloodPressure createBloodPressure){
         return crudServiceBloodPressure.AddBloodPressure(createBloodPressure);
     }
     @PatchMapping(path="/UpdateBloodPressure")
     public @ResponseBody
-    BloodPressure UpdateBloodPressure(@RequestBody UpdateBloodPressure updateBloodPressure){
+    Response<BloodPressure> UpdateBloodPressure(@RequestBody UpdateBloodPressure updateBloodPressure){
         return crudServiceBloodPressure.UpdateBloodPressure(updateBloodPressure);
     }
     @DeleteMapping(path="/DeleteBloodPressure")
     public @ResponseBody
-    String DeleteBloodPressure(@RequestParam UUID bloodPressureId){
+    Response<BloodPressure> DeleteBloodPressure(@RequestParam UUID bloodPressureId){
         return crudServiceBloodPressure.DeleteBloodPressure(bloodPressureId);
     }
     @GetMapping(path="/GetBloodPressureById")
     public @ResponseBody
-    BloodPressure GetBloodPressureById(@RequestParam UUID id){
+    Response<BloodPressure> GetBloodPressureById(@RequestParam UUID id){
         return fetchServiceBloodPressure.GetBloodPressureById(id);
     }
     @GetMapping(path="/GetBloodPressureByMedicalInformationId")
     public @ResponseBody
-    List<BloodPressure> GetBloodPressureByMedicalInformationId(@RequestParam UUID MedicalInformationId){
+    Response<BloodPressure> GetBloodPressureByMedicalInformationId(@RequestParam UUID MedicalInformationId){
         return  fetchServiceBloodPressure.GetBloodPressureByMedicalInformationId(MedicalInformationId);
     }
     @GetMapping(path="/findBloodPressureDeleted")
     public @ResponseBody
-    List<BloodPressure> findBloodPressureDeleted(@RequestParam UUID MedicalInformationId){
+    Response<BloodPressure> findBloodPressureDeleted(@RequestParam UUID MedicalInformationId){
         return  fetchServiceBloodPressure.findBloodPressureDeleted(MedicalInformationId);
     }
 
     @GetMapping(path="/GetAllBloodPressure")
     public @ResponseBody
-    List<BloodPressure> GetAllBloodPressure(){
+    Response<BloodPressure> GetAllBloodPressure(){
         return fetchServiceBloodPressure.GetAllBloodPressure();
     }
     @GetMapping(path="/GetAllBloodPressureByDate")
     public @ResponseBody
-    List<BloodPressure> GetAllBloodPressureByDate(@RequestParam Date start, @RequestParam Date endDate){
+    Response<BloodPressure> GetAllBloodPressureByDate(@RequestParam Date start, @RequestParam Date endDate){
         return fetchServiceBloodPressure.GetAllBloodPressureByDate(start,endDate);
     }
     @GetMapping(path="/GetBloodPressureByDiastolic")
     public @ResponseBody
-    List<BloodPressure> GetBloodPressureByDiastolic(@RequestParam int diastolic){
+    Response<BloodPressure> GetBloodPressureByDiastolic(@RequestParam int diastolic){
         return fetchServiceBloodPressure.GetBloodPressureByDiastolic(diastolic);
     }
     @GetMapping(path="/GetBloodPressureBySystolic")
     public @ResponseBody
-    List<BloodPressure> GetBloodPressureBySystolic(@RequestParam int systolic){
+    Response<BloodPressure> GetBloodPressureBySystolic(@RequestParam int systolic){
         return fetchServiceBloodPressure.GetBloodPressureBySystolic(systolic);
     }
     @GetMapping(path="/GetBloodPressureByBloodPressureCategory")
     public @ResponseBody
-    List<BloodPressure> GetBloodPressureByBloodPressureCategory(@RequestParam BloodPressureCategory bloodPressureCategory){
+    Response<BloodPressure> GetBloodPressureByBloodPressureCategory(@RequestParam BloodPressureCategory bloodPressureCategory){
         return fetchServiceBloodPressure.GetBloodPressureByBloodPressureCategory(bloodPressureCategory);
     }
 

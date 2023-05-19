@@ -1,7 +1,9 @@
 package com.example.projectdeploy.MedicalInformation.BloodPressure.Model;
 
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.AM_PM;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +30,7 @@ public class BloodPressure implements Serializable {
     private UUID id;
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
+    @JsonIgnore
     @Autowired
     MedicalInformation medicalInformation;
 
@@ -39,6 +43,11 @@ public class BloodPressure implements Serializable {
     @Column(name = "date", nullable = false, updatable = false)
     @CreationTimestamp
     private Date date;
+
+    private Time time;
+
+    @Enumerated(EnumType.STRING)
+    private AM_PM am_pm;
 
     @Enumerated(EnumType.STRING)
     private BloodPressureCategory bloodPressureCategory;
