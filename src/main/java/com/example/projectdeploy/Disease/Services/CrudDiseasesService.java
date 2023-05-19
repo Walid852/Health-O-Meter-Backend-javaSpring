@@ -34,9 +34,14 @@ public class CrudDiseasesService {
     public Disease AddDisease(DiseaseDto creationDisease){
         MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(creationDisease.getMedicalInformationId());
         if (medicalInformation==null)return null;
+        long milliseconds1 = creationDisease.getStartDate().getTime();
+        long milliseconds2 = creationDisease.getEndDate().getTime();
+
+        long millisecondsDiff = milliseconds2 - milliseconds1;
+        long daysDiff = millisecondsDiff / (1000 * 60 * 60 * 24);
         Disease disease=new Disease(medicalInformation,creationDisease.getName()
         ,creationDisease.getDescription(),creationDisease.getStartDate()
-        ,creationDisease.getEndDate(), creationDisease.getIsCured());
+        ,creationDisease.getEndDate(), creationDisease.getIsCured(),daysDiff);
         diseaseRepo.save(disease);
         return disease;
     }
