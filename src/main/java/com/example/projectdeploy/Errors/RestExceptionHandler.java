@@ -13,8 +13,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { Exception.class })
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "Internal Server Error";
-        return handleExceptionInternal(ex, bodyOfResponse,
+        //String bodyOfResponse = "Internal Server Error";
+        return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }
