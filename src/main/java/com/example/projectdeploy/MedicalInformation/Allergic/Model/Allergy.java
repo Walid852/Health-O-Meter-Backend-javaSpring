@@ -2,6 +2,7 @@ package com.example.projectdeploy.MedicalInformation.Allergic.Model;
 
 
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Allergy implements Serializable {
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
+    @JsonIgnore
     private MedicalInformation medicalInformation;
 
     boolean isDeleted=false;

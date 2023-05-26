@@ -5,10 +5,14 @@ import com.example.projectdeploy.MedicalInformation.Allergic.Repo.AllergyRepo;
 import com.example.projectdeploy.MedicalInformation.Allergic.Request.AllergyRequest;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
+import com.example.projectdeploy.Test.Models.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -22,59 +26,127 @@ public class AllergyService {
     @Autowired
     MedicalInformationRepo medicalInformationRepo;
     @Transactional
-    public Allergy addAllergy(AllergyRequest allergyRequest){
-        Allergy allergy =new Allergy();
-        MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(allergyRequest.getMedicalInformationId());
-        if(medicalInformation==null||allergyRequest.getName()==null)return null;
-        allergy.setDate(allergyRequest.getDate());
-        allergy.setName(allergyRequest.getName());
-        allergy.setMedicalInformation(medicalInformation);
-        allergyRepo.save(allergy);
-        return allergy;
-    }
-    @Transactional
-    public Allergy updateAllergy(AllergyRequest allergyRequest){
-        Allergy updatedAllergy =allergyRepo.getAllergyById(allergyRequest.getAllergyId());
-        if(updatedAllergy==null)return null;
-        if(allergyRequest.getName()!=null)updatedAllergy.setName(allergyRequest.getName());
-        if(allergyRequest.getDate()!=null)updatedAllergy.setDate(allergyRequest.getDate());
-
-        allergyRepo.save(updatedAllergy);
-        return updatedAllergy;
-    }
-    @Transactional
-    public String deleteAllergy(UUID id){
-        Allergy deletedAllergy =new Allergy();
-
-        if(allergyRepo.findById(id).isPresent()){
-            deletedAllergy =allergyRepo.findById(id).get();
+    public Response<Allergy>  addAllergy(AllergyRequest allergyRequest){
+        try {
+            Allergy allergy =new Allergy();
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(allergyRequest.getMedicalInformationId());
+            if(medicalInformation==null||allergyRequest.getName()==null)return new Response<>(false, StaticsText.MessageForTest("error", "not have a name"));
+            allergy.setDate(allergyRequest.getDate());
+            allergy.setName(allergyRequest.getName());
+            allergy.setMedicalInformation(medicalInformation);
+            allergyRepo.save(allergy);
+            List<Allergy> result = new ArrayList<>();
+            result.add(allergy);
+            return new Response<>(true, StaticsText.MessageForTest("Allergy", "Created"), result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
         }
-        deletedAllergy.setDeleted(true);
-        allergyRepo.save(deletedAllergy);
-        return "deleted Allergy";
+        }
+    @Transactional
+    public Response<Allergy>  updateAllergy(AllergyRequest allergyRequest){
+        try {
+            Allergy updatedAllergy =allergyRepo.getAllergyById(allergyRequest.getAllergyId());
+            if(updatedAllergy==null)return new Response<>(false, StaticsText.MessageForTest("error", "not have this allergic"));
+            if(allergyRequest.getName()!=null)updatedAllergy.setName(allergyRequest.getName());
+            if(allergyRequest.getDate()!=null)updatedAllergy.setDate(allergyRequest.getDate());
+            allergyRepo.save(updatedAllergy);
+            List<Allergy> result = new ArrayList<>();
+            result.add(updatedAllergy);
+            return new Response<>(true, StaticsText.MessageForTest("Allergy", "Updated"), result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Allergy> getAllergyByMedicalInformationId(UUID medicalInformationId){
-        return allergyRepo.getAllergyByMedicalInformationId(medicalInformationId);
+    public Response<Allergy> deleteAllergy(UUID id){
+        try {
+            Allergy deletedAllergy =new Allergy();
+            if(allergyRepo.findById(id).isPresent()){
+                deletedAllergy =allergyRepo.findById(id).get();
+            }
+            deletedAllergy.setDeleted(true);
+            allergyRepo.save(deletedAllergy);
+            List<Allergy> result = new ArrayList<>();
+            result.add(deletedAllergy);
+            return new Response<>(true, StaticsText.MessageForTest("Allergy", "Deleted"), result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Allergy> getAllergyDeletedByMedicalInformationId(UUID medicalInformationId){
-        return allergyRepo.getAllergyDeletedByMedicalInformationId(medicalInformationId);
+    public Response<Allergy> getAllergyByMedicalInformationId(UUID medicalInformationId){
+        try {
+            List<Allergy> result=allergyRepo.getAllergyByMedicalInformationId(medicalInformationId);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+        }
+        catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Allergy> getAllAllergy(){
-        return allergyRepo.getAllAllergy();
+    public Response<Allergy> getAllergyDeletedByMedicalInformationId(UUID medicalInformationId){
+        try {
+            List<Allergy> result=allergyRepo.getAllergyDeletedByMedicalInformationId(medicalInformationId);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+        }
+        catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Allergy> getAllergyByName(String name){
-        return allergyRepo.getAllergyByName(name);
+    public Response<Allergy> getAllAllergy(){
+        try {
+            List<Allergy> result=allergyRepo.getAllAllergy();
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+        }
+        catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Allergy> getAllergyByDate(Date date){
-        return allergyRepo.getAllergyByDate(date);
+    public Response<Allergy> getAllergyByName(String name){
+        try {
+            List<Allergy> result=allergyRepo.getAllergyByName(name);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+        }
+        catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public Allergy getAllergyById(UUID id){
-        return allergyRepo.getAllergyById(id);
+    public Response<Allergy> getAllergyByDate(Date date){
+        try {
+            List<Allergy> result=allergyRepo.getAllergyByDate(date);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+        }
+        catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
+    }
+    @Transactional
+    public Response<Allergy> getAllergyById(UUID id){
+        try {
+            List<Allergy> result = null;
+            Allergy allergy=allergyRepo.getAllergyById(id);
+            if(allergy!=null) {
+                result.add(allergy);
+            }
+            else return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+        }
+        catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
 }
