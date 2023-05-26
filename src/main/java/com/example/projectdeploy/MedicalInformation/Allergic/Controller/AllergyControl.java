@@ -30,8 +30,13 @@ public class AllergyControl {
     Response<Allergy> updateAllergy(@RequestBody AllergyRequest allergyRequest){
         return allergyService.updateAllergy(allergyRequest);
     }
-
     @DeleteMapping(value = "/deleteAllergy")
+    public @ResponseBody
+    Response<Allergy> deleteAllergy(@RequestParam UUID id){
+        return allergyService.deleteAllergy(id);
+    }
+
+    @DeleteMapping(value = "/getAllergyByMedicalInformationId")
     public @ResponseBody
     Response<Allergy> getAllergyByMedicalInformationId(@RequestParam UUID medicalInformationId){
         return allergyService.getAllergyByMedicalInformationId(medicalInformationId);
