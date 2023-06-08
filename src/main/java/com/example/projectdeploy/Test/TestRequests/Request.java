@@ -40,6 +40,8 @@ public class Request {
     float Urea=-1;
     float CreatinineInSerum=-1;
     float UricAcid=-1;
+    float WhiteBloodCells=-1;
+    float RedCellsDistributionWidth=-1;
     String Color="";
     String Consistency="";
      Boolean FoodParticles;

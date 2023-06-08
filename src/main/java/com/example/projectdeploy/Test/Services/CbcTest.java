@@ -31,7 +31,7 @@ public class CbcTest implements BaseTest{
             if (medicalInformation == null)
                 return new Response<>(false, StaticsText.MessageForTest("cbc Test", "not Created"));
             CBC cbc = new CBC(medicalInformation, test.getIsDeleted(), test.getDate(),
-                    test.getTest(), test.getHaemoglobin(), test.getRedCellsCount(),
+                    test.getTest(),test.getWhiteBloodCells(),test.getRedCellsDistributionWidth(), test.getHaemoglobin(), test.getRedCellsCount(),
                     test.getHaematocrit(), test.getMCV(), test.getMCH(), test.getMCHC()
                     , test.getPlateletsCount(), test.getPlateletsCount(), test.getNeutroPhils(),
                     test.getLymphoctyes(), test.getMonocytes(), test.getEosinophils(),
@@ -67,6 +67,8 @@ public class CbcTest implements BaseTest{
             if(test.getRedCellsCount()!=-1)cbc.setRedCellsCount(test.getRedCellsCount());
             if(test.getMonocytesabsolutecount()!=-1)cbc.setMonocytesabsolutecount(test.getMonocytesabsolutecount());
             if(test.getNeutrophilsabsoluteCount()!=-1)cbc.setNeutrophilsabsoluteCount(test.getNeutrophilsabsoluteCount());
+            if(test.getWhiteBloodCells()!=-1)cbc.setWhiteBloodCells(test.getWhiteBloodCells());
+            if(test.getRedCellsDistributionWidth()!=-1)cbc.setRedCellsDistributionWidth(test.getRedCellsDistributionWidth());
             cbcRepo.saveAndFlush(cbc);
             List<Test> result = new ArrayList<>();
             result.add(cbc);

@@ -33,13 +33,22 @@ public class CBC extends Test{
     private float LymphocytesAbsoluteCount;
     private float Monocytesabsolutecount;
     private float Eosinophilsabsolutecount;
+    private float WhiteBloodCells;
+    private float RedCellsDistributionWidth;
 
     public CBC() {
         super();
     }
 
-    public CBC(MedicalInformation medicalInformation, Boolean isDeleted, Date date, TypesTest test, float haemoglobin, float redCellsCount, float haematocrit, float MCV, float MCH, float MCHC, float plateletsCount, float totalLeucoCyticCount, float neutroPhils, float lymphoctyes, float monocytes, float eosinophils, float neutrophilsabsoluteCount, float lymphocytesAbsoluteCount, float monocytesabsolutecount, float eosinophilsabsolutecount) {
+    public CBC(MedicalInformation medicalInformation, Boolean isDeleted, Date date, TypesTest test,
+               float WhiteBloodCells,float RedCellsDistributionWidth,
+               float haemoglobin, float redCellsCount, float haematocrit, float MCV, float MCH, float MCHC,
+               float plateletsCount, float totalLeucoCyticCount, float neutroPhils, float lymphoctyes, float monocytes,
+               float eosinophils, float neutrophilsabsoluteCount, float lymphocytesAbsoluteCount, float monocytesabsolutecount, float eosinophilsabsolutecount
+      ) {
         super(medicalInformation, isDeleted, date, test);
+        this.WhiteBloodCells=WhiteBloodCells;
+        this.RedCellsDistributionWidth=RedCellsDistributionWidth;
         Haemoglobin = haemoglobin;
         RedCellsCount = redCellsCount;
         Haematocrit = haematocrit;

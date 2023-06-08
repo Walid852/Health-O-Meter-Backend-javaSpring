@@ -23,4 +23,6 @@ public class CBCRequest {
     float LymphocytesAbsoluteCount;
     float Monocytesabsolutecount;
     float Eosinophilsabsolutecount;
+    float WhiteBloodCells;
+    float RedCellsDistributionWidth;
 }
