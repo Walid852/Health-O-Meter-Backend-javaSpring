@@ -3,8 +3,10 @@ package com.example.projectdeploy.Community;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -55,9 +57,17 @@ public class CommunityService {
     public Community AddUserInCommunity(UUID userId,UUID communityId) {
         Community communityObject=CommunityRepo.findCommunityById(communityId);
         User user=userRepo.findByUserId(userId);
+        if(communityObject.getUsers().contains(user)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is already in community");
+        }else{
         communityObject.getUsers().add(user);
         CommunityRepo.save(communityObject);
         return communityObject;
+        }
+    }
+    @Transactional
+    public List<Community> getUsersCommunity(UUID userId){
+        return CommunityRepo.getUsersCommunity(userId);
     }
     @Transactional
     public Community DeleteUserInCommunity(UUID userId,UUID communityId)  {

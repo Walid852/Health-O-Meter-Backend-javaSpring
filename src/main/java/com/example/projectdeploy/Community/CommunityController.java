@@ -47,6 +47,11 @@ public class CommunityController {
     List<User> UsersForCommunity(UUID communityId) {
         return communityService.UsersForCommunity(communityId);
     }
+    @GetMapping(path = "/UsersCommunity")
+    public @ResponseBody
+    List<Community> getUsersCommunity(UUID userId) {
+        return communityService.getUsersCommunity(userId);
+    }
     @GetMapping(path = "/AddUserInCommunity")
     public @ResponseBody
     Community AddUserInCommunity(@RequestParam UUID userId,@RequestParam UUID communityId){
