@@ -21,6 +21,7 @@ public class CommunityService {
     public Community CreateCommunity(CommunityRequest community) {
         Community communityObject=new Community();
         communityObject.setName(community.name);
+        communityObject.setDescription(community.description);
         CommunityRepo.save(communityObject);
         return communityObject;
     }

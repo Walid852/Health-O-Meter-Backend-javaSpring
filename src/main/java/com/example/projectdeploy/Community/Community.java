@@ -30,6 +30,8 @@ public class Community implements Serializable {
     @ManyToMany(cascade = {CascadeType.ALL})
     List<User> users = new ArrayList<>();
 
+    String description;
+
 
 
 
