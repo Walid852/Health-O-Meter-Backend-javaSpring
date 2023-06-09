@@ -44,12 +44,12 @@ public class CommunityController {
     }
     @GetMapping(path = "/UsersForCommunity")
     public @ResponseBody
-    List<User> UsersForCommunity(UUID communityId) {
+    List<User> UsersForCommunity(@RequestParam UUID communityId) {
         return communityService.UsersForCommunity(communityId);
     }
     @GetMapping(path = "/UsersCommunity")
     public @ResponseBody
-    List<Community> getUsersCommunity(UUID userId) {
+    List<Community> getUsersCommunity(@RequestParam UUID userId) {
         return communityService.getUsersCommunity(userId);
     }
     @GetMapping(path = "/AddUserInCommunity")
