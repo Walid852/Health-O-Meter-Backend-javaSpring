@@ -5,6 +5,7 @@ import com.example.projectdeploy.Community.CommunityRepo;
 import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.Community.Post.Request.NewUpdatePost;
+import com.example.projectdeploy.SimilarPosts.ElasticService;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class CrudServices {
     @Autowired
     CommunityRepo communityRepo;
 
+    @Autowired
+    ElasticService elasticService;
+
     @Transactional
     public Post createPost(NewUpdatePost newUpdatePost){
         Post post=new Post();
@@ -40,6 +44,7 @@ public class CrudServices {
                 post.setFile(newUpdatePost.getFile());
                 post.setImage(newUpdatePost.getImage());
                 postRepo.save(post);
+                elasticService.addToElastic(post);
             }
         }
         return post;

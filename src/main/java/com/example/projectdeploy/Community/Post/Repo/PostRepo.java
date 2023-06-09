@@ -19,6 +19,8 @@ public interface PostRepo extends JpaRepository<Post, UUID> {
     @Query("SELECT O from Post O where O.community.id=?1")
     List<Post> getCommunityPost(UUID communityId);
 
+    @Query("SELECT O from Post O where O.id=?1")
+    Post findPostById(UUID postId);
 
     @Query("select L from Likee L where L.post.id=?1")
     List<Likee> getPostLikes(UUID postId);
