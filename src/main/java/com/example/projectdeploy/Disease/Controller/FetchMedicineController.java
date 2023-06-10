@@ -1,7 +1,9 @@
 package com.example.projectdeploy.Disease.Controller;
 
+import com.example.projectdeploy.Disease.Models.Disease;
 import com.example.projectdeploy.Disease.Models.Medicine;
 import com.example.projectdeploy.Disease.Services.FetchMedicalService;
+import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,27 +22,27 @@ public class FetchMedicineController {
 
     @GetMapping(path="/findMedicineById")
     public @ResponseBody
-    Medicine findMedicineById(UUID id){
+    Response<Medicine>  findMedicineById(UUID id){
         return fetchMedicalService.findMedicineById(id);
     }
     @GetMapping(path="/findMedicineByNameForMedicalInformationId")
     public @ResponseBody
-    List<Medicine> findMedicineByNameForMedicalInformationId(UUID id, String name){
+    Response<Medicine> findMedicineByNameForMedicalInformationId(UUID id, String name){
         return fetchMedicalService.findMedicineByNameForMedicalInformationId(id,name);
     }
     @GetMapping(path="/findMedicineForMedicalInformationId")
     public @ResponseBody
-    List<Medicine> findMedicineForMedicalInformationId(UUID id){
+    Response<Medicine>findMedicineForMedicalInformationId(UUID id){
         return fetchMedicalService.findMedicineForMedicalInformationId(id);
     }
     @GetMapping(path="/findMedicineForDisease")
     public @ResponseBody
-    List<Medicine> findMedicineForDisease(UUID id){
+    Response<Medicine> findMedicineForDisease(UUID id){
         return fetchMedicalService.findMedicineForDisease(id);
     }
     @GetMapping(path="/findMedicineByIsNotifiedForMedicalInformationId")
     public @ResponseBody
-    List<Medicine> findMedicineByIsNotifiedForMedicalInformationId(UUID id,Boolean isNotified){
+    Response<Medicine> findMedicineByIsNotifiedForMedicalInformationId(UUID id,Boolean isNotified){
         return fetchMedicalService.findMedicineByIsNotifiedForMedicalInformationId(id,isNotified);
     }
 

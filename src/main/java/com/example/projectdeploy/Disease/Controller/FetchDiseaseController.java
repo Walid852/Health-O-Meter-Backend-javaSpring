@@ -2,6 +2,7 @@ package com.example.projectdeploy.Disease.Controller;
 
 import com.example.projectdeploy.Disease.Models.Disease;
 import com.example.projectdeploy.Disease.Services.FetchDiseasesService;
+import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,37 +23,37 @@ public class FetchDiseaseController {
 
     @GetMapping(path="/findAllDiseaseByName")
     public @ResponseBody
-    List<Disease> findAllDiseaseByName(String name){
+    Response<Disease> findAllDiseaseByName(String name){
         return fetchDiseasesService.findAllDiseaseByName(name);
     }
     @GetMapping(path="/findAllDiseaseByIsCured")
     public @ResponseBody
-    List<Disease> findAllDiseaseByIsCured(Boolean isCured){
+    Response<Disease> findAllDiseaseByIsCured(Boolean isCured){
         return fetchDiseasesService.findAllDiseaseByIsCured(isCured);
     }
     @GetMapping(path="/findDiseaseByName")
     public @ResponseBody
-    List<Disease> findDiseaseByName(String name, UUID id){
+    Response<Disease> findDiseaseByName(String name, UUID id){
         return fetchDiseasesService.findDiseaseByName(name,id);
     }
     @GetMapping(path="/findDiseaseByIsCured")
     public @ResponseBody
-    List<Disease> findDiseaseByIsCured(Boolean isCured,UUID id){
+    Response<Disease> findDiseaseByIsCured(Boolean isCured,UUID id){
         return fetchDiseasesService.findDiseaseByIsCured(isCured,id);
     }
     @GetMapping(path="/findDiseaseByMedicalInformationId")
     public @ResponseBody
-    List<Disease> findDiseaseByMedicalInformationId(UUID id){
+    Response<Disease> findDiseaseByMedicalInformationId(UUID id){
         return fetchDiseasesService.findDiseaseByMedicalInformationId(id);
     }
     @GetMapping(path="/filterDiseaseByStartDate")
     public @ResponseBody
-    List<Disease> filterDiseaseByStartDate(UUID medicalInformationId, Date start, Date end){
+    Response<Disease> filterDiseaseByStartDate(UUID medicalInformationId, Date start, Date end){
         return fetchDiseasesService.filterDiseaseByStartDate(medicalInformationId,start,end);
     }
     @GetMapping(path="/filterDiseaseByEndDate")
     public @ResponseBody
-    List<Disease> filterDiseaseByEndDate(UUID medicalInformationId, Date start, Date end){
+    Response<Disease> filterDiseaseByEndDate(UUID medicalInformationId, Date start, Date end){
         return fetchDiseasesService.filterDiseaseByEndDate(medicalInformationId,start,end);
     }
 

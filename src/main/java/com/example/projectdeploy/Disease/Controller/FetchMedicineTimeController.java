@@ -1,7 +1,9 @@
 package com.example.projectdeploy.Disease.Controller;
 
+import com.example.projectdeploy.Disease.Models.Medicine;
 import com.example.projectdeploy.Disease.Models.MedicineTime;
 import com.example.projectdeploy.Disease.Services.FetchMedicalTimesService;
+import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,25 +22,25 @@ public class FetchMedicineTimeController {
 
     @GetMapping(path = "/findMedicineTimeById")
     public @ResponseBody
-    MedicineTime findMedicineTimeById(UUID id) {
+    Response<MedicineTime>  findMedicineTimeById(UUID id) {
         return fetchMedicalTimesService.findMedicineTimeById(id);
     }
 
     @GetMapping(path = "/findMedicineTimeByMedicineId")
     public @ResponseBody
-    List<MedicineTime> findMedicineTimeByMedicineId(UUID id) {
+    Response<MedicineTime>  findMedicineTimeByMedicineId(UUID id) {
         return fetchMedicalTimesService.findMedicineTimeByMedicineId(id);
     }
 
     @GetMapping(path = "/findMedicineTimeByDiseaseId")
     public @ResponseBody
-    List<MedicineTime> findMedicineTimeByDiseaseId(UUID id) {
+    Response<MedicineTime>  findMedicineTimeByDiseaseId(UUID id) {
         return fetchMedicalTimesService.findMedicineTimeByDiseaseId(id);
     }
 
     @GetMapping(path = "/findMedicineTimeByMedicalInformationIdAndNotified")
     public @ResponseBody
-    List<MedicineTime> findMedicineTimeByMedicalInformationIdAndNotified(UUID id) {
+    Response<MedicineTime>  findMedicineTimeByMedicalInformationIdAndNotified(UUID id) {
         return fetchMedicalTimesService.findMedicineTimeByMedicalInformationIdAndNotified(id);
     }
 }
