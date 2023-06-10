@@ -79,13 +79,13 @@ public class BloodPressureController {
     }
 
     @GetMapping(value = "/pressureAnalysis")
-    public @ResponseBody Response<PressureAnalysis> pressureAnalysis(@RequestParam UUID medicalId){
-        return fetchServiceBloodPressure.pressureAnalysis(medicalId);
+    public @ResponseBody Response<PressureAnalysis> pressureAnalysis(@RequestBody DateReq dateReq){
+        return fetchServiceBloodPressure.pressureAnalysis(dateReq);
     }
 
     @GetMapping(value = "/countCategory")
-    public @ResponseBody Response<CategoryCount> countCategory(@RequestParam UUID medicalId){
-        return fetchServiceBloodPressure.countCategories(medicalId);
+    public @ResponseBody Response<CategoryCount> countCategory(@RequestBody DateReq dateReq){
+        return fetchServiceBloodPressure.countCategories(dateReq);
     }
 
 

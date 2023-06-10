@@ -7,6 +7,7 @@ import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarTe
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Repo.SugarBloodTestRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Requset.SugarTestRequest;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.CategoryAnalysis;
+import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.DateReq;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.SugarAnalysis;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.TestPeriod;
 import com.example.projectdeploy.Shared.Response;
@@ -188,9 +189,9 @@ public class SugarBloodTestService {
 
 
     @Transactional
-    public Response<SugarAnalysis> SugarAnalysis(UUID medicalId){
+    public Response<SugarAnalysis> SugarAnalysis(DateReq dateReq){
         List<SugarAnalysis> reads=new ArrayList<>();
-        List<Object[]> analysis= testRepo.calculateAverageByDate(medicalId);
+        List<Object[]> analysis= testRepo.calculateAverageByDate(dateReq.getMedicalId(),dateReq.getFrom(),dateReq.getTo());
         for(Object[] obj:analysis){
             SugarAnalysis sugarAnalysis= new SugarAnalysis();
             sugarAnalysis.setDate((Date) obj[0]);
@@ -201,9 +202,9 @@ public class SugarBloodTestService {
     }
 
     @Transactional
-    public Response<CategoryAnalysis> sCategoryAnalysis(UUID medicalId){
+    public Response<CategoryAnalysis> sCategoryAnalysis(DateReq dateReq){
         List<CategoryAnalysis> counts=new ArrayList<>();
-        List<Object[]> analysis= testRepo.calculateCategory(medicalId);
+        List<Object[]> analysis= testRepo.calculateCategory(dateReq.getMedicalId(),dateReq.getFrom(),dateReq.getTo());
         for(Object[] obj:analysis){
             CategoryAnalysis categoryAnalysis= new CategoryAnalysis();
             categoryAnalysis.setCategory(obj[0].toString());

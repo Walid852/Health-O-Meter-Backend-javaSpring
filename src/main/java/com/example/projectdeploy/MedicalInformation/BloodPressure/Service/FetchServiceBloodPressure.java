@@ -4,6 +4,7 @@ import com.example.projectdeploy.MedicalInformation.BloodPressure.Model.BloodPre
 import com.example.projectdeploy.MedicalInformation.BloodPressure.Repo.BloodPressureRepo;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.CategoryCount;
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.DateReq;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.PressureAnalysis;
 import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarBloodTest;
@@ -112,9 +113,9 @@ public class FetchServiceBloodPressure {
         }
     }
     @Transactional
-    public Response<PressureAnalysis> pressureAnalysis(UUID medicalId){
+    public Response<PressureAnalysis> pressureAnalysis(DateReq dateReq){
         List<PressureAnalysis> reads=new ArrayList<>();
-        List<Object[]> analysis= bloodPressureRepo.calculateAverageByDate(medicalId);
+        List<Object[]> analysis= bloodPressureRepo.calculateAverageByDate(dateReq.getMedicalId(),dateReq.getFrom(),dateReq.getTo());
         for(Object[] obj:analysis){
             PressureAnalysis pressureAnalysis= new PressureAnalysis();
             pressureAnalysis.setDate((Date) obj[0]);
@@ -126,9 +127,9 @@ public class FetchServiceBloodPressure {
     }
 
     @Transactional
-    public Response<CategoryCount> countCategories(UUID medicalId){
+    public Response<CategoryCount> countCategories(DateReq dateReq){
         List<CategoryCount> counts=new ArrayList<>();
-        List<Object[]> analysis= bloodPressureRepo.calculateCategory(medicalId);
+        List<Object[]> analysis= bloodPressureRepo.calculateCategory(dateReq.getMedicalId(),dateReq.getFrom(),dateReq.getTo());
         for(Object[] obj:analysis){
             CategoryCount categoryCount= new CategoryCount();
             categoryCount.setCategory(obj[0].toString());
