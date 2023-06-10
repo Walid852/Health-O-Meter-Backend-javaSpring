@@ -1,9 +1,10 @@
 package com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis;
 
+import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+@Setter @Getter
 public class CategoryAnalysis {
-    String Category;
+    String category;
     Long count;
 }

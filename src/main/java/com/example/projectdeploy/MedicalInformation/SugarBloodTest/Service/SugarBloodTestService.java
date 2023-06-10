@@ -54,9 +54,9 @@ public class SugarBloodTestService {
 
     public SugarTestCategory getDiabetesCategory(int read){
         SugarTestCategory sugarTestCategory;
-        if(read<70)
+        if(read<=70)
             sugarTestCategory=SugarTestCategory.Low;
-        else if(read>70 && read<179)
+        else if(read<=179)
             sugarTestCategory=SugarTestCategory.Normal;
         else
             sugarTestCategory=SugarTestCategory.High;
