@@ -1,8 +1,12 @@
 package com.example.projectdeploy.MedicalInformation.Surgery.Service;
 
+import com.example.projectdeploy.MedicalInformation.Allergic.Model.Allergy;
 import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
+import com.example.projectdeploy.MedicalInformation.Phobia.model.Phobia;
 import com.example.projectdeploy.MedicalInformation.Surgery.Model.Surgery;
 import com.example.projectdeploy.MedicalInformation.Surgery.Repo.SurgeryRepo;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,32 +22,87 @@ public class FetchServiceSurgery {
     @Autowired
     MedicalInformationRepo medicalInformationRepo;
     @Transactional
-    public Surgery findSurgeryById(UUID id){
-        return surgeryRepo.findSurgeryById(id);
+    public Response<Surgery> findSurgeryById(UUID id){
+        try {
+            List<Surgery> result = null;
+            Surgery surgery=surgeryRepo.findSurgeryById(id);
+            if(surgery!=null) {
+                result.add(surgery);
+            }
+            else return new Response<>(false, StaticsText.MessageForTest("Surgeries", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Surgeries", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Surgery> findAllSurgery(){
-        return surgeryRepo.findAllSurgery();
+    public Response<Surgery> findAllSurgery(){
+        try {
+
+            List<Surgery> result=surgeryRepo.findAllSurgery();
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Surgeries", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Surgery> findSurgeryByMedicalInformationId(UUID id){
-        return surgeryRepo.findSurgeryByMedicalInformationId(id);
+    public Response<Surgery> findSurgeryByMedicalInformationId(UUID id){
+
+        try {
+
+            List<Surgery> result=surgeryRepo.findSurgeryByMedicalInformationId(id);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Surgeries", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Surgery> findSurgeryDeleted(UUID id){
-        return surgeryRepo.findSurgeryDeleted(id);
+    public Response<Surgery> findSurgeryDeleted(UUID id){
+        try {
+
+            List<Surgery> result=surgeryRepo.findSurgeryDeleted(id);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Surgeries", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Surgery> findSurgeryByName(String name){
-        return surgeryRepo.findSurgeryByName(name);
+    public Response<Surgery> findSurgeryByName(String name){
+        try {
+
+            List<Surgery> result=surgeryRepo.findSurgeryByName(name);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Surgeries", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Surgery> findSurgeryByBodyMember(String bodyMember){
-        return surgeryRepo.findSurgeryByBodyMember(bodyMember);
+    public Response<Surgery> findSurgeryByBodyMember(String bodyMember){
+        try {
+            List<Surgery> result=surgeryRepo.findSurgeryByBodyMember(bodyMember);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Surgeries", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Surgery> findSurgeryByCreationDate(Date creationDate,UUID medicalInformationId){
-        return surgeryRepo.findSurgeryByCreationDate(creationDate,medicalInformationId);
+    public Response<Surgery> findSurgeryByCreationDate(Date creationDate,UUID medicalInformationId){
+        try {
+
+            List<Surgery> result= surgeryRepo.findSurgeryByCreationDate(creationDate,medicalInformationId);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Surgeries", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     /*@Transactional
     public List<Surgery> findSurgeryBySurgeryDate(Date surgeryDate, UUID medicalInformationId){

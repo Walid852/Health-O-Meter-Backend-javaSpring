@@ -1,16 +1,20 @@
 package com.example.projectdeploy.MedicalInformation.Phobia.Service;
 
+import com.example.projectdeploy.MedicalInformation.Allergic.Model.Allergy;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.MedicalInformation.Phobia.Repo.PhobiaRepo;
 import com.example.projectdeploy.MedicalInformation.Phobia.Request.PhobiaRequest;
 import com.example.projectdeploy.MedicalInformation.Phobia.Request.PhobiaUpdate;
 import com.example.projectdeploy.MedicalInformation.Phobia.model.Phobia;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,57 +27,130 @@ public class PhobiaService {
     MedicalInformationRepo medicalInformationRepo;
 
     @Transactional
-    public Phobia addPhobia(PhobiaRequest phobiaRequest){
-        Phobia phobia=new Phobia();
-        MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(phobiaRequest.getMedicalInformationId());
-        if(medicalInformation==null||phobiaRequest.getName()==null) return null;
-        phobia.setName(phobiaRequest.getName());
-        phobia.setMedicalInformation(medicalInformation);
-        phobiaRepo.save(phobia);
-        return phobia;
+    public Response<Phobia> addPhobia(PhobiaRequest phobiaRequest){
+        try{
+            Phobia phobia=new Phobia();
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(phobiaRequest.getMedicalInformationId());
+            if(medicalInformation==null||phobiaRequest.getName()==null) {
+                return new Response<>(false, StaticsText.MessageForTest("error", "not have a name"));
+            }
+            phobia.setName(phobiaRequest.getName());
+            phobia.setMedicalInformation(medicalInformation);
+            phobiaRepo.save(phobia);
+            List<Phobia> result = new ArrayList<>();
+            result.add(phobia);
+            return new Response<>(true, StaticsText.MessageForTest("Phobia", "Created"), result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public Phobia updatePhobia(PhobiaUpdate phobiaUpdate){
-        Phobia Phobia=phobiaRepo.getPhobiaById(phobiaUpdate.getPhobiaId());
-        if(Phobia==null)return null;
-        Phobia.setName(phobiaUpdate.getName());
-        phobiaRepo.save(Phobia);
-        return Phobia;
+    public Response<Phobia>  updatePhobia(PhobiaUpdate phobiaUpdate){
+        try{
+            Phobia Phobia=phobiaRepo.getPhobiaById(phobiaUpdate.getPhobiaId());
+            if(Phobia==null)return new Response<>(false, StaticsText.MessageForTest("error", "not have this Phobia"));
+            Phobia.setName(phobiaUpdate.getName());
+            phobiaRepo.save(Phobia);
+            List<Phobia> result = new ArrayList<>();
+            result.add(Phobia);
+            return new Response<>(true, StaticsText.MessageForTest("Phobia", "Updated"), result);
+
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public String deletePhobia(UUID id){
-        Phobia deletedPhobia =phobiaRepo.getPhobiaById(id);
-        if (deletedPhobia==null)return "not found";
-        deletedPhobia.setDeleted(true);
-        phobiaRepo.save(deletedPhobia);
-        return "phobia deleted";
+    public Response<Phobia>  deletePhobia(UUID id){
+        try{
+            Phobia deletedPhobia =phobiaRepo.getPhobiaById(id);
+            if (deletedPhobia==null)return new Response<>(false, StaticsText.MessageForTest("error", "not have this Phobia"));
+            deletedPhobia.setDeleted(true);
+            phobiaRepo.save(deletedPhobia);
+            List<Phobia> result = new ArrayList<>();
+            result.add(deletedPhobia);
+            return new Response<>(true, StaticsText.MessageForTest("Phobia", "deleted"), result);
+
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Phobia> getAllPhobia()
+    public Response<Phobia>  getAllPhobia()
     {
-        return phobiaRepo.getAllPhobia();
+        try{
+            List<Phobia> result=phobiaRepo.getAllPhobia();
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
+
     }
     @Transactional
-    public List<Phobia> getPhobiaByMedicalInformationId(UUID medicalInformationId){
-        return phobiaRepo.getPhobiaByMedicalInformationId(medicalInformationId);
+    public Response<Phobia>  getPhobiaByMedicalInformationId(UUID medicalInformationId){
+
+        try{
+            List<Phobia> result=phobiaRepo.getPhobiaByMedicalInformationId(medicalInformationId);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public Phobia getPhobiaById(UUID id){
-        return phobiaRepo.getPhobiaById(id);
+    public Response<Phobia>  getPhobiaById(UUID id){
+        try{
+            List<Phobia> result = null;
+            Phobia phobia=phobiaRepo.getPhobiaById(id);
+            if(phobia!=null) {
+                result.add(phobia);
+            }
+            else return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Phobia> getPhobiaByName(String name)
+    public Response<Phobia>  getPhobiaByName(String name)
     {
-        return phobiaRepo.getPhobiaByName(name);
+        try{
+            List<Phobia> result=phobiaRepo.getPhobiaByName(name);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Phobia> getPhobiaDeletedByMedicalInformationId(UUID medicalInformationId)
+    public Response<Phobia>  getPhobiaDeletedByMedicalInformationId(UUID medicalInformationId)
     {
-        return phobiaRepo.getPhobiaDeletedByMedicalInformationId(medicalInformationId);
+        try{
+            List<Phobia> result=phobiaRepo.getPhobiaDeletedByMedicalInformationId(medicalInformationId);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
     @Transactional
-    public List<Phobia> getPhobiaByDate(Date creationDate){
-        return phobiaRepo.getPhobiaByDate(creationDate);
+    public Response<Phobia>  getPhobiaByDate(Date creationDate){
+
+        try{
+            List<Phobia> result=phobiaRepo.getPhobiaByDate(creationDate);
+            if(result.size()==0)return new Response<>(false, StaticsText.MessageForTest("Allergies", "not Found"));
+            return new Response<>(true, StaticsText.MessageForTest("Allergies", "Retrieved"),result);
+
+        }catch (Exception e){
+            return new Response<>(false, StaticsText.MessageForTestError());
+        }
     }
 
 
