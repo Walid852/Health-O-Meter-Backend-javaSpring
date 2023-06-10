@@ -5,10 +5,10 @@ import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarBloodTest;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Repo.SugarBloodTestRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Requset.SugarTestRequest;
+import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.SugarAnalysis;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.TestPeriod;
 import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
-import com.example.projectdeploy.Test.Models.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -165,5 +165,19 @@ public class SugarBloodTestService {
         }catch (Exception e){
             return new Response<>(false, StaticsText.MessageForTestError());
         }
+    }
+
+
+    @Transactional
+    public Response<SugarAnalysis> SugarAnalysis(UUID medicalId){
+        List<SugarAnalysis> reads=new ArrayList<>();
+        List<Object[]> analysis= testRepo.calculateAverageByDate(medicalId);
+        for(Object[] obj:analysis){
+            SugarAnalysis sugarAnalysis= new SugarAnalysis();
+            sugarAnalysis.setDate((Date) obj[0]);
+            sugarAnalysis.setAvgRead((Double) obj[1]);
+            reads.add(sugarAnalysis);
+        }
+        return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"),reads);
     }
 }

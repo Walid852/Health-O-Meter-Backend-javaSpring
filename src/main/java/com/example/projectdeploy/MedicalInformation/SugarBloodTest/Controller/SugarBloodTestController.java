@@ -3,6 +3,7 @@ package com.example.projectdeploy.MedicalInformation.SugarBloodTest.Controller;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarBloodTest;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Requset.SugarTestRequest;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Service.SugarBloodTestService;
+import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.SugarAnalysis;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.TestPeriod;
 import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,11 @@ public class SugarBloodTestController {
     public @ResponseBody
     Response<SugarBloodTest> filterTestByDateUser(@RequestParam UUID medicalInformationId,@RequestParam Date start,@RequestParam Date end){
         return testService.filterTestByDateUser(medicalInformationId,start,end);
+    }
+
+    @GetMapping(value = "/sugarAnalysis")
+    public @ResponseBody Response<SugarAnalysis> SugarAnalysis(@RequestParam UUID medicalId){
+        return testService.SugarAnalysis(medicalId);
     }
 }
 

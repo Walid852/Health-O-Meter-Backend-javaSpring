@@ -29,4 +29,7 @@ public interface BloodPressureRepo extends JpaRepository<BloodPressure,UUID> {
     @Query("select B from BloodPressure B where B.date>=?1 and B.date<=?2")
     public List<BloodPressure> findAllBloodPressureByDate(Date start,Date endDate);
 
+    @Query("SELECT O.date, AVG(O.systolic) AS average_systolic, AVG(O.diastolic) AS diastolic  FROM BloodPressure O where O.medicalInformation.id=?1 and O.isDeleted=false GROUP BY O.date")
+    List<Object[]> calculateAverageByDate(UUID medicalId);
+
 }
