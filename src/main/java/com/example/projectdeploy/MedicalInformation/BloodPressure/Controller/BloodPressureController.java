@@ -3,10 +3,7 @@ package com.example.projectdeploy.MedicalInformation.BloodPressure.Controller;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.Model.BloodPressure;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.Service.CrudServiceBloodPressure;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.Service.FetchServiceBloodPressure;
-import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
-import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.CreateBloodPressure;
-import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.PressureAnalysis;
-import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.UpdateBloodPressure;
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.*;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.SugarAnalysis;
 import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +83,10 @@ public class BloodPressureController {
         return fetchServiceBloodPressure.pressureAnalysis(medicalId);
     }
 
+    @GetMapping(value = "/countCategory")
+    public @ResponseBody Response<CategoryCount> countCategory(@RequestParam UUID medicalId){
+        return fetchServiceBloodPressure.countCategories(medicalId);
+    }
 
 
 }

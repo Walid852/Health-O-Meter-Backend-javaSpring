@@ -3,6 +3,7 @@ package com.example.projectdeploy.MedicalInformation.SugarBloodTest.Controller;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarBloodTest;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Requset.SugarTestRequest;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Service.SugarBloodTestService;
+import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.CategoryAnalysis;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.SugarAnalysis;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.TestPeriod;
 import com.example.projectdeploy.Shared.Response;
@@ -77,6 +78,11 @@ public class SugarBloodTestController {
     @GetMapping(value = "/sugarAnalysis")
     public @ResponseBody Response<SugarAnalysis> SugarAnalysis(@RequestParam UUID medicalId){
         return testService.SugarAnalysis(medicalId);
+    }
+
+    @GetMapping(value = "/sCategoryAnalysis")
+    public @ResponseBody Response<CategoryAnalysis> sCategoryAnalysis(@RequestParam UUID medicalId){
+        return testService.sCategoryAnalysis(medicalId);
     }
 }
 

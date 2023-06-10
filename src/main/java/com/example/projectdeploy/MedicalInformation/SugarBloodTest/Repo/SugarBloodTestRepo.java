@@ -31,6 +31,9 @@ public interface SugarBloodTestRepo extends JpaRepository<SugarBloodTest, UUID> 
     @Query("SELECT O.date, AVG(O.readd) AS average_value FROM SugarBloodTest O where O.medicalInformation.id=?1 and O.isDeleted=false GROUP BY O.date")
     List<Object[]> calculateAverageByDate(UUID medicalId);
 
+    @Query("SELECT e.sugarTestCategory, COUNT(e) As category_count FROM SugarBloodTest e where e.medicalInformation.id=?1 and e.isDeleted=false GROUP BY e.sugarTestCategory")
+    List<Object[]> calculateCategory(UUID medicalId);
+
 
 
 }

@@ -3,8 +3,10 @@ package com.example.projectdeploy.MedicalInformation.SugarBloodTest.Service;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarBloodTest;
+import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarTestCategory;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Repo.SugarBloodTestRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Requset.SugarTestRequest;
+import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.CategoryAnalysis;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.SugarAnalysis;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.TestPeriod;
 import com.example.projectdeploy.Shared.Response;
@@ -40,6 +42,7 @@ public class SugarBloodTestService {
             test.setTestPeriod(testRequest.getPeriod());
             test.setAm_pm(testRequest.getAm_pm());
             System.out.println(test);
+            test.setSugarTestCategory(getDiabetesCategory(testRequest.getRead()));
             testRepo.save(test);
             List<SugarBloodTest> result = new ArrayList<>();
             result.add(test);
@@ -47,6 +50,19 @@ public class SugarBloodTestService {
         }catch (Exception e){
             return new Response<>(false, StaticsText.MessageForTestError());
         }
+    }
+
+    public SugarTestCategory getDiabetesCategory(int read){
+        SugarTestCategory sugarTestCategory;
+        if(read<70)
+            sugarTestCategory=SugarTestCategory.Low;
+        else if(read>70 && read<179)
+            sugarTestCategory=SugarTestCategory.Normal;
+        else
+            sugarTestCategory=SugarTestCategory.High;
+
+        return sugarTestCategory;
+
     }
 
     @Transactional
@@ -57,7 +73,10 @@ public class SugarBloodTestService {
             if(testRepo.findById(testRequest.getTestId()).isPresent()){
                 updatedTest=testRepo.findById(testRequest.getTestId()).get();
                 if(testRequest.getPeriod()!=null)updatedTest.setTestPeriod(testRequest.getPeriod());
-                if(testRequest.getRead()!=-1)updatedTest.setReadd(testRequest.getRead());
+                if(testRequest.getRead()!=-1){
+                    updatedTest.setReadd(testRequest.getRead());
+                    updatedTest.setSugarTestCategory(getDiabetesCategory(testRequest.getRead()));
+                }
                 if(testRequest.getDate()!=null)updatedTest.setDate(testRequest.getDate());
                 if(testRequest.getTime()!=null)updatedTest.setTime(testRequest.getTime());
                 updatedTest.setAm_pm(testRequest.getAm_pm());
@@ -179,5 +198,18 @@ public class SugarBloodTestService {
             reads.add(sugarAnalysis);
         }
         return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"),reads);
+    }
+
+    @Transactional
+    public Response<CategoryAnalysis> sCategoryAnalysis(UUID medicalId){
+        List<CategoryAnalysis> counts=new ArrayList<>();
+        List<Object[]> analysis= testRepo.calculateCategory(medicalId);
+        for(Object[] obj:analysis){
+            CategoryAnalysis categoryAnalysis= new CategoryAnalysis();
+            categoryAnalysis.setCategory(obj[0].toString());
+            categoryAnalysis.setCount((Long) obj[1]);
+            counts.add(categoryAnalysis);
+        }
+        return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"),counts);
     }
 }

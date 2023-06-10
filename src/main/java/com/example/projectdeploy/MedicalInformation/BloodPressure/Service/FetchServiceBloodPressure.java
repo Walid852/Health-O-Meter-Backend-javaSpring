@@ -3,6 +3,7 @@ package com.example.projectdeploy.MedicalInformation.BloodPressure.Service;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.Model.BloodPressure;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.Repo.BloodPressureRepo;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.CategoryCount;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.PressureAnalysis;
 import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model.SugarBloodTest;
@@ -122,5 +123,18 @@ public class FetchServiceBloodPressure {
             reads.add(pressureAnalysis);
         }
         return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"),reads);
+    }
+
+    @Transactional
+    public Response<CategoryCount> countCategories(UUID medicalId){
+        List<CategoryCount> counts=new ArrayList<>();
+        List<Object[]> analysis= bloodPressureRepo.calculateCategory(medicalId);
+        for(Object[] obj:analysis){
+            CategoryCount categoryCount= new CategoryCount();
+            categoryCount.setCategory(obj[0].toString());
+            categoryCount.setCount((Long) obj[1]);
+            counts.add(categoryCount);
+        }
+        return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"),counts);
     }
 }

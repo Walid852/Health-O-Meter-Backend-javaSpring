@@ -1,6 +1,7 @@
 package com.example.projectdeploy.MedicalInformation.SugarBloodTest.Model;
 
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.AM_PM;
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import com.example.projectdeploy.MedicalInformation.SugarBloodTest.TestPeriod;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,6 +44,9 @@ public class SugarBloodTest implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     TestPeriod testPeriod;
+
+    @Enumerated(EnumType.STRING)
+    private SugarTestCategory sugarTestCategory;
 
     public UUID getId() {
         return id;

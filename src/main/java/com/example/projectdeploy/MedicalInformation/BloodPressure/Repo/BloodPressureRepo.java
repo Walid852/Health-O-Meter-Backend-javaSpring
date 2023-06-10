@@ -32,4 +32,7 @@ public interface BloodPressureRepo extends JpaRepository<BloodPressure,UUID> {
     @Query("SELECT O.date, AVG(O.systolic) AS average_systolic, AVG(O.diastolic) AS diastolic  FROM BloodPressure O where O.medicalInformation.id=?1 and O.isDeleted=false GROUP BY O.date")
     List<Object[]> calculateAverageByDate(UUID medicalId);
 
+    @Query("SELECT e.bloodPressureCategory, COUNT(e) As category_count FROM BloodPressure e where e.medicalInformation.id=?1 and e.isDeleted=false GROUP BY e.bloodPressureCategory")
+    List<Object[]> calculateCategory(UUID medicalId);
+
 }
