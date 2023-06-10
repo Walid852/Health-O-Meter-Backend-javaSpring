@@ -5,7 +5,9 @@ import com.example.projectdeploy.MedicalInformation.BloodPressure.Service.CrudSe
 import com.example.projectdeploy.MedicalInformation.BloodPressure.Service.FetchServiceBloodPressure;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.BloodPressureCategory;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.CreateBloodPressure;
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.PressureAnalysis;
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.UpdateBloodPressure;
+import com.example.projectdeploy.MedicalInformation.SugarBloodTest.SugarAnalysis.SugarAnalysis;
 import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -79,6 +81,10 @@ public class BloodPressureController {
         return fetchServiceBloodPressure.GetBloodPressureByBloodPressureCategory(bloodPressureCategory);
     }
 
+    @GetMapping(value = "/pressureAnalysis")
+    public @ResponseBody Response<PressureAnalysis> pressureAnalysis(@RequestParam UUID medicalId){
+        return fetchServiceBloodPressure.pressureAnalysis(medicalId);
+    }
 
 
 
