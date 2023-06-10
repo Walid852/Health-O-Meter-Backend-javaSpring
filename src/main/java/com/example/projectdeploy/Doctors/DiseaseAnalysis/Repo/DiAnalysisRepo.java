@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public interface DiAnalysisRepo extends JpaRepository<Disease, UUID> {
@@ -39,5 +40,11 @@ public interface DiAnalysisRepo extends JpaRepository<Disease, UUID> {
 
     @Query("select avg(d.daysToCure) from Disease d where d.name=?1 and d.startDate between ?2 and ?3")
     int avgToRecover(String disease, Date from,Date to);
+
+    @Query("select ul.lat,ul.lng from User u, Disease d,MedicalInformation m, UserLocation ul where d.medicalInformation.id=m.id and m.user.id=u.id and d.name=?1 and ul.id=u.location.id and d.startDate between ?2 and ?3")
+    List<Object[]> getDiseaseLocation(String disease, Date from, Date to);
+
+
+
 
 }

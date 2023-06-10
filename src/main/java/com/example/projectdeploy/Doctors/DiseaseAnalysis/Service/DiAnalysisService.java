@@ -2,6 +2,7 @@ package com.example.projectdeploy.Doctors.DiseaseAnalysis.Service;
 
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.Data;
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DateReq;
+import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DiseaseLocation;
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Repo.DiAnalysisRepo;
 import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
@@ -38,5 +39,18 @@ public class DiAnalysisService {
             result.add(data);
         }
         return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"), result);
+    }
+
+    public Response<DiseaseLocation> getDiseaseLocation(DateReq dateReq){
+        List<DiseaseLocation> result= new ArrayList<>();
+        List<Object[]> locations= diAnalysisRepo.getDiseaseLocation(dateReq.getDisease(),dateReq.getFrom(),dateReq.getTo());
+        for(Object[] obj : locations){
+            DiseaseLocation diseaseLocation= new DiseaseLocation();
+            diseaseLocation.setLat((Double) obj[0]);
+            diseaseLocation.setLang((Double) obj[1]);
+            result.add(diseaseLocation);
+        }
+        return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"), result);
+
     }
 }

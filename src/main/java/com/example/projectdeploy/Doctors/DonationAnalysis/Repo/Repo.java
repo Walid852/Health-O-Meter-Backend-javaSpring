@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -50,6 +51,9 @@ public interface Repo extends JpaRepository<Donate, UUID> {
 
     @Query("select distinct u.city from UserLocation u")
     ArrayList<String> getDistinctCities();
+
+    @Query("select ul.lat,ul.lng from User u ,Donate do, UserLocation ul where do.RequestorMedicalInformation.id=u.id and ul.id=u.location.id and do.donateDate between ?1 and ?2")
+    List<Object[]> getDonationLocation(Date from, Date to);
 
 
 

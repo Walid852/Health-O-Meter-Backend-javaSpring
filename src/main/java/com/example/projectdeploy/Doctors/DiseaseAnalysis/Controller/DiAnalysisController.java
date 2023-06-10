@@ -3,6 +3,7 @@ package com.example.projectdeploy.Doctors.DiseaseAnalysis.Controller;
 
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.Data;
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DateReq;
+import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DiseaseLocation;
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Service.DiAnalysisService;
 
 import com.example.projectdeploy.Shared.Response;
@@ -23,4 +24,11 @@ public class DiAnalysisController {
     Response<Data> getInsights(@RequestBody DateReq dateReq){
         return diAnalysisService.getInsights(dateReq);
     }
+
+    @GetMapping(path="/diseaseLocation")
+    public @ResponseBody
+    Response<DiseaseLocation> getDiseaseLocation(@RequestBody DateReq dateReq){
+        return diAnalysisService.getDiseaseLocation(dateReq);
+    }
+
 }

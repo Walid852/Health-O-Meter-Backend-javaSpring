@@ -1,6 +1,7 @@
 package com.example.projectdeploy.Doctors.DonationAnalysis.Service;
 
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DateReq;
+import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DiseaseLocation;
 import com.example.projectdeploy.Doctors.DonationAnalysis.DTO.DTO;
 import com.example.projectdeploy.Doctors.DonationAnalysis.Repo.Repo;
 import com.example.projectdeploy.Shared.Response;
@@ -62,6 +63,19 @@ public class DonationAnalysisService {
             }
         }
         System.out.println(bloodTypes);
+        return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"), result);
+
+    }
+
+    public Response<DiseaseLocation> getDonationLocation(DateReq dateReq){
+        List<DiseaseLocation> result= new ArrayList<>();
+        List<Object[]> locations= repo.getDonationLocation(dateReq.getFrom(),dateReq.getTo());
+        for(Object[] location : locations){
+            DiseaseLocation donationLocation= new DiseaseLocation();
+            donationLocation.setLat((Double) location[0]);
+            donationLocation.setLang((Double) location[1]);
+            result.add(donationLocation);
+        }
         return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"), result);
 
     }
