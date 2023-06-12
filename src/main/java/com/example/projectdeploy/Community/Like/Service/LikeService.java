@@ -59,7 +59,7 @@ public class LikeService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You should specify at least post or comment");
             }
         }else
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You have already liked the post");
+            return deleteLike(likeRequest);
     }
 
     @Transactional
