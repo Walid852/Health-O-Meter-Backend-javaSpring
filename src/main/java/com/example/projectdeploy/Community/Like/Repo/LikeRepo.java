@@ -13,4 +13,7 @@ public interface LikeRepo extends JpaRepository<Likee, UUID> {
 
     @Query("SELECT L from Likee L where L.post.id=?1 and L.user.id=?2")
         Likee getDeletedLike(UUID postId,UUID userId);
+    @Query("select count(L) from Likee L where L.post.id=?1")
+    int getNumberLikes(UUID postId);
+
 }

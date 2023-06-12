@@ -5,6 +5,7 @@ import com.example.projectdeploy.Community.Comment.Repo.CommentRepo;
 import com.example.projectdeploy.Community.Like.Model.Likee;
 import com.example.projectdeploy.Community.Like.Repo.LikeRepo;
 import com.example.projectdeploy.Community.Like.Request.LikeRequest;
+import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,12 @@ public class LikeService {
 
         if(!likeBefore(likeRequest)) {
             int flag=0;
+            boolean onPost=false;
             Likee like = new Likee();
             if (likeRequest.getPostId()!=null) {
                 if (postRepo.findById(likeRequest.getPostId()).isPresent()) {
                     like.setPost(postRepo.findById(likeRequest.getPostId()).get());
+                    onPost=true;
                     flag++;
                 }
             }
@@ -53,6 +56,13 @@ public class LikeService {
                 flag++;
             }
             if(flag==2){
+                if(onPost) {
+                    double noLikes = likeRepo.getNumberLikes(likeRequest.getPostId());
+                    Post p=postRepo.findPostById(likeRequest.getPostId());
+                    p.setNumberOfLikes(noLikes+1);
+                    postRepo.save(p);
+                }
+                //TODO number of likes for comment
                 likeRepo.save(like);
                 return like;
             }else{
@@ -67,6 +77,14 @@ public class LikeService {
         if(likeBefore(likeRequest)) {
             Likee deletedLike = likeRepo.getDeletedLike(likeRequest.getPostId(), likeRequest.getUserId());
             likeRepo.delete(deletedLike);
+            if(likeRequest.getPostId()!=null) {
+                double noLikes = likeRepo.getNumberLikes(likeRequest.getPostId());
+                Post p = postRepo.findPostById(likeRequest.getPostId());
+                p.setNumberOfLikes(noLikes-1);
+                postRepo.save(p);
+            }
+            //TODO edit comment likes
+
             return deletedLike;
         }else
             return null;

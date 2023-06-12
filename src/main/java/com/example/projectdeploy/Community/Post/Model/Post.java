@@ -49,6 +49,10 @@ public class Post implements Serializable {
     @Column(columnDefinition = "boolean default false")
     boolean isDeleted;
 
+    double numberOfLikes=0;
+
+    double numberOfComment=0;
+
     /*public void addLike(Likee likeMe){
         likes.add(likeMe);
     }
