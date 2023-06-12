@@ -8,8 +8,10 @@ import com.example.projectdeploy.Community.Like.Request.LikeRequest;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -32,21 +34,32 @@ public class LikeService {
     public Likee addLike(LikeRequest likeRequest){
 
         if(!likeBefore(likeRequest)) {
+            int flag=0;
             Likee like = new Likee();
             if (likeRequest.getPostId()!=null) {
-                if (postRepo.findById(likeRequest.getPostId()).isPresent())
+                if (postRepo.findById(likeRequest.getPostId()).isPresent()) {
                     like.setPost(postRepo.findById(likeRequest.getPostId()).get());
+                    flag++;
+                }
             }
             if (likeRequest.getCommentId()!=null) {
-                if (commentRepo.findById(likeRequest.getCommentId()).isPresent())
+                if (commentRepo.findById(likeRequest.getCommentId()).isPresent()){
                     like.setComment(commentRepo.findById(likeRequest.getCommentId()).get());
+                    flag++;
+                }
             }
-            if (userRepo.findById(likeRequest.getUserId()).isPresent())
+            if (userRepo.findById(likeRequest.getUserId()).isPresent()){
                 like.setUser(userRepo.findById(likeRequest.getUserId()).get());
-            likeRepo.save(like);
-            return like;
+                flag++;
+            }
+            if(flag==2){
+                likeRepo.save(like);
+                return like;
+            }else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You should specify at least post or comment");
+            }
         }else
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You have already liked the post");
     }
 
     @Transactional

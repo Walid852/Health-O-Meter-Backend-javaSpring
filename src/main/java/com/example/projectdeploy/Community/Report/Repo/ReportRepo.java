@@ -20,4 +20,5 @@ public interface ReportRepo extends JpaRepository<Report, UUID> {
     public List<Report> findAllReportForSpecificComment(UUID id);
     @Query("select P from Report P where P.post.id=?1")
     public List<Report> findAllReportForSpecificPost(UUID id);
+
 }

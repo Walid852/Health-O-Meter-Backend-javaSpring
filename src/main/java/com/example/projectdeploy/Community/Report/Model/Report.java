@@ -2,6 +2,7 @@ package com.example.projectdeploy.Community.Report.Model;
 
 import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Post.Model.Post;
+import com.example.projectdeploy.Community.Report.dto.ReportAction;
 import com.example.projectdeploy.User.Model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -47,4 +48,7 @@ public class Report implements Serializable {
     @NotNull
     @Size(min = 1)
     String reason;
+
+    @Enumerated(EnumType.STRING)
+    ReportAction action;
 }

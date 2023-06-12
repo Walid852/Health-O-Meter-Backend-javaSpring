@@ -44,7 +44,7 @@ public class UserServices {
             user.setUserName(registerDto.getUsername());
             user.setPassword(bcryptEncoder.encode((registerDto.getPassword())));
             //all is user at first
-            Role roles = roleRepo.findByName("User");
+            Role roles = roleRepo.findByName(registerDto.getRole());
             user.setRoles(roles);
             user.setAge(registerDto.getAge());
             user.setEmail(registerDto.getEmail());
