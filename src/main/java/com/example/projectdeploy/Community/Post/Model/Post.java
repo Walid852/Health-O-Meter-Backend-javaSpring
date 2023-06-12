@@ -2,6 +2,7 @@ package com.example.projectdeploy.Community.Post.Model;
 
 import com.example.projectdeploy.Community.Community;
 import com.example.projectdeploy.User.Model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class Post implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
+    @JsonIgnore
     Community community;
 
     private String image;
