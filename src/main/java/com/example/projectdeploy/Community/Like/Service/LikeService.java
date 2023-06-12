@@ -75,18 +75,25 @@ public class LikeService {
     @Transactional
     boolean likeBefore(LikeRequest likeRequest){
         int flag=0;
-        List<Likee> postLikes=postRepo.getPostLikes(likeRequest.getPostId());
-
-        for(Likee likee:postLikes){
-            if(likee.getPost().getId().equals(likeRequest.getPostId()) &&
-                    likee.getUser().getId().equals(likeRequest.getUserId())){
-                flag=1;
-                break;
+        if(likeRequest.getCommentId()!=null) {
+            List<Likee> commentLikes=commentRepo.getLikesForComment(likeRequest.getCommentId());
+            for(Likee likee:commentLikes) {
+                if (likee.getComment().getId().equals(likeRequest.getCommentId()) &&
+                        likee.getUser().getId().equals(likeRequest.getUserId())) {
+                    flag = 1;
+                    break;
+                }
             }
-            if(likee.getComment().getId().equals(likeRequest.getCommentId()) &&
-                    likee.getUser().getId().equals(likeRequest.getUserId())){
-                flag=1;
-                break;
+        }
+        if(likeRequest.getPostId()!=null) {
+            List<Likee> postLikes=postRepo.getPostLikes(likeRequest.getPostId());
+            for (Likee likee : postLikes) {
+                if (likee.getPost().getId().equals(likeRequest.getPostId()) &&
+                        likee.getUser().getId().equals(likeRequest.getUserId())) {
+                    flag = 1;
+                    break;
+                }
+
             }
         }
         return flag != 0;
