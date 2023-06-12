@@ -3,6 +3,7 @@ package com.example.projectdeploy.Community.Like.Model;
 import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.User.Model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -26,10 +27,12 @@ public class Likee implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
+    @JsonIgnore
     private Post post;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
+    @JsonIgnore
     private Comment comment;
 
 
