@@ -1,9 +1,10 @@
 package com.example.projectdeploy.Images;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 @RestController
 public class FileUploadController {
@@ -26,4 +27,5 @@ public class FileUploadController {
 
         return ResponseEntity.ok().body(uploadResponse);
     }
+
 }
