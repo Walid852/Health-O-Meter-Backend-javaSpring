@@ -58,8 +58,11 @@ public class LikeService {
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You should specify at least post or comment");
             }
-        }else
+        }
+        else{
             return deleteLike(likeRequest);
+        }
+
     }
 
     public Comment addLikeComment(LikeRequest likeRequest){
