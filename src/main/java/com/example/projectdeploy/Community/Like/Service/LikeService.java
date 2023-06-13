@@ -99,7 +99,7 @@ public class LikeService {
             double noLikes = likeRepo.getNOLikeOnComment(likeRequest.getCommentId());
             if(commentRepo.findById(likeRequest.getCommentId()).isPresent()) {
                 c = commentRepo.findById(likeRequest.getCommentId()).get();
-                c.setNumberOfLikes(noLikes - 1);
+                c.setNumberOfLikes(noLikes);
                 commentRepo.save(c);
                 return c;
             }else{
@@ -117,7 +117,7 @@ public class LikeService {
             if(likeRequest.getPostId()!=null) {
                 double noLikes = likeRepo.getNumberLikes(likeRequest.getPostId());
                 p = postRepo.findPostById(likeRequest.getPostId());
-                p.setNumberOfLikes(noLikes-1);
+                p.setNumberOfLikes(noLikes);
                 postRepo.save(p);
                 return p;
         }
