@@ -17,4 +17,6 @@ public interface CommentRepo extends JpaRepository<Comment, UUID> {
 
     @Query("select count(C) from Comment C where C.post.id=?1")
     int getNoComment(UUID postId);
+
+
 }

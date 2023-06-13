@@ -34,6 +34,9 @@ public class Comment implements Serializable {
     @ManyToOne(cascade = {CascadeType.ALL})
     Post post;
 
+    double numberOfLikes;
+
+    double numberOfReplies;
 
 
     public UUID getId() {

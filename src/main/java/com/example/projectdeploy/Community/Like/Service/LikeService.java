@@ -1,6 +1,7 @@
 package com.example.projectdeploy.Community.Like.Service;
 
 
+import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Comment.Repo.CommentRepo;
 import com.example.projectdeploy.Community.Like.Model.Likee;
 import com.example.projectdeploy.Community.Like.Repo.LikeRepo;
@@ -32,22 +33,15 @@ public class LikeService {
     UserRepo userRepo;
 
     @Transactional
-    public Likee addLike(LikeRequest likeRequest){
-
+    public Post addLike(LikeRequest likeRequest){
         if(!likeBefore(likeRequest)) {
             int flag=0;
-            boolean onPost=false;
             Likee like = new Likee();
+            Post p=new Post();
             if (likeRequest.getPostId()!=null) {
                 if (postRepo.findById(likeRequest.getPostId()).isPresent()) {
+                    p=postRepo.findPostById(likeRequest.getPostId());
                     like.setPost(postRepo.findById(likeRequest.getPostId()).get());
-                    onPost=true;
-                    flag++;
-                }
-            }
-            if (likeRequest.getCommentId()!=null) {
-                if (commentRepo.findById(likeRequest.getCommentId()).isPresent()){
-                    like.setComment(commentRepo.findById(likeRequest.getCommentId()).get());
                     flag++;
                 }
             }
@@ -56,15 +50,11 @@ public class LikeService {
                 flag++;
             }
             if(flag==2){
-                if(onPost) {
-                    double noLikes = likeRepo.getNumberLikes(likeRequest.getPostId());
-                    Post p=postRepo.findPostById(likeRequest.getPostId());
-                    p.setNumberOfLikes(noLikes+1);
-                    postRepo.save(p);
-                }
-                //TODO number of likes for comment
+                double noLikes = likeRepo.getNumberLikes(likeRequest.getPostId());
+                p.setNumberOfLikes(noLikes+1);
+                postRepo.save(p);
                 likeRepo.save(like);
-                return like;
+                return p;
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You should specify at least post or comment");
             }
@@ -75,22 +65,63 @@ public class LikeService {
 
     }
 
-    @Transactional
-    public Likee deleteLike(LikeRequest likeRequest){
-        if(likeBefore(likeRequest)) {
-            Likee deletedLike = likeRepo.getDeletedLike(likeRequest.getPostId(), likeRequest.getUserId());
-            likeRepo.delete(deletedLike);
+    public Comment addLikeComment(LikeRequest likeRequest){
+        Likee like = new Likee();
+        Comment c= new Comment();
+        int flag=0;
+        if(!likeBefore(likeRequest)) {
+            if (likeRequest.getCommentId() != null) {
+                if (commentRepo.findById(likeRequest.getCommentId()).isPresent()) {
+                    like.setComment(commentRepo.findById(likeRequest.getCommentId()).get());
+                    flag++;
+                }
+            }
+            if (userRepo.findById(likeRequest.getUserId()).isPresent()) {
+                like.setUser(userRepo.findById(likeRequest.getUserId()).get());
+                flag++;
+            }
+            if (flag == 2) {
+                double noLikes = likeRepo.getNOLikeOnComment(likeRequest.getCommentId());
+                c.setNumberOfLikes(noLikes + 1);
+                commentRepo.save(c);
+            }
+            return c;
+        }else{
+            return deleteLikeForComment(likeRequest);
+        }
+    }
+
+    public Comment deleteLikeForComment(LikeRequest likeRequest){
+        Comment c=new Comment();
+        Likee deletedLike = likeRepo.getDeletedLikeForComment(likeRequest.getCommentId(), likeRequest.getUserId());
+        likeRepo.deleteLike(deletedLike.getId());
+        if(likeRequest.getCommentId()!=null) {
+            double noLikes = likeRepo.getNOLikeOnComment(likeRequest.getCommentId());
+            if(commentRepo.findById(likeRequest.getCommentId()).isPresent()) {
+                c = commentRepo.findById(likeRequest.getCommentId()).get();
+                c.setNumberOfLikes(noLikes - 1);
+                commentRepo.save(c);
+                return c;
+            }else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "comment is not found");
+            }
+        }else
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "you should send comment");
+    }
+
+
+    public Post deleteLike(LikeRequest likeRequest){
+        Post p=new Post();
+        Likee deletedLike = likeRepo.getDeletedLike(likeRequest.getPostId(), likeRequest.getUserId());
+        likeRepo.deleteLike(deletedLike.getId());
             if(likeRequest.getPostId()!=null) {
                 double noLikes = likeRepo.getNumberLikes(likeRequest.getPostId());
-                Post p = postRepo.findPostById(likeRequest.getPostId());
+                p = postRepo.findPostById(likeRequest.getPostId());
                 p.setNumberOfLikes(noLikes-1);
                 postRepo.save(p);
-            }
-            //TODO edit comment likes
-
-            return deletedLike;
-        }else
-            return null;
+                return p;
+        }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post is not found");
     }
 
     @Transactional
