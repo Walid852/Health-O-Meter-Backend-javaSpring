@@ -3,6 +3,7 @@ package com.example.projectdeploy.Community.Post.Repo;
 import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Like.Model.Likee;
 import com.example.projectdeploy.Community.Post.Model.Post;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public interface PostRepo extends JpaRepository<Post, UUID> {
     List<Post> getUserPost(UUID userId);
 
     @Query("SELECT O from Post O where O.community.id=?1")
-    List<Post> getCommunityPost(UUID communityId);
+    List<Post> getCommunityPost(UUID communityId, Pageable pageable);
 
     @Query("SELECT O from Post O where O.id=?1")
     Post findPostById(UUID postId);
