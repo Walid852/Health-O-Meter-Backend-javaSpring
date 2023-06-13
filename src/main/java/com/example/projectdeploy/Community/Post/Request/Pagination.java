@@ -10,4 +10,5 @@ public class Pagination {
     UUID communityId;
     int page;
     int pageSize;
+    UUID userId;
 }

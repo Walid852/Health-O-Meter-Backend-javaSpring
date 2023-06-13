@@ -20,8 +20,9 @@ public class FetchService {
     PostRepo postRepo;
 
     @Transactional
-    public List<Post> getPostForUser(UUID userId){
-        return postRepo.getUserPost(userId);
+    public List<Post> getPostForUser(Pagination pagination){
+        Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
+        return postRepo.getUserPost(pagination.getUserId(),pageable);
     }
 
     @Transactional
