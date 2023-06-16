@@ -152,7 +152,7 @@ public class CreateDonate {
             List<MedicalInformation> medicalInformationList=crudServiceMedicalInformation.ValidateToDonate(donate.getBloodType(),
                     donate.getRequestorMedicalInformation().getUser().getLocation().getGovernment());
             System.out.println("Size2:  "+medicalInformationList.size());
-            List<DonateNotified> donateNotifiedList=AddMedicalInformationValidateToDonate(medicalInformationList,donate);
+            AddMedicalInformationValidateToDonate(medicalInformationList,donate);
             ExpandingNotificationTransmission(donate.getId());
             donateRepo.save(donate);
             List<Donate> result = new ArrayList<>();

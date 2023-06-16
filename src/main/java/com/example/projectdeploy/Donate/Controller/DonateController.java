@@ -52,7 +52,7 @@ public class DonateController {
     Response<Donate> GetMyDonation(UUID medicalInformationId){
         return fetchServices.GetMyDonation(medicalInformationId);
     }
-    @GetMapping(path="/GetMyDonation")
+    @GetMapping(path="/GetRequestsForYou")
     public @ResponseBody
     Response<DonateNotified> GetRequestsForYou(UUID medicalInformationId){
         return fetchServices.GetRequestsForYou(medicalInformationId);
