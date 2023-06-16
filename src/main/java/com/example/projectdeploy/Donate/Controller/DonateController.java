@@ -3,10 +3,12 @@ package com.example.projectdeploy.Donate.Controller;
 import com.example.projectdeploy.Donate.DTO.DonateRequest;
 import com.example.projectdeploy.Donate.DTO.Resultt;
 import com.example.projectdeploy.Donate.DTO.UpdateStatusRequest;
+import com.example.projectdeploy.Donate.Model.Candidate;
 import com.example.projectdeploy.Donate.Model.Donate;
 import com.example.projectdeploy.Donate.Model.DonateNotified;
 import com.example.projectdeploy.Donate.Services.CreateDonate;
 import com.example.projectdeploy.Donate.Services.DonateNotifiedUpdateStatus;
+import com.example.projectdeploy.Donate.Services.FetchServices;
 import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ public class DonateController {
     CreateDonate createDonate;
     @Autowired
     DonateNotifiedUpdateStatus donateNotifiedUpdateStatus;
+    @Autowired
+    FetchServices fetchServices;
     @PostMapping(path="/AddDonate")
     public @ResponseBody
     Response<Donate> AddDonate(@RequestBody DonateRequest donateRequest){
@@ -38,4 +42,21 @@ public class DonateController {
     Response<DonateNotified> UpdateStatus(UpdateStatusRequest updateStatusRequest){
         return donateNotifiedUpdateStatus.UpdateStatus(updateStatusRequest);
     }
+    @GetMapping(path="/GetCandidatesForRequestor")
+    public @ResponseBody
+    Response<Candidate> GetCandidatesForRequestor(UUID donatedId){
+        return fetchServices.GetCandidatesForRequestor(donatedId);
+    }
+    @GetMapping(path="/GetMyDonation")
+    public @ResponseBody
+    Response<Donate> GetMyDonation(UUID medicalInformationId){
+        return fetchServices.GetMyDonation(medicalInformationId);
+    }
+    @GetMapping(path="/GetMyDonation")
+    public @ResponseBody
+    Response<DonateNotified> GetRequestsForYou(UUID medicalInformationId){
+        return fetchServices.GetRequestsForYou(medicalInformationId);
+    }
+
+
 }

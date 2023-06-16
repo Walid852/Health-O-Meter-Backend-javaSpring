@@ -17,4 +17,8 @@ public interface DonateNotifiedRepo  extends JpaRepository<DonateNotified, UUID>
     public List<DonateNotified> findDonateNotifiedByDonateId(UUID id);
     @Query("select D from DonateNotified D where D.MedicalInformation.id=?1 and  D.status=?2")
     public List<DonateNotified> findDonateNotifiedFoMedicalInformationByStatus(UUID id, Status status);
+    @Query("select D from DonateNotified D where D.donate.id=?1 and D.status not in ?2")
+    public List<DonateNotified> findDonateNotifiedByDonateIdForRequestor(UUID id,List<Status> SS);
+    @Query("select D from DonateNotified D where D.MedicalInformation.id=?1 and  D.status not in ?2")
+    public List<DonateNotified> findDonateNotifiedFoMedicalInformation(UUID id,List<Status> SS);
 }
