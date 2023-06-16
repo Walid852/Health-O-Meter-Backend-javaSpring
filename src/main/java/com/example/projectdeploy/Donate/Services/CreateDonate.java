@@ -74,6 +74,7 @@ public class CreateDonate {
                 notificationServices.AddNotification(notificationRequest);
                 donateNotifiedRepo.save(donateNotified);
     }
+
     String ExpandingNotificationTransmission(Donate donate){
         List<DonateNotified> donateNotifiedList=donateNotifiedRepo.findDonateNotifiedByDonateId(donate.getId());
       if(donate.getDonatorMedicalInformation()!=null){
