@@ -4,6 +4,7 @@ import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Like.Model.Likee;
 import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Request.NewUpdatePost;
+import com.example.projectdeploy.Community.Post.Request.Pagination;
 import com.example.projectdeploy.Community.Post.Service.CrudServices;
 import com.example.projectdeploy.Community.Post.Service.FetchService;
 import com.example.projectdeploy.Community.Post.Service.PostService;
@@ -52,12 +53,12 @@ public class PostController {
     }
 
     @GetMapping(value = "/getUserPosts")
-    public @ResponseBody List<Post> getPostForUser(@RequestParam UUID userId){
-        return fetchService.getPostForUser(userId);
+    public @ResponseBody List<Post> getPostForUser(@RequestBody Pagination pagination){
+        return fetchService.getPostForUser(pagination);
     }
 
     @GetMapping(value = "/getCommunityPosts")
-    public @ResponseBody List<Post> getPostForCommunity(@RequestParam UUID communityId){
-        return fetchService.getPostForCommunity(communityId);
+    public @ResponseBody List<Post> getPostForCommunity(@RequestBody Pagination pagination){
+        return fetchService.getPostForCommunity(pagination);
     }
 }
