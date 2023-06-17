@@ -20,19 +20,27 @@ public class AppNotification {
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
-    private User user;
+    private User FromUser;
+    @NotNull
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @Autowired
+    private User ToUser;
     String title;
     String message;
-    String url;
+    UUID url;
+    TypeUrl typeUrl;
     String photo;
     boolean readd =false;
     Date notificationDate;
 
-    public AppNotification(User user, String title, String message, String url, String photo, Date notificationDate) {
-        this.user = user;
+    public AppNotification(User fromUser, User toUser, String title, String message, UUID url, TypeUrl typeUrl, String photo, Date notificationDate) {
+
+        FromUser = fromUser;
+        ToUser = toUser;
         this.title = title;
         this.message = message;
         this.url = url;
+        this.typeUrl = typeUrl;
         this.photo = photo;
         this.notificationDate = notificationDate;
     }

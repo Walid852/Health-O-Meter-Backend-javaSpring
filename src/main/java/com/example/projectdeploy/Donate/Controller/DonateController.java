@@ -39,22 +39,22 @@ public class DonateController {
     }
     @PutMapping(path="/UpdateStatus")
     public @ResponseBody
-    Response<DonateNotified> UpdateStatus(UpdateStatusRequest updateStatusRequest){
+    Response<DonateNotified> UpdateStatus(@RequestBody UpdateStatusRequest updateStatusRequest){
         return donateNotifiedUpdateStatus.UpdateStatus(updateStatusRequest);
     }
     @GetMapping(path="/GetCandidatesForRequestor")
     public @ResponseBody
-    Response<Candidate> GetCandidatesForRequestor(UUID donatedId){
+    Response<Candidate> GetCandidatesForRequestor(@RequestParam UUID donatedId){
         return fetchServices.GetCandidatesForRequestor(donatedId);
     }
     @GetMapping(path="/GetMyDonation")
     public @ResponseBody
-    Response<Donate> GetMyDonation(UUID medicalInformationId){
+    Response<Donate> GetMyDonation(@RequestParam UUID medicalInformationId){
         return fetchServices.GetMyDonation(medicalInformationId);
     }
     @GetMapping(path="/GetRequestsForYou")
     public @ResponseBody
-    Response<DonateNotified> GetRequestsForYou(UUID medicalInformationId){
+    Response<DonateNotified> GetRequestsForYou(@RequestParam UUID medicalInformationId){
         return fetchServices.GetRequestsForYou(medicalInformationId);
     }
 

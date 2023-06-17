@@ -18,6 +18,7 @@ import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.Notification.Model.ConstantMessage;
 import com.example.projectdeploy.Notification.Model.NotificationRequest;
+import com.example.projectdeploy.Notification.Model.TypeUrl;
 import com.example.projectdeploy.Notification.Repo.NotificationRepo;
 import com.example.projectdeploy.Notification.Services.NotificationServices;
 import com.example.projectdeploy.Shared.StaticsText;
@@ -66,10 +67,14 @@ public class CreateDonate {
                 donateNotified.setStatus(Status.Notified);
                 long now = System.currentTimeMillis();
                 Date DateNow = new Date(now);
-                NotificationRequest notificationRequest=new NotificationRequest(donateNotified.getMedicalInformation().getUser().getId()
+                NotificationRequest notificationRequest=new NotificationRequest(
+                        donateNotified.getDonate().getRequestorMedicalInformation().getUser().getId()
+                        ,donateNotified.getMedicalInformation().getUser().getId()
                         ,ConstantMessage.titleDonation
                         ,donateNotified.getMedicalInformation().getUser().getName()+ConstantMessage.messageDonation
-                        ,ConstantMessage.urlDonation,ConstantMessage.photoDonation
+                        ,donateNotified.getDonate().getId()
+                        , TypeUrl.Donate
+                        ,ConstantMessage.photoDonation
                         , (java.sql.Date) DateNow);
                 notificationServices.AddNotification(notificationRequest);
                 donateNotifiedRepo.save(donateNotified);
