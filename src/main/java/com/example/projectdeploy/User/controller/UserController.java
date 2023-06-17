@@ -1,5 +1,6 @@
 package com.example.projectdeploy.User.controller;
 
+import com.example.projectdeploy.User.Gender;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.dto.ChangePasswordDto;
 import com.example.projectdeploy.User.dto.RegisterDto;
@@ -29,6 +30,11 @@ public class UserController {
     @GetMapping(value = "/all")
     public @ResponseBody List<User> getAllUsers(){
         return userServices.getAllUsers();
+    }
+
+    @GetMapping(value = "/getGenderByUserId")
+    public @ResponseBody com.example.projectdeploy.Shared.Response<Gender> getGenderByUserId(UUID userId){
+        return userServices.getGenderByUserId(userId);
     }
 
     @PutMapping(value = "/updateUser")

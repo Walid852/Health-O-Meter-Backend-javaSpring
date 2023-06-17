@@ -1,4 +1,6 @@
 package com.example.projectdeploy.User.service;
+import com.example.projectdeploy.Shared.StaticsText;
+import com.example.projectdeploy.User.Gender;
 import com.example.projectdeploy.User.Model.Response;
 import com.example.projectdeploy.User.Model.Role;
 import com.example.projectdeploy.User.Model.User;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -118,7 +121,15 @@ public class UserServices {
         }
         return deletedUser;
     }
-
+    public com.example.projectdeploy.Shared.Response<Gender> getGenderByUserId(UUID userId){
+        try{
+            List<Gender> genders=new LinkedList<>();
+            genders.add(userRepo.findByUserId(userId).getGender());
+        return new com.example.projectdeploy.Shared.Response<>(true, StaticsText.MessageForTest("Donate ", "Created"), genders);
+    }catch (Exception e){
+        return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
+    }
+    }
 
 
 }
