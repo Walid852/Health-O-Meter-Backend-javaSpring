@@ -1,9 +1,10 @@
 package com.example.projectdeploy.Notification.Services;
 
-import com.example.projectdeploy.Notification.Model.AppNotification;
-import com.example.projectdeploy.Notification.Model.ConstantMessage;
-import com.example.projectdeploy.Notification.Model.NotificationRequest;
-import com.example.projectdeploy.Notification.Model.TypeUrl;
+import com.example.projectdeploy.Community.Post.Model.Post;
+import com.example.projectdeploy.Community.Post.Repo.PostRepo;
+import com.example.projectdeploy.Donate.Model.Donate;
+import com.example.projectdeploy.Donate.Repo.DonateRepo;
+import com.example.projectdeploy.Notification.Model.*;
 import com.example.projectdeploy.Notification.Repo.NotificationRepo;
 import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
@@ -20,6 +21,10 @@ import java.util.UUID;
 public class NotificationServices {
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    PostRepo postRepo;
+    @Autowired
+    DonateRepo donateRepo;
     @Autowired
     NotificationRepo notificationRepo;
     public Response<AppNotification> AddNotification(NotificationRequest notificationRequest){
@@ -51,6 +56,21 @@ public class NotificationServices {
 
         }catch (Exception e){
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
+        }
+    }
+    public ResponseForNotification OpenNotification(UUID notificationId){
+        try {
+            AppNotification appNotification=notificationRepo.FindNotificationById(notificationId);
+            if(appNotification.getTypeUrl()==TypeUrl.Post){
+                return new ResponseForNotification(true, "successfully Retrieved Post",postRepo.findPostById(appNotification.getUrl()),null);
+            }else if(appNotification.getTypeUrl()==TypeUrl.Donate) {
+                return new ResponseForNotification(true, "successfully Retrieved Donate",null,donateRepo.findDonateById(appNotification.getUrl()));
+            }
+            else {
+                return new ResponseForNotification(false, "not have reference for this notification",null,null);
+            }
+        }catch (Exception e){
+            return new ResponseForNotification(false, StaticsText.MessageForTestError(),null,null);
         }
     }
 }

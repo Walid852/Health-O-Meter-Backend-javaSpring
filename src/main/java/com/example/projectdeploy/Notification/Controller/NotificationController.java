@@ -4,6 +4,7 @@ import com.example.projectdeploy.Donate.Model.DonateNotified;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import com.example.projectdeploy.Notification.Model.AppNotification;
 import com.example.projectdeploy.Notification.Model.NotificationRequest;
+import com.example.projectdeploy.Notification.Model.ResponseForNotification;
 import com.example.projectdeploy.Notification.Services.NotificationServices;
 import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class NotificationController {
     public @ResponseBody
     Response<AppNotification> getMyNotificationNotRead(@RequestParam  UUID userId){
         return notificationServices.getMyNotificationNotRead(userId);
+    }
+    @GetMapping(path="/OpenNotification")
+    public @ResponseBody
+    ResponseForNotification OpenNotification(@RequestParam UUID notificationId){
+        return notificationServices.OpenNotification(notificationId);
     }
 
 }
