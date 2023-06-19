@@ -2,6 +2,7 @@ package com.example.projectdeploy.User.Model;
 
 import com.example.projectdeploy.Map.Model.UserLocation;
 import com.example.projectdeploy.User.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -36,6 +37,8 @@ public class User implements Serializable {
     @ManyToOne(fetch = EAGER,cascade = CascadeType.ALL)
     private Role roles ;
     private String nationalId;
+    @JsonIgnore
+    private String registrationToken=null;
     @ManyToOne
     @JoinColumn(name = "location_id")
     private UserLocation location ;
