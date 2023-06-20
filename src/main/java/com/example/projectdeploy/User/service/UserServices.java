@@ -1,8 +1,10 @@
 package com.example.projectdeploy.User.service;
+import com.example.projectdeploy.User.Model.SaveRegistrationTokenRequest;
+import com.example.projectdeploy.Shared.StaticsText;
+import com.example.projectdeploy.User.Gender;
 import com.example.projectdeploy.User.Model.Response;
 import com.example.projectdeploy.User.Model.Role;
 import com.example.projectdeploy.User.Model.User;
-import com.example.projectdeploy.User.Model.res;
 import com.example.projectdeploy.User.Repo.RoleRepo;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import com.example.projectdeploy.User.controller.JwtAuthenticationController;
@@ -14,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -29,7 +31,11 @@ public class UserServices {
     private RoleRepo roleRepo;
     @Autowired
     private PasswordEncoder bcryptEncoder;
-
+    public void SaveRegistrationToken(SaveRegistrationTokenRequest saveRegistrationTokenRequest){
+        User user=userRepo.findByUserId(saveRegistrationTokenRequest.getUserId());
+        user.setRegistrationToken(saveRegistrationTokenRequest.getRegistrationToken());
+        userRepo.save(user);
+    }
     public ResponseEntity<?> register(RegisterDto registerDto) {
         try {
             if (userRepo.findByUsername(registerDto.getUsername()) != null) {
@@ -118,7 +124,15 @@ public class UserServices {
         }
         return deletedUser;
     }
-
+    public com.example.projectdeploy.Shared.Response<Gender> getGenderByUserId(UUID userId){
+        try{
+            List<Gender> genders=new LinkedList<>();
+            genders.add(userRepo.findByUserId(userId).getGender());
+        return new com.example.projectdeploy.Shared.Response<>(true, StaticsText.MessageForTest("Donate ", "Created"), genders);
+    }catch (Exception e){
+        return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
+    }
+    }
 
 
 }

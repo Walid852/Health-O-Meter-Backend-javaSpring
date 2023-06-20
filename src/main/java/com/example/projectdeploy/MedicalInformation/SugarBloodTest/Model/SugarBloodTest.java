@@ -32,7 +32,6 @@ public class SugarBloodTest implements Serializable {
     int readd;
 
     @Column(name = "date", nullable = false, updatable = false)
-    @CreationTimestamp
     private Date date;
 
     private Time time;

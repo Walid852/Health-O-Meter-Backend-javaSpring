@@ -76,12 +76,12 @@ public class SugarBloodTestController {
         return testService.filterTestByDateUser(medicalInformationId,start,end);
     }
 
-    @GetMapping(value = "/sugarAnalysis")
+    @PostMapping(value = "/sugarAnalysis")
     public @ResponseBody Response<SugarAnalysis> SugarAnalysis(@RequestBody DateReq dateReq){
         return testService.SugarAnalysis(dateReq);
     }
 
-    @GetMapping(value = "/sCategoryAnalysis")
+    @PostMapping(value = "/sCategoryAnalysis")
     public @ResponseBody Response<CategoryAnalysis> sCategoryAnalysis(@RequestBody DateReq dateReq){
         return testService.sCategoryAnalysis(dateReq);
     }

@@ -6,6 +6,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
+import com.example.projectdeploy.Community.Post.Model.Post;
+import com.example.projectdeploy.Community.Post.Repo.PostRepo;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
+import com.example.projectdeploy.User.Model.User;
+import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -13,7 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 class FileStorageService {
-
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private PostRepo postRepo;
     private final Path fileStorageLocation;
 
     @Autowired
@@ -38,10 +51,10 @@ class FileStorageService {
         return fileNameParts[fileNameParts.length - 1];
     }
 
-    public String storeFile(MultipartFile file) {
+    public Response<String> storeFile(MultipartFile file, UUID id,TypeForImage typeForImage) {
         // Normalize file name
         String fileName =
-                new Date().getTime() + "-file." + getFileExtension(file.getOriginalFilename());
+                new Date().getTime()+id.toString()+ "-file." + getFileExtension(file.getOriginalFilename());
 
         try {
             // Check if the filename contains invalid characters
@@ -52,10 +65,24 @@ class FileStorageService {
 
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
-            return fileName;
+            if(typeForImage==TypeForImage.User) {
+                User user = userRepo.findByUserId(id);
+                user.setPhoto(fileName);
+                userRepo.save(user);
+            }
+            else if(typeForImage==TypeForImage.Post) {
+                Post post=postRepo.findPostById(id);
+                post.setImage(fileName);
+                postRepo.save(post);
+            }
+            else{
+                return new Response<>(false, StaticsText.MessageForTest("Photo not Set to ", typeForImage.toString()),new LinkedList<>());
+            }
+            List<String> filenames=new LinkedList<>();
+            filenames.add(fileName);
+            return new Response<>(true, StaticsText.MessageForTest("Photo Set to ", typeForImage.toString()),filenames);
         } catch (IOException ex) {
-            throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
+            return new Response<>(false, StaticsText.MessageForTestError());
         }
     }
 }

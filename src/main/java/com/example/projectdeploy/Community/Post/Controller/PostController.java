@@ -57,7 +57,7 @@ public class PostController {
         return fetchService.getPostForUser(pagination);
     }
 
-    @GetMapping(value = "/getCommunityPosts")
+    @PostMapping(value = "/getCommunityPosts")
     public @ResponseBody List<Post> getPostForCommunity(@RequestBody Pagination pagination){
         return fetchService.getPostForCommunity(pagination);
     }

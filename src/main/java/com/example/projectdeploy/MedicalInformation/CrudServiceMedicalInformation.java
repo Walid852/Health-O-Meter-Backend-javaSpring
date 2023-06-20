@@ -4,6 +4,7 @@ import com.example.projectdeploy.Member.Model.Member;
 import com.example.projectdeploy.Member.Repo.MemberRepo;
 import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
+import com.example.projectdeploy.User.Gender;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class CrudServiceMedicalInformation {
         for (MedicalInformation MI:medicalInformationList) {
             System.out.println(MI.getUser().getId());
             int F=0;
+            int y=0;
             if(MI.lastTimeDonate!=null){
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
@@ -72,7 +74,7 @@ public class CrudServiceMedicalInformation {
             Period diff = Period.between(date,date1);
             if((Math.abs(diff.getDays())<56))F=1;
             }
-            /*if(MI.getUser().getAge()<18
+            if(MI.getUser().getAge()<18
                     ||MI.getUser().getAge()>65
                     ||(MI.getUser().getGender()== Gender.male&&(MI.hemoglobin>17||MI.hemoglobin<14))
                     ||(MI.getUser().getGender()== Gender.female&&(MI.hemoglobin>14||MI.hemoglobin<12))
@@ -81,8 +83,7 @@ public class CrudServiceMedicalInformation {
             }
             else {
                 result.add(MI);
-            }*/
-            result.add(MI);
+            }
         }
         return result;
     }

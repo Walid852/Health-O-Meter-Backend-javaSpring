@@ -1,25 +1,18 @@
 package com.example.projectdeploy.Images;
 
+import java.util.UUID;
+
 public class UploadResponse {
     private final String fileName;
-    private final String fullName;
-    private final String dateOfBirth;
+    private final UUID userId;
 
-    public UploadResponse(String fileName, String fullName, String dateOfBirth) {
+    public UploadResponse(String fileName,UUID userId) {
         this.fileName = fileName;
-        this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
+        this.userId = userId;
     }
 
     public String getFileName() {
         return fileName;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
 }

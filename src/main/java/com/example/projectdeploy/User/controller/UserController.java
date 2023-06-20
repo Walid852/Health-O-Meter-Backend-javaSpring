@@ -1,5 +1,7 @@
 package com.example.projectdeploy.User.controller;
 
+import com.example.projectdeploy.User.Model.SaveRegistrationTokenRequest;
+import com.example.projectdeploy.User.Gender;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.dto.ChangePasswordDto;
 import com.example.projectdeploy.User.dto.RegisterDto;
@@ -29,6 +31,19 @@ public class UserController {
     @GetMapping(value = "/all")
     public @ResponseBody List<User> getAllUsers(){
         return userServices.getAllUsers();
+    }
+
+    @GetMapping(value = "/getGenderByUserId")
+    public @ResponseBody com.example.projectdeploy.Shared.Response<Gender> getGenderByUserId(UUID userId){
+        return userServices.getGenderByUserId(userId);
+    }
+    @PutMapping(path="/SaveRegistrationToken")
+    public @ResponseBody
+    ResponseEntity<?> SaveRegistrationToken(@RequestBody SaveRegistrationTokenRequest saveRegistrationTokenRequest){
+        System.out.println("fjrrf");
+        userServices.SaveRegistrationToken(saveRegistrationTokenRequest);
+        System.out.println("dfdf");
+        return ResponseEntity.ok("Done Saved");
     }
 
     @PutMapping(value = "/updateUser")

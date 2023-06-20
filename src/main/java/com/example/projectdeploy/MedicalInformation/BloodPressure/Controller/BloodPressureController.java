@@ -78,12 +78,12 @@ public class BloodPressureController {
         return fetchServiceBloodPressure.GetBloodPressureByBloodPressureCategory(bloodPressureCategory);
     }
 
-    @GetMapping(value = "/pressureAnalysis")
+    @PostMapping(value = "/pressureAnalysis")
     public @ResponseBody Response<PressureAnalysis> pressureAnalysis(@RequestBody DateReq dateReq){
         return fetchServiceBloodPressure.pressureAnalysis(dateReq);
     }
 
-    @GetMapping(value = "/countCategory")
+    @PostMapping(value = "/countCategory")
     public @ResponseBody Response<CategoryCount> countCategory(@RequestBody DateReq dateReq){
         return fetchServiceBloodPressure.countCategories(dateReq);
     }

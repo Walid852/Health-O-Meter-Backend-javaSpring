@@ -1,10 +1,10 @@
 package com.example.projectdeploy.Images;
+import com.example.projectdeploy.Shared.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Path;
+import java.util.UUID;
 
 @RestController
 public class FileUploadController {
@@ -15,17 +15,14 @@ public class FileUploadController {
         this.fileStorageService = fileStorageService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<UploadResponse> uploadFile(
+    @PostMapping("/uploadPhoto")
+    public Response<String> uploadFile(
             @RequestParam(name = "file", required = false) MultipartFile file,
-            @RequestParam("fullName") String fullName,
-            @RequestParam("dateOfBirth") String dateOfBirth
+            @RequestParam("userId") UUID id,
+            @RequestParam("typeForImage") TypeForImage typeForImage
     ) {
-        String fileName = fileStorageService.storeFile(file);
+        return fileStorageService.storeFile(file,id,typeForImage);
 
-        UploadResponse uploadResponse = new UploadResponse(fileName, fullName, dateOfBirth);
-
-        return ResponseEntity.ok().body(uploadResponse);
     }
 
 }

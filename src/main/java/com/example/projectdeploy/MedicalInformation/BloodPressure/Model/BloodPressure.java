@@ -41,7 +41,6 @@ public class BloodPressure implements Serializable {
     boolean isDeleted=false;
 
     @Column(name = "date", nullable = false, updatable = false)
-    @CreationTimestamp
     private Date date;
 
     private Time time;
