@@ -50,7 +50,7 @@ public class CreateDonate {
     @Autowired
     LocationService locationService;
 
-    private static final Object API_KEY = "AIzaSyBNo0YT5YEAKoIP13yyGUkEIrnJKCNQ0-8";
+    private static final Object API_KEY = "AIzaSyDQE_OqbesINOGfLOhflK5uGUbVFJXe7L0";
     List<DonateNotified> AddMedicalInformationValidateToDonate(List<MedicalInformation> medicalInformationList, Donate donate){
         List<DonateNotified> donateNotifiedList=new LinkedList<>();
         System.out.println("size:   "+medicalInformationList.size());
@@ -134,26 +134,20 @@ public class CreateDonate {
     }
    public com.example.projectdeploy.Shared.Response<Donate> AddDonate(DonateRequest donateRequest){
         try {
-            UriComponents uri = UriComponentsBuilder.newInstance()
-                    .scheme("https")
-                    .host("maps.googleapis.com")
-                    .path("/maps/api/geocode/json")
-                    .queryParam("key", API_KEY)
-                    .queryParam("latlng",donateRequest.getLating())
-                    .build();
-            System.out.println(uri.toUriString());
-            ResponseEntity<Response> response = new RestTemplate().getForEntity(uri.toUriString(), Response.class);
-            Result[] results= Objects.requireNonNull(response.getBody()).getResults();
-            System.out.println(results[0]);
-            System.out.println(Objects.requireNonNull(response.getBody()).getResults().length);
-            UserLocation location= locationService.AddLocation(results[0]);
-
-            MedicalInformation medicalInformation= medicalInformationRepo.findMedicalInformationById(
-                    donateRequest.getRequesterMedicalInformationId()
-            );
-            if(medicalInformation==null)return new com.example.projectdeploy.Shared.Response<>(false,
-                    StaticsText.MessageForTest("medicalInformation", "not Found"));
+            UserLocation location=locationService.SaveLocation(donateRequest.getLating());
+            MedicalInformation medicalInformation=null;
+            if(medicalInformationRepo.findById(donateRequest.getRequesterMedicalInformationId()).isPresent()){
+                medicalInformation= medicalInformationRepo.findMedicalInformationById(
+                        donateRequest.getRequesterMedicalInformationId()
+                );
+            }
+            else {
+                return new com.example.projectdeploy.Shared.Response<>(false,
+                        StaticsText.MessageForTest("medicalInformation", "not Found"));
+            }
+            System.out.println("medicalInformation: "+medicalInformation);
             Donate donate=new Donate(medicalInformation,donateRequest.getDonateDate(),donateRequest.getBloodType(),location);
+            System.out.println("donate: "+donate);
             List<MedicalInformation> medicalInformationList=crudServiceMedicalInformation.ValidateToDonate(donate.getBloodType(),
                     donate.getRequestorMedicalInformation().getUser().getLocation().getGovernment());
             System.out.println("Size2:  "+medicalInformationList.size());
@@ -164,6 +158,7 @@ public class CreateDonate {
             result.add(donate);
             return new com.example.projectdeploy.Shared.Response<>(true, StaticsText.MessageForTest("Donate ", "Created"), result);
         }catch (Exception e){
+            System.out.println(e);
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
         }
 
