@@ -1,5 +1,6 @@
 package com.example.projectdeploy.Donate.Model;
 
+import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.AM_PM;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.UUID;
 
 @Entity
@@ -33,7 +35,13 @@ public class DonateNotified implements Serializable {
     private Donate donate;
     Status status=Status.Pending;
     Date LastUpdateDate;
-    Date dateOfArrival=null;
+    @Column(name = "date", nullable = false, updatable = false)
+    private Date dateOfArrival=null;
+
+    private Time time;
+
+    @Enumerated(EnumType.STRING)
+    private AM_PM am_pm;
     public DonateNotified(MedicalInformation medicalInformation, Donate donate, Status status, Date lastUpdateDate) {
         MedicalInformation = medicalInformation;
         this.donate = donate;
