@@ -1,21 +1,24 @@
 package com.example.projectdeploy.Map.Service;
 
-import com.example.projectdeploy.Map.Model.AddressComponents;
-import com.example.projectdeploy.Map.Model.DetailedAddress;
-import com.example.projectdeploy.Map.Model.Result;
-import com.example.projectdeploy.Map.Model.UserLocation;
+import com.example.projectdeploy.Map.Model.*;
 import com.example.projectdeploy.Map.Repos.UserLocationRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
 public class LocationService {
 @Autowired
 UserLocationRepo userLocationRepo;
+    private static final Object API_KEY = "AIzaSyDQE_OqbesINOGfLOhflK5uGUbVFJXe7L0";
    DetailedAddress DetailsForAddressComponents(AddressComponents[] addressComponents){
        DetailedAddress detailedAddress=new DetailedAddress();
        int i=0;
@@ -51,6 +54,21 @@ UserLocationRepo userLocationRepo;
       System.out.println(detailedAddress.getPostal_code());
       userLocationRepo.save(userLocation);
       return userLocation;
+    }
+    public UserLocation SaveLocation(String latlng){
+        UriComponents uri = UriComponentsBuilder.newInstance()
+                .scheme("https")
+                .host("maps.googleapis.com")
+                .path("/maps/api/geocode/json")
+                .queryParam("key", API_KEY)
+                .queryParam("latlng", latlng)
+                .build();
+        System.out.println(uri.toUriString());
+        ResponseEntity<Response> response = new RestTemplate().getForEntity(uri.toUriString(), Response.class);
+        Result[] results= Objects.requireNonNull(response.getBody()).getResults();
+        System.out.println(results[0]);
+        System.out.println(Objects.requireNonNull(response.getBody()).getResults().length);
+        return AddLocation(results[0]);
     }
     public String DeleteLocation(UUID id){
         UserLocation userLocation=userLocationRepo.findUserLocationById(id);

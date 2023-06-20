@@ -45,6 +45,11 @@ public class UserController {
         System.out.println("dfdf");
         return ResponseEntity.ok("Done Saved");
     }
+    @GetMapping(path="/UpdateLocation")
+    public @ResponseBody
+    ResponseEntity<?> UpdateLocation(@RequestParam String Lating,@RequestParam UUID userId){
+        return userServices.UpdateLocation(Lating,userId);
+    }
 
     @PutMapping(value = "/updateUser")
     public @ResponseBody User updateUserInfo(@RequestBody RegisterDto registerDto){

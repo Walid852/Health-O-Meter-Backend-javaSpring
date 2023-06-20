@@ -1,4 +1,6 @@
 package com.example.projectdeploy.User.service;
+import com.example.projectdeploy.Map.Model.UserLocation;
+import com.example.projectdeploy.Map.Service.LocationService;
 import com.example.projectdeploy.User.Model.SaveRegistrationTokenRequest;
 import com.example.projectdeploy.Shared.StaticsText;
 import com.example.projectdeploy.User.Gender;
@@ -31,6 +33,8 @@ public class UserServices {
     private RoleRepo roleRepo;
     @Autowired
     private PasswordEncoder bcryptEncoder;
+    @Autowired
+    LocationService locationService;
     public void SaveRegistrationToken(SaveRegistrationTokenRequest saveRegistrationTokenRequest){
         User user=userRepo.findByUserId(saveRegistrationTokenRequest.getUserId());
         user.setRegistrationToken(saveRegistrationTokenRequest.getRegistrationToken());
@@ -58,6 +62,8 @@ public class UserServices {
             user.setNationalId(registerDto.getNationalId());
             user.setPhoneNumber(registerDto.getPhoneNumber());
             user.setName(registerDto.getName());
+            UserLocation userLocation=locationService.SaveLocation(registerDto.getLating());
+            user.setLocation(userLocation);
             userRepo.save(user);
             Response response=jwtAuthenticationController.createAuthenticationToken(new JwtRequest(registerDto.getUsername(),registerDto.getPassword()));
             return ResponseEntity.ok(response);
@@ -82,6 +88,13 @@ public class UserServices {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(new Response(false, "Something wrong Make Ensure do Correct process and try agin"));
         }
+    }
+    public ResponseEntity<?> UpdateLocation(String Lating,UUID userId){
+        UserLocation userLocation=locationService.SaveLocation(Lating);
+        User user=userRepo.findByUserId(userId);
+        user.setLocation(userLocation);
+        userRepo.save(user);
+        return ResponseEntity.ok("Successfully Update Location");
     }
 
 

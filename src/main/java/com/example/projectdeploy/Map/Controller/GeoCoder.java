@@ -21,24 +21,12 @@ import java.util.Objects;
 public class GeoCoder {
     @Autowired
     LocationService locationService;
-    private static final Object API_KEY = "AIzaSyDQE_OqbesINOGfLOhflK5uGUbVFJXe7L0";
+
     @GetMapping(value="/getLocation", produces= MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     UserLocation getAddress(@RequestParam String latlng){
         System.out.println("Hello");
-        UriComponents uri = UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("maps.googleapis.com")
-                .path("/maps/api/geocode/json")
-                .queryParam("key", API_KEY)
-                .queryParam("latlng", latlng)
-                .build();
-        System.out.println(uri.toUriString());
-        ResponseEntity<Response> response = new RestTemplate().getForEntity(uri.toUriString(), Response.class);
-        Result[] results= Objects.requireNonNull(response.getBody()).getResults();
-        System.out.println(results[0]);
-        System.out.println(Objects.requireNonNull(response.getBody()).getResults().length);
-        return locationService.AddLocation(results[0]);
+        return  locationService.SaveLocation(latlng);
     }
     @GetMapping("/AllLocationBasedOnCity")
     public @ResponseBody
