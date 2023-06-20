@@ -20,6 +20,9 @@ public interface PostRepo extends JpaRepository<Post, UUID> {
     @Query("SELECT O from Post O where O.community.id=?1")
     List<Post> getCommunityPost(UUID communityId, Pageable pageable);
 
+    @Query("select p from Post p join Report r where r.post.id=p.id")
+    List<Post> getAllPosts(Pageable pageable);
+
     @Query("SELECT O from Post O where O.id=?1")
     Post findPostById(UUID postId);
 

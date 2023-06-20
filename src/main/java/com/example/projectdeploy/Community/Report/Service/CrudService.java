@@ -7,6 +7,7 @@ import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.Community.Report.Model.Report;
 import com.example.projectdeploy.Community.Report.Repo.ReportRepo;
 import com.example.projectdeploy.Community.Report.dto.CreateReport;
+import com.example.projectdeploy.Community.Report.dto.ReportAction;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class CrudService {
             reportObject.setComment(comment);
             }
         }
+        reportObject.setAction(ReportAction.Pending);
         reportRepo.save(reportObject);
         return reportObject;
     }

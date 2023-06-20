@@ -67,8 +67,8 @@ public class CommentService {
         reply.setComment(commentRequest.getComment());
         if(userRepo.findById(commentRequest.getUserId()).isPresent())
             reply.setUser(userRepo.findById(commentRequest.getUserId()).get());
-        if(postRepo.findById(commentRequest.getPostId()).isPresent())
-            reply.setPost(postRepo.findById(commentRequest.getPostId()).get());
+       /* if(postRepo.findById(commentRequest.getPostId()).isPresent())
+            reply.setPost(postRepo.findById(commentRequest.getPostId()).get());*/
 
         mainComment.getReplies().add(reply);
         commentRepo.save(reply);
