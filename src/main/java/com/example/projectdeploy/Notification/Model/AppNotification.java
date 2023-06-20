@@ -3,35 +3,38 @@ package com.example.projectdeploy.Notification.Model;
 import com.example.projectdeploy.User.Model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 import java.util.UUID;
 
 @Entity
-@Data
+
+@AllArgsConstructor
+@Setter
+@Getter
 public class AppNotification {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue
     private UUID id;
 
-    @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
-    private User FromUser;
-    @NotNull
+     User FromUser;
+
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
-    private User ToUser;
-    String title;
-    String message;
-    UUID url;
-    TypeUrl typeUrl;
-    String photo;
-    boolean readd =false;
-    Date notificationDate;
+     User ToUser;
+    private String title;
+    private String message;
+    private UUID url;
+    private TypeUrl typeUrl;
+    private String photo;
+    @Column(columnDefinition = "boolean default false")
+     boolean readd;
+    private Date notificationDate;
 
     public AppNotification(User fromUser, User toUser, String title, String message, UUID url, TypeUrl typeUrl, String photo, Date notificationDate) {
 

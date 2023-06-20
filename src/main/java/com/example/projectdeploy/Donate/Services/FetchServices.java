@@ -73,7 +73,6 @@ public class FetchServices {
             List<Status> statusList= Arrays.asList(Status.Pending, Status.Rejected);
             List<DonateNotified> donateNotifiedList=
                     donateNotifiedRepo.findDonateNotifiedFoMedicalInformation(medicalInformationId,statusList);
-
             return new Response<>(true, StaticsText.MessageForTest("GetMyDonation", "Retrieved"), donateNotifiedList);
         }catch (Exception e){
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());

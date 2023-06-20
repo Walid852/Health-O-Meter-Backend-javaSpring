@@ -21,6 +21,7 @@ public class NotificationController {
     @PostMapping(path="/AddNotification")
     public @ResponseBody
     Response<AppNotification> AddNotification(@RequestBody  NotificationRequest notificationRequest){
+        System.out.println(notificationRequest);
         return notificationServices.AddNotification(notificationRequest);
     }
     @GetMapping(path="/getMyNotification")
