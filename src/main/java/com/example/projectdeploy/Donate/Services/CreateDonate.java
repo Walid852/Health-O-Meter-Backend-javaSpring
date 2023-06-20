@@ -50,7 +50,7 @@ public class CreateDonate {
     @Autowired
     LocationService locationService;
 
-    private static final Object API_KEY = "AIzaSyBNo0YT5YEAKoIP13yyGUkEIrnJKCNQ0-8";
+    private static final Object API_KEY = "AIzaSyDQE_OqbesINOGfLOhflK5uGUbVFJXe7L0";
     List<DonateNotified> AddMedicalInformationValidateToDonate(List<MedicalInformation> medicalInformationList, Donate donate){
         List<DonateNotified> donateNotifiedList=new LinkedList<>();
         System.out.println("size:   "+medicalInformationList.size());

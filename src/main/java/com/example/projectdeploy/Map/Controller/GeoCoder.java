@@ -21,7 +21,7 @@ import java.util.Objects;
 public class GeoCoder {
     @Autowired
     LocationService locationService;
-    private static final Object API_KEY = "AIzaSyBNo0YT5YEAKoIP13yyGUkEIrnJKCNQ0-8";
+    private static final Object API_KEY = "AIzaSyDQE_OqbesINOGfLOhflK5uGUbVFJXe7L0";
     @GetMapping(value="/getLocation", produces= MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     UserLocation getAddress(@RequestParam String latlng){
