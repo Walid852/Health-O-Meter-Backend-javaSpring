@@ -28,7 +28,7 @@ public class Comment implements Serializable {
     List<Comment> replies=new ArrayList<>();
 
     @NotNull
-//    @Size(min = 1)
+//   @Size(min = 1)
     String Comment;
 
     @ManyToOne(cascade = {CascadeType.ALL})

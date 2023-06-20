@@ -64,7 +64,7 @@ public class LikeService {
                 likeRepo.save(like);
                 String username=like.getUser().getUserName();
                 NotificationRequest notificationRequest=new NotificationRequest(like.getUser().getId(),p.getUser().getId(),
-                        "Post like","%username liked your post",p.getId(), TypeUrl.Post,"",
+                        "Post like",String.format("%s liked your post",username),p.getId(), TypeUrl.Post,"",
                         Date.valueOf(LocalDate.now()));
                 notificationServices.AddNotification(notificationRequest);
                 return p;
@@ -99,7 +99,7 @@ public class LikeService {
                 commentRepo.save(c);
                 String username=like.getUser().getUserName();
                 NotificationRequest notificationRequest=new NotificationRequest(like.getUser().getId(),c.getUser().getId(),
-                        "Comment like","%username liked your comment",c.getId(), TypeUrl.Post,"",
+                        "Comment like",String.format("%s liked your comment",username),c.getId(), TypeUrl.Post,"",
                         Date.valueOf(LocalDate.now()));
                 notificationServices.AddNotification(notificationRequest);
             }

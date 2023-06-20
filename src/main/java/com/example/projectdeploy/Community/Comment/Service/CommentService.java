@@ -50,7 +50,7 @@ public class CommentService {
         postRepo.save(post);
         String username=comment.getUser().getUserName();
         NotificationRequest notificationRequest=new NotificationRequest(comment.getUser().getId(),comment.getPost().getUser().getId(),
-                "Commented","%username comment on your post",comment.getPost().getId(), TypeUrl.Post,"",
+                "Commented",String.format("%s commented on your post",username),comment.getPost().getId(), TypeUrl.Post,"",
                 Date.valueOf(LocalDate.now()));
         notificationServices.AddNotification(notificationRequest);
         return comment;
@@ -97,7 +97,7 @@ public class CommentService {
         commentRepo.save(mainComment);
         String username=reply.getUser().getUserName();
         NotificationRequest notificationRequest=new NotificationRequest(reply.getUser().getId(),mainComment.getUser().getId(),
-                "comment reply","%username replied on your comment",mainComment.getId(), TypeUrl.Post,"",
+                "comment reply",String.format("%s replied on your comment",username),mainComment.getId(), TypeUrl.Post,"",
                 Date.valueOf(LocalDate.now()));
         notificationServices.AddNotification(notificationRequest);
         return mainComment;
