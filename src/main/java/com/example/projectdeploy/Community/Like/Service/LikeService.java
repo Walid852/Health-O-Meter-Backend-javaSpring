@@ -8,6 +8,9 @@ import com.example.projectdeploy.Community.Like.Repo.LikeRepo;
 import com.example.projectdeploy.Community.Like.Request.LikeRequest;
 import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
+import com.example.projectdeploy.Notification.Model.NotificationRequest;
+import com.example.projectdeploy.Notification.Model.TypeUrl;
+import com.example.projectdeploy.Notification.Services.NotificationServices;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -31,6 +36,9 @@ public class LikeService {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    NotificationServices notificationServices;
 
     @Transactional
     public Post addLike(LikeRequest likeRequest){
@@ -54,6 +62,11 @@ public class LikeService {
                 p.setNumberOfLikes(noLikes+1);
                 postRepo.save(p);
                 likeRepo.save(like);
+                String username=like.getUser().getUserName();
+                NotificationRequest notificationRequest=new NotificationRequest(like.getUser().getId(),p.getUser().getId(),
+                        "Post like","%username liked your post",p.getId(), TypeUrl.Post,"",
+                        Date.valueOf(LocalDate.now()));
+                notificationServices.AddNotification(notificationRequest);
                 return p;
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You should specify at least post or comment");
@@ -84,6 +97,11 @@ public class LikeService {
                 double noLikes = likeRepo.getNOLikeOnComment(likeRequest.getCommentId());
                 c.setNumberOfLikes(noLikes + 1);
                 commentRepo.save(c);
+                String username=like.getUser().getUserName();
+                NotificationRequest notificationRequest=new NotificationRequest(like.getUser().getId(),c.getUser().getId(),
+                        "Comment like","%username liked your comment",c.getId(), TypeUrl.Post,"",
+                        Date.valueOf(LocalDate.now()));
+                notificationServices.AddNotification(notificationRequest);
             }
             return c;
         }else{

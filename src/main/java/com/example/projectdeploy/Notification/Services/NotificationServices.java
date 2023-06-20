@@ -12,6 +12,7 @@ import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,8 @@ public class NotificationServices {
     DonateRepo donateRepo;
     @Autowired
     NotificationRepo notificationRepo;
+
+    @Transactional
     public Response<AppNotification> AddNotification(NotificationRequest notificationRequest){
         try {
             User FromUser;
@@ -38,10 +41,12 @@ public class NotificationServices {
             else {
                 return new com.example.projectdeploy.Shared.Response<>(false, "Users not Found");
             }
+            System.out.println(FromUser.getId());
+            System.out.println(ToUser.getId());
             AppNotification notification=new AppNotification(FromUser,ToUser,notificationRequest.getTitle(),notificationRequest.getMessage(),
                     notificationRequest.getUrl(),notificationRequest.getTypeUrl(),notificationRequest.getPhoto(),notificationRequest.getNotificationDate());
             System.out.println(notification);
-            notificationRepo.saveAndFlush(notification);
+            notificationRepo.save(notification);
             List<AppNotification> appNotificationList=new LinkedList<>();
             appNotificationList.add(notification);
             return new Response<>(true, StaticsText.MessageForTest("notification", "added"),appNotificationList);
