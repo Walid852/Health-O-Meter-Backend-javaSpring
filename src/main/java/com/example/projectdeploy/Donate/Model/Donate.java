@@ -48,4 +48,6 @@ public class Donate implements Serializable {
         this.location = location;
         this.bloodType=bloodType;
     }
+
+
 }

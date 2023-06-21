@@ -51,6 +51,7 @@ public class CbcTest implements BaseTest{
         try{
             CBC cbc=cbcRepo.cbcById(test.getId());
             if(cbc==null)return new Response<>(false, StaticsText.MessageForTest("cbc Test", "not Updated"));
+            if(test.getDate()!=null){cbc.setDate(test.getDate());}
             if(test.getEosinophils()!=-1)cbc.setEosinophils(test.getEosinophils());
             if(test.getHaematocrit()!=-1)cbc.setHaematocrit(test.getHaematocrit());
             if(test.getEosinophilsabsolutecount()!=-1)cbc.setEosinophilsabsolutecount(test.getEosinophilsabsolutecount());

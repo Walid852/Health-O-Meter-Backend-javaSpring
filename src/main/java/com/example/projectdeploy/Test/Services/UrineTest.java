@@ -53,6 +53,7 @@ public class UrineTest implements BaseTest{
             if (urine==null)return new Response<>(false, StaticsText.MessageForTest("urine Test", "not Found"));
             if(test.getSpecificGravity()!=-1)urine.setSpecificGravity(test.getSpecificGravity());
             if(test.getUrinePH()!=null)urine.setUrinePH(test.getUrinePH());
+            if(test.getDate()!=null){urine.setDate(test.getDate());}
             if(test.getCasts()!=null)urine.setCasts(test.getCasts());
             if(test.getCrystals()!=null)urine.setCrystals(test.getCrystals());
             if(test.getColor()!=null)urine.setColor(test.getColor());

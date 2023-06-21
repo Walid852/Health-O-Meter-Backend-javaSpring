@@ -55,6 +55,7 @@ public class LiverFunctionTest implements BaseTest{
             if (test.getBilirubin_Total() != -1) liverFunction.setBilirubin_Total(test.getBilirubin_Total());
             if (test.getGammaGT() != -1) liverFunction.setGammaGT(test.getGammaGT());
             if (test.getTotalProtein() != -1) liverFunction.setTotalProtein(test.getTotalProtein());
+            if(test.getDate()!=null){liverFunction.setDate(test.getDate());}
             liverFunctionRepo.saveAndFlush(liverFunction);
             List<Test> result = new ArrayList<>();
             result.add(liverFunction);

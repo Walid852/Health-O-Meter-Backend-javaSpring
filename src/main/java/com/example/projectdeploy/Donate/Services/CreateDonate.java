@@ -2,12 +2,9 @@ package com.example.projectdeploy.Donate.Services;
 
 import com.example.projectdeploy.Donate.DTO.DonateRequest;
 import com.example.projectdeploy.Donate.DTO.Resultt;
-import com.example.projectdeploy.Donate.Model.Donate;
-import com.example.projectdeploy.Donate.Model.DonateNotified;
+import com.example.projectdeploy.Donate.Model.*;
 
 import com.example.projectdeploy.Map.Model.Response;
-import com.example.projectdeploy.Donate.Model.LocationHierarchical;
-import com.example.projectdeploy.Donate.Model.Status;
 import com.example.projectdeploy.Donate.Repo.DonateNotifiedRepo;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
 import com.example.projectdeploy.Map.Model.Result;
@@ -132,7 +129,7 @@ public class CreateDonate {
           return new com.example.projectdeploy.Shared.Response<>(true, StaticsText.MessageForTest(ConstantMessage.UnSuccessExpand, ""),result);
       }
     }
-   public com.example.projectdeploy.Shared.Response<Donate> AddDonate(DonateRequest donateRequest){
+   public com.example.projectdeploy.Shared.Response<DonateResponse> AddDonate(DonateRequest donateRequest){
         try {
             UserLocation location=locationService.SaveLocation(donateRequest.getLating());
             MedicalInformation medicalInformation=null;
@@ -154,17 +151,29 @@ public class CreateDonate {
                 medicalInformationList=crudServiceMedicalInformation.ValidateToDonate(donate.getBloodType(),
                         donate.getRequestorMedicalInformation().getUser().getLocation().getGovernment());
             }
+           Donate donate1=donateRepo.save(donate);
             System.out.println("Size2:  "+medicalInformationList.size());
             AddMedicalInformationValidateToDonate(medicalInformationList,donate);
             ExpandingNotificationTransmission(donate.getId());
-            donateRepo.save(donate);
-            List<Donate> result = new ArrayList<>();
-            result.add(donate);
+            System.out.println("LLLLLL");
+            List<DonateResponse> result = new ArrayList<>();
+            DonateResponse donateResponse=MapToDonateResponse(donate1);
+            result.add(donateResponse);
             return new com.example.projectdeploy.Shared.Response<>(true, StaticsText.MessageForTest("Donate ", "Created"), result);
         }catch (Exception e){
             System.out.println(e);
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
         }
+
+    }
+    public DonateResponse MapToDonateResponse(Donate donate){
+        UUID donatorMedicalInformation=null;
+        if (donate.getDonatorMedicalInformation() != null) {
+            donatorMedicalInformation=donate.getDonatorMedicalInformation().getId();
+        }
+        return new DonateResponse(donate.getId(),donate.getDonateDate(),donate.getIsDone(),donate.getBloodType(),donate.getLocation().getLat(),
+                    donate.getLocation().getLng(),donate.getCurrent(),donate.getRequestorMedicalInformation().getId(),
+                     donatorMedicalInformation);
 
     }
 
