@@ -1,5 +1,6 @@
 package com.example.projectdeploy.Notification.Model;
 
+import com.example.projectdeploy.Notification.EventListener.CommunityCreatedEvent;
 import com.example.projectdeploy.User.Model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -48,5 +49,12 @@ public class AppNotification {
 
     public AppNotification() {
 
+    }
+
+    @PostPersist
+    public void onPostPersist() {
+        CommunityCreatedEvent event = new CommunityCreatedEvent(this);
+        // Publish the event
+        // You can use an event publisher or application context to publish the event
     }
 }
