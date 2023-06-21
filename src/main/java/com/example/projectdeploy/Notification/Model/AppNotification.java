@@ -22,13 +22,12 @@ public class AppNotification {
     private UUID id;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @Autowired
-     User FromUser;
+    private User FromUser;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
     @JsonIgnore
-     User ToUser;
+    private User ToUser;
     private String title;
     private String message;
     private UUID url;
@@ -40,8 +39,8 @@ public class AppNotification {
 
     public AppNotification(User fromUser, User toUser, String title, String message, UUID url, TypeUrl typeUrl, String photo, Date notificationDate) {
 
-        FromUser = fromUser;
-        ToUser = toUser;
+        this.FromUser = fromUser;
+        this.ToUser = toUser;
         this.title = title;
         this.message = message;
         this.url = url;

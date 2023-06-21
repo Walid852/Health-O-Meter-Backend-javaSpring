@@ -5,12 +5,18 @@ import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Comment.Repo.CommentRepo;
 import com.example.projectdeploy.Community.Comment.Request.CommentRequest;
 import com.example.projectdeploy.Community.Like.Model.Likee;
+import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
+import com.example.projectdeploy.Notification.Model.NotificationRequest;
+import com.example.projectdeploy.Notification.Model.TypeUrl;
+import com.example.projectdeploy.Notification.Services.NotificationServices;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +32,9 @@ public class CommentService {
     @Autowired
     PostRepo postRepo;
 
+    @Autowired
+    NotificationServices notificationServices;
+
     @Transactional
     public Comment addComment(CommentRequest commentRequest){
         Comment comment=new Comment();
@@ -35,6 +44,15 @@ public class CommentService {
             comment.setPost(postRepo.findById(commentRequest.getPostId()).get());
         comment.setComment(commentRequest.getComment());
         commentRepo.save(comment);
+        Post post=comment.getPost();
+        double noOfComments=commentRepo.getNoComment(post.getId());
+        post.setNumberOfLikes(noOfComments);
+        postRepo.save(post);
+        String username=comment.getUser().getUserName();
+        NotificationRequest notificationRequest=new NotificationRequest(comment.getUser().getId(),comment.getPost().getUser().getId(),
+                "Commented",String.format("%s commented on your post",username),comment.getPost().getId(), TypeUrl.Post,"",
+                Date.valueOf(LocalDate.now()));
+        notificationServices.AddNotification(notificationRequest);
         return comment;
     }
 
@@ -43,7 +61,11 @@ public class CommentService {
         Comment deletedComment=new Comment();
         if(commentRepo.findById(commentId).isPresent())
           deletedComment=commentRepo.findById(commentId).get();
-        commentRepo.delete(deletedComment);
+        commentRepo.deletecomment(deletedComment.getId());
+        Post post=deletedComment.getPost();
+        double noOfComments=commentRepo.getNoComment(post.getId());
+        post.setNumberOfComment(noOfComments);
+        postRepo.save(post);
         return deletedComment;
     }
 
@@ -73,6 +95,11 @@ public class CommentService {
         mainComment.getReplies().add(reply);
         commentRepo.save(reply);
         commentRepo.save(mainComment);
+        String username=reply.getUser().getUserName();
+        NotificationRequest notificationRequest=new NotificationRequest(reply.getUser().getId(),mainComment.getUser().getId(),
+                "comment reply",String.format("%s replied on your comment",username),mainComment.getId(), TypeUrl.Post,"",
+                Date.valueOf(LocalDate.now()));
+        notificationServices.AddNotification(notificationRequest);
         return mainComment;
     }
 
