@@ -13,16 +13,15 @@ import java.util.UUID;
 @Service
 public class FCMNoficiation {
 
-    public void SendNotificationToOneDevice(String registrationToken) throws FirebaseMessagingException {
+    public void SendNotificationToOneDevice(String registrationToken,AppNotification appNotification) throws FirebaseMessagingException {
         // See documentation on defining a message payload.
         Notification notification = Notification.builder()
-                .setTitle("Title")
-                .setBody("Body")
+                .setTitle(appNotification.getTitle())
+                .setBody(appNotification.getMessage())
                 .build();
         Message message = Message.builder()
                 .setNotification(notification)
-                .putData("content","walid")
-                .putData("KKKKK","GGGGGG")
+                .putData("Date",appNotification.getNotificationDate().toString())
                 .setToken(registrationToken)
                 .build();
         // Send a message to the device corresponding to the provided

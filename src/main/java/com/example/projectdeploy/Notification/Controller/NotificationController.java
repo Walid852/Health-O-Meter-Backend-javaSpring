@@ -46,7 +46,7 @@ public class NotificationController {
     }
     @PostMapping(path="/SendNotificationToOneDevice")
     public @ResponseBody
-    void SendNotificationToOneDevice(@RequestParam String registrationToken) throws FirebaseMessagingException {
-        fcmNoficiation.SendNotificationToOneDevice(registrationToken);
+    void SendNotificationToOneDevice(@RequestParam String registrationToken,@RequestBody AppNotification appNotification) throws FirebaseMessagingException {
+        fcmNoficiation.SendNotificationToOneDevice(registrationToken,appNotification);
     }
 }
