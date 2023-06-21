@@ -2,6 +2,7 @@ package com.example.projectdeploy.Notification.Model;
 
 import com.example.projectdeploy.Notification.EventListener.CommunityCreatedEvent;
 import com.example.projectdeploy.User.Model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -25,6 +26,8 @@ public class AppNotification {
     private User FromUser;
 
     @ManyToOne(cascade = {CascadeType.ALL})
+    @Autowired
+    @JsonIgnore
     private User ToUser;
     private String title;
     private String message;
