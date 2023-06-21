@@ -97,7 +97,7 @@ public class CommentService {
         commentRepo.save(mainComment);
         String username=reply.getUser().getUserName();
         NotificationRequest notificationRequest=new NotificationRequest(reply.getUser().getId(),mainComment.getUser().getId(),
-                "comment reply",String.format("%s replied on your comment",username),mainComment.getId(), TypeUrl.Post,"",
+                "comment reply",String.format("%s replied on your comment",username),mainComment.getPost().getId(), TypeUrl.Post,"",
                 Date.valueOf(LocalDate.now()));
         notificationServices.AddNotification(notificationRequest);
         return mainComment;

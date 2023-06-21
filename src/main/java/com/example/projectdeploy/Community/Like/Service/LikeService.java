@@ -99,7 +99,7 @@ public class LikeService {
                 commentRepo.save(c);
                 String username=like.getUser().getUserName();
                 NotificationRequest notificationRequest=new NotificationRequest(like.getUser().getId(),c.getUser().getId(),
-                        "Comment like",String.format("%s liked your comment",username),c.getId(), TypeUrl.Post,"",
+                        "Comment like",String.format("%s liked your comment",username),likeRequest.getPostId(), TypeUrl.Post,"",
                         Date.valueOf(LocalDate.now()));
                 notificationServices.AddNotification(notificationRequest);
             }
