@@ -29,6 +29,11 @@ public class NotificationController {
     Response<AppNotification> getMyNotification(@RequestParam  UUID userId){
         return notificationServices.getMyNotification(userId);
     }
+    @GetMapping(path="/getAllNotification")
+    public @ResponseBody
+    Response<AppNotification> getAllNotification(){
+        return notificationServices.getAllNotification();
+    }
     @GetMapping(path="/getMyNotificationNotRead")
     public @ResponseBody
     Response<AppNotification> getMyNotificationNotRead(@RequestParam  UUID userId){

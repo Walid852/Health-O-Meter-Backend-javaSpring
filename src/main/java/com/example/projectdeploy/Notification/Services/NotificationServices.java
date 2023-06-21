@@ -58,6 +58,15 @@ public class NotificationServices {
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
         }
     }
+    public Response<AppNotification> getAllNotification(){
+        try {
+            List<AppNotification> appNotificationList = notificationRepo.findAll();
+            return new Response<>(true, StaticsText.MessageForTest("notification", " retrived"), appNotificationList);
+        }catch (Exception e){
+            return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
+        }
+    }
+
     public Response<AppNotification> getMyNotificationNotRead(UUID userId){
         try {
             List<AppNotification> appNotificationList=notificationRepo.FindNotificationByUserIdAndRead(userId,false);

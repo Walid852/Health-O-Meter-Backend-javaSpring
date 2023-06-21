@@ -1,6 +1,7 @@
 package com.example.projectdeploy.Notification.Model;
 
 import com.example.projectdeploy.User.Model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -26,6 +27,7 @@ public class AppNotification {
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
+    @JsonIgnore
      User ToUser;
     private String title;
     private String message;

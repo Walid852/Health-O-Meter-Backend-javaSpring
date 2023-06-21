@@ -148,8 +148,12 @@ public class CreateDonate {
             System.out.println("medicalInformation: "+medicalInformation);
             Donate donate=new Donate(medicalInformation,donateRequest.getDonateDate(),donateRequest.getBloodType(),location);
             System.out.println("donate: "+donate);
-            List<MedicalInformation> medicalInformationList=crudServiceMedicalInformation.ValidateToDonate(donate.getBloodType(),
-                    donate.getRequestorMedicalInformation().getUser().getLocation().getGovernment());
+            System.out.println();
+            List<MedicalInformation> medicalInformationList=new LinkedList<>();
+            if(donate.getRequestorMedicalInformation().getUser().getLocation().getGovernment()!=null){
+                medicalInformationList=crudServiceMedicalInformation.ValidateToDonate(donate.getBloodType(),
+                        donate.getRequestorMedicalInformation().getUser().getLocation().getGovernment());
+            }
             System.out.println("Size2:  "+medicalInformationList.size());
             AddMedicalInformationValidateToDonate(medicalInformationList,donate);
             ExpandingNotificationTransmission(donate.getId());
