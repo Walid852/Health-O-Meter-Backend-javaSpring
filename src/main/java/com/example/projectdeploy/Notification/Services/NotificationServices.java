@@ -4,6 +4,7 @@ import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.Donate.Model.Donate;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
+import com.example.projectdeploy.Notification.EventListener.AppNotificationCreatedEvent;
 import com.example.projectdeploy.Notification.Model.*;
 import com.example.projectdeploy.Notification.Repo.NotificationRepo;
 import com.example.projectdeploy.Shared.Response;
@@ -11,6 +12,7 @@ import com.example.projectdeploy.Shared.StaticsText;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,8 @@ public class NotificationServices {
     DonateRepo donateRepo;
     @Autowired
     NotificationRepo notificationRepo;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Response<AppNotification> AddNotification(NotificationRequest notificationRequest){
@@ -47,6 +51,8 @@ public class NotificationServices {
                     notificationRequest.getUrl(),notificationRequest.getTypeUrl(),notificationRequest.getPhoto(),notificationRequest.getNotificationDate());
             System.out.println(notification);
             notificationRepo.save(notification);
+            // Publish the event
+            eventPublisher.publishEvent(new AppNotificationCreatedEvent(this, notification));
             List<AppNotification> appNotificationList=new LinkedList<>();
             appNotificationList.add(notification);
             return new Response<>(true, StaticsText.MessageForTest("notification", "added"),appNotificationList);

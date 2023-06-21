@@ -14,7 +14,7 @@ public class CommunityNotificationListener {
     FCMNoficiation fcmNoficiation;
 
     @EventListener
-    public void onEntityCreated(CommunityCreatedEvent event) throws FirebaseMessagingException {
+    public void onEntityCreated(AppNotificationCreatedEvent event) throws FirebaseMessagingException {
         // Perform actions when MyEntity is created
         AppNotification entity = event.getAppNotification();
         System.out.println("we reached the event listener");
