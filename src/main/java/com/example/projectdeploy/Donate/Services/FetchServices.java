@@ -1,9 +1,6 @@
 package com.example.projectdeploy.Donate.Services;
 
-import com.example.projectdeploy.Donate.Model.Candidate;
-import com.example.projectdeploy.Donate.Model.Donate;
-import com.example.projectdeploy.Donate.Model.DonateNotified;
-import com.example.projectdeploy.Donate.Model.Status;
+import com.example.projectdeploy.Donate.Model.*;
 import com.example.projectdeploy.Donate.Repo.DonateNotifiedRepo;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
 import com.example.projectdeploy.MedicalInformation.CrudServiceMedicalInformation;
@@ -35,6 +32,8 @@ public class FetchServices {
     NotificationServices notificationServices;
     @Autowired
     CrudServiceMedicalInformation crudServiceMedicalInformation;
+    @Autowired
+    CreateDonate createDonate;
     public Response<Candidate> GetCandidatesForRequestor(UUID donatedId){
         try {
             List<Candidate> candidateList=new LinkedList<>();
@@ -60,10 +59,14 @@ public class FetchServices {
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
         }
     }
-    public Response<Donate> GetMyDonation(UUID medicalInformationId){
+    public Response<DonateResponse> GetMyDonation(UUID medicalInformationId){
         try{
             List<Donate> donateList=donateRepo.findMyDonateByMedicalInformationId(medicalInformationId);
-            return new Response<>(true, StaticsText.MessageForTest("GetMyDonation", "Retrieved"), donateList);
+            List<DonateResponse> donateResponseList=new LinkedList<>();
+            for (Donate d:donateList) {
+                donateResponseList.add(createDonate.MapToDonateResponse(d));
+            }
+            return new Response<>(true, StaticsText.MessageForTest("GetMyDonation", "Retrieved"), donateResponseList);
         }catch (Exception e){
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
         }

@@ -50,6 +50,7 @@ public class StoolTest implements BaseTest{
             Stool stool=stoolRepo.stoolById(test.getId());
             if(stool==null)return new Response<>(false, StaticsText.MessageForTest("stool Test", "not Found"));
             if(test.getBlood()!=null)stool.setBlood(test.getBlood());
+            if(test.getDate()!=null){stool.setDate(test.getDate());}
             if(test.getCiliates()!=null)stool.setCiliates(test.getCiliates());
             if(test.getColor()!=null)stool.setColor(test.getColor());
             if(test.getConsistency()!=null)stool.setConsistency(test.getConsistency());

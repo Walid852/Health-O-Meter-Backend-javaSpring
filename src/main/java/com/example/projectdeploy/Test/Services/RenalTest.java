@@ -52,6 +52,7 @@ public class RenalTest implements BaseTest{
             if(test.getUrea()!=-1)renal.setUrea(test.getUrea());
             if(test.getCreatinineInSerum()!=-1)renal.setCreatinineInSerum(test.getCreatinineInSerum());
             if(test.getUricAcid()!=-1)renal.setUricAcid(test.getUricAcid());
+            if(test.getDate()!=null){renal.setDate(test.getDate());}
             renalRepo.save(renal);
             List<Test> result = new ArrayList<>();
             result.add(renal);

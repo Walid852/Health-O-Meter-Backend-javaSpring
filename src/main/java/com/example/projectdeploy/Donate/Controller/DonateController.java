@@ -6,6 +6,7 @@ import com.example.projectdeploy.Donate.DTO.UpdateStatusRequest;
 import com.example.projectdeploy.Donate.Model.Candidate;
 import com.example.projectdeploy.Donate.Model.Donate;
 import com.example.projectdeploy.Donate.Model.DonateNotified;
+import com.example.projectdeploy.Donate.Model.DonateResponse;
 import com.example.projectdeploy.Donate.Services.CreateDonate;
 import com.example.projectdeploy.Donate.Services.DonateNotifiedUpdateStatus;
 import com.example.projectdeploy.Donate.Services.FetchServices;
@@ -27,7 +28,7 @@ public class DonateController {
     FetchServices fetchServices;
     @PostMapping(path="/AddDonate")
     public @ResponseBody
-    Response<Donate> AddDonate(@RequestBody DonateRequest donateRequest){
+    Response<DonateResponse> AddDonate(@RequestBody DonateRequest donateRequest){
 
         return createDonate.AddDonate(donateRequest);
     }
@@ -49,7 +50,7 @@ public class DonateController {
     }
     @GetMapping(path="/GetMyDonation")
     public @ResponseBody
-    Response<Donate> GetMyDonation(@RequestParam UUID medicalInformationId){
+    Response<DonateResponse> GetMyDonation(@RequestParam UUID medicalInformationId){
         return fetchServices.GetMyDonation(medicalInformationId);
     }
     @GetMapping(path="/GetRequestsForYou")
