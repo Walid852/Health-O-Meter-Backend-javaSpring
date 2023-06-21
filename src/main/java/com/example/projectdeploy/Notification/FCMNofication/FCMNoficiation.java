@@ -22,6 +22,8 @@ public class FCMNoficiation {
         Message message = Message.builder()
                 .setNotification(notification)
                 .putData("Date",appNotification.getNotificationDate().toString())
+                .putData("typeUrl",appNotification.getTypeUrl().toString()).
+                putData("url",appNotification.getUrl().toString())
                 .setToken(registrationToken)
                 .build();
         // Send a message to the device corresponding to the provided
