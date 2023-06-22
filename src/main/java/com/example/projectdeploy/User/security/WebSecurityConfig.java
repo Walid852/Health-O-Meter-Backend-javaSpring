@@ -53,6 +53,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/authenticate").permitAll()
                 .requestMatchers("/temp").permitAll()
                 .requestMatchers("/addRole").permitAll()
+                .requestMatchers("/uploads/files/**").permitAll()
                 .requestMatchers("/all").hasAuthority("ROLE_User")
                 .anyRequest().authenticated();
 
