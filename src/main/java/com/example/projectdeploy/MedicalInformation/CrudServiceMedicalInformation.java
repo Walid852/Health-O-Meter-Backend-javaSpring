@@ -95,6 +95,18 @@ public class CrudServiceMedicalInformation {
             if(updateMedicalInformation.getBloodType()!=null) medicalInformation.setBloodType(updateMedicalInformation.getBloodType());
             if(updateMedicalInformation.CurrentWeight!=0) medicalInformation.setCurrentWeight(updateMedicalInformation.CurrentWeight);
             if(updateMedicalInformation.CurrentHeight!=0) medicalInformation.setCurrentHeight(updateMedicalInformation.CurrentHeight);
+            medicalInformation.setFever(updateMedicalInformation.isFever());
+            medicalInformation.setHaveAids(updateMedicalInformation.getHaveAids());
+            medicalInformation.setHepatitis_B(updateMedicalInformation.getHepatitis_B());
+            medicalInformation.setHepatitis_C(updateMedicalInformation.getHepatitis_C());
+            medicalInformation.setHaveMalaria(updateMedicalInformation.getHaveMalaria());
+            medicalInformation.setHaveSyphilis(updateMedicalInformation.getHaveSyphilis());
+            medicalInformation.setHaveSevereAnemia(updateMedicalInformation.getHaveSevereAnemia());
+            medicalInformation.setHaveCancer(updateMedicalInformation.getHaveCancer());
+            medicalInformation.setHaveDiabetes(updateMedicalInformation.getHaveDiabetes());
+            medicalInformation.setHaveHighBloodPressure(updateMedicalInformation.getHaveHighBloodPressure());
+            medicalInformation.setHaveGeneticBloodDiseases(updateMedicalInformation.getHaveGeneticBloodDiseases());
+            medicalInformation.setHaveAbilityToDonate(updateMedicalInformation.getHaveAbilityToDonate());
             medicalInformationRepo.save(medicalInformation);
             List<MedicalInformation> result = new ArrayList<>();
             result.add(medicalInformation);
