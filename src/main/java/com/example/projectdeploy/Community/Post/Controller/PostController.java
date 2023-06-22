@@ -2,12 +2,14 @@ package com.example.projectdeploy.Community.Post.Controller;
 
 import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Like.Model.Likee;
+import com.example.projectdeploy.Community.Post.DTO.CommentResponse;
 import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Request.NewUpdatePost;
 import com.example.projectdeploy.Community.Post.Request.Pagination;
 import com.example.projectdeploy.Community.Post.Service.CrudServices;
 import com.example.projectdeploy.Community.Post.Service.FetchService;
 import com.example.projectdeploy.Community.Post.Service.PostService;
+import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +50,8 @@ public class PostController {
     }
 
     @GetMapping(value = "/getPostComments")
-    public @ResponseBody List<Comment> getMyComment(@RequestParam UUID postId){
+    public @ResponseBody
+    Response<CommentResponse> getMyComment(@RequestParam UUID postId){
         return postService.getMyComments(postId);
     }
 
