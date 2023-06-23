@@ -47,6 +47,7 @@ public class CommentService {
         if(postRepo.findById(commentRequest.getPostId()).isPresent())
             comment.setPost(postRepo.findById(commentRequest.getPostId()).get());
         comment.setComment(commentRequest.getComment());
+        comment.setCreationDate(new Date(System.currentTimeMillis()));
         commentRepo.save(comment);
         Post post=comment.getPost();
         double noOfComments=commentRepo.getNoComment(post.getId());
@@ -97,6 +98,7 @@ public class CommentService {
             reply.setPost(postRepo.findById(commentRequest.getPostId()).get());*/
 
         mainComment.getReplies().add(reply);
+        reply.setCreationDate(new Date(System.currentTimeMillis()));
         commentRepo.save(reply);
         commentRepo.save(mainComment);
         String username=reply.getUser().getUserName();
