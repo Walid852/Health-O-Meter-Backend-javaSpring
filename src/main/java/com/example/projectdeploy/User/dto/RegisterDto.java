@@ -17,5 +17,5 @@ public class RegisterDto {
     private String nationalId;
     private String role;
     private UUID memberId;
-    private String Lating;
+    //private String Lating;
 }

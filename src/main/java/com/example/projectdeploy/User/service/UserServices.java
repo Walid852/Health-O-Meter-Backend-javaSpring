@@ -62,8 +62,8 @@ public class UserServices {
             user.setNationalId(registerDto.getNationalId());
             user.setPhoneNumber(registerDto.getPhoneNumber());
             user.setName(registerDto.getName());
-            UserLocation userLocation=locationService.SaveLocation(registerDto.getLating());
-            user.setLocation(userLocation);
+            //UserLocation userLocation=locationService.SaveLocation(registerDto.getLating());
+            //user.setLocation(userLocation);
             userRepo.save(user);
             Response response=jwtAuthenticationController.createAuthenticationToken(new JwtRequest(registerDto.getUsername(),registerDto.getPassword()));
             return ResponseEntity.ok(response);
@@ -94,7 +94,7 @@ public class UserServices {
         User user=userRepo.findByUserId(userId);
         user.setLocation(userLocation);
         userRepo.save(user);
-        return ResponseEntity.ok("Successfully Update Location");
+        return ResponseEntity.ok("Successfully add Location");
     }
 
 
