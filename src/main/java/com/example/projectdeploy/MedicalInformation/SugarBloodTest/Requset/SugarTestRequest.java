@@ -13,8 +13,8 @@ public class SugarTestRequest {
     private UUID medicalInformationId;
     private TestPeriod period;
     private int read=-1;
-    private Date date;
-    private Time time;
+    private Date date=null;
+    private Time time=null;
     private AM_PM am_pm;
     private UUID testId;
 }

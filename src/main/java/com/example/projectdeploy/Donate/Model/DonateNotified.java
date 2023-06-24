@@ -2,6 +2,7 @@ package com.example.projectdeploy.Donate.Model;
 
 import com.example.projectdeploy.MedicalInformation.BloodPressure.dto.AM_PM;
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,14 +29,16 @@ public class DonateNotified implements Serializable {
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
+    @JsonIgnore
     private MedicalInformation MedicalInformation;
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
     private Donate donate;
     Status status=Status.Pending;
+
     Date LastUpdateDate;
-    @Column(name = "date", nullable = false, updatable = false)
+
     private Date dateOfArrival=null;
 
     private Time time;

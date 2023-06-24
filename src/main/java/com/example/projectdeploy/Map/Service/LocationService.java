@@ -21,7 +21,7 @@ UserLocationRepo userLocationRepo;
     private static final Object API_KEY = "AIzaSyDQE_OqbesINOGfLOhflK5uGUbVFJXe7L0";
    DetailedAddress DetailsForAddressComponents(AddressComponents[] addressComponents){
        DetailedAddress detailedAddress=new DetailedAddress();
-       int i=0;
+       /*int i=0;
        for (AddressComponents AC:addressComponents) {
            if(i==1){
               detailedAddress.setStreet(AC.getLong_name());
@@ -42,7 +42,29 @@ UserLocationRepo userLocationRepo;
 
            i++;
 
+       }*/
+       for (AddressComponents ac : addressComponents) {
+           for (String type : ac.getTypes()) {
+               switch (type) {
+                   case "administrative_area_level_3":
+                       detailedAddress.setStreet(ac.getLong_name());
+                       break;
+                   case "administrative_area_level_2":
+                       detailedAddress.setCity(ac.getLong_name());
+                       break;
+                   case "administrative_area_level_1":
+                       detailedAddress.setGovernment(ac.getLong_name());
+                       break;
+                   case "country":
+                       detailedAddress.setCountry(ac.getLong_name());
+                       break;
+                   case "postal_code":
+                       detailedAddress.setPostal_code(ac.getLong_name());
+                       break;
+               }
+           }
        }
+
        return detailedAddress;
    }
 @Transactional
@@ -66,7 +88,6 @@ UserLocationRepo userLocationRepo;
         System.out.println(uri.toUriString());
         ResponseEntity<Response> response = new RestTemplate().getForEntity(uri.toUriString(), Response.class);
         Result[] results= Objects.requireNonNull(response.getBody()).getResults();
-        System.out.println(results[0]);
         System.out.println(Objects.requireNonNull(response.getBody()).getResults().length);
         return AddLocation(results[0]);
     }

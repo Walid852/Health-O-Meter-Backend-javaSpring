@@ -59,14 +59,18 @@ public class CrudServiceMedicalInformation {
         List<BloodType> bloodTypeList=GivenAndReceiveForBloodType(bloodType);
         System.out.println(bloodType);
         System.out.println(government);
+        System.out.println(bloodTypeList);
         List<MedicalInformation> medicalInformationList=medicalInformationRepo.findAllMedicalInformationValidateToDonate(bloodTypeList,government);
+        System.out.println("medicalInformationList1");
         System.out.println(medicalInformationList.size());
         List<MedicalInformation> result=new LinkedList<>();
         for (MedicalInformation MI:medicalInformationList) {
+            if(MI.getUser().getLocation()==null)continue;
             System.out.println(MI.getUser().getId());
             int F=0;
             int y=0;
             if(MI.lastTimeDonate!=null){
+                System.out.println("Hi");
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
             LocalDate date =DateNow.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -74,6 +78,8 @@ public class CrudServiceMedicalInformation {
             Period diff = Period.between(date,date1);
             if((Math.abs(diff.getDays())<56))F=1;
             }
+            System.out.println(MI.getUser().getGender());
+            System.out.println(MI.hemoglobin);
             if(MI.getUser().getAge()<18
                     ||MI.getUser().getAge()>65
                     ||(MI.getUser().getGender()== Gender.male&&(MI.hemoglobin>17||MI.hemoglobin<14))
@@ -84,6 +90,7 @@ public class CrudServiceMedicalInformation {
             else {
                 result.add(MI);
             }
+            System.out.println("----------------------");
         }
         return result;
     }
@@ -107,6 +114,7 @@ public class CrudServiceMedicalInformation {
             medicalInformation.setHaveHighBloodPressure(updateMedicalInformation.getHaveHighBloodPressure());
             medicalInformation.setHaveGeneticBloodDiseases(updateMedicalInformation.getHaveGeneticBloodDiseases());
             medicalInformation.setHaveAbilityToDonate(updateMedicalInformation.getHaveAbilityToDonate());
+            medicalInformation.setHemoglobin(updateMedicalInformation.getHemoglobin());
             medicalInformationRepo.save(medicalInformation);
             List<MedicalInformation> result = new ArrayList<>();
             result.add(medicalInformation);
@@ -115,6 +123,26 @@ public class CrudServiceMedicalInformation {
         catch (Exception e){
             return new Response<>(false,StaticsText.MessageForTestError());
         }
+    }
+    void NN(){
+        int i=12;
+        int p=0;
+        List<MedicalInformation> medicalInformationList=medicalInformationRepo.findAllMedicalInformation();
+        for (MedicalInformation mi:medicalInformationList
+             ) {
+            if(mi.getUser().getLocation()==null)continue;
+            mi.setHemoglobin(i);
+            mi.setHaveAbilityToDonate(true);
+            p++;
+            i++;
+            if(p==2){
+                p=0;
+            }
+            if (i==19){
+                i=13;
+            }
+        }
+        medicalInformationRepo.saveAll(medicalInformationList);
     }
     @Transactional
     public List<BloodType> GivenAndReceiveForBloodType(BloodType bloodType){

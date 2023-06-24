@@ -39,6 +39,7 @@ public class FetchServices {
             List<Candidate> candidateList=new LinkedList<>();
             List<Status> statusList= Arrays.asList(Status.Pending, Status.Rejected, Status.Notified);
             List<DonateNotified> donateNotifiedList=donateNotifiedRepo.findDonateNotifiedByDonateIdForRequestor(donatedId,statusList);
+            System.out.println(donateNotifiedList.size());
             for (DonateNotified DN:
                     donateNotifiedList) {
                 Candidate candidate=new Candidate();
@@ -73,10 +74,10 @@ public class FetchServices {
     }
     public Response<DonateNotified> GetRequestsForYou(UUID medicalInformationId){
         try{
-            List<Status> statusList= Arrays.asList(Status.Pending, Status.Rejected);
+            List<Status> statusList= Arrays.asList(Status.Approval, Status.Rejected);
             List<DonateNotified> donateNotifiedList=
                     donateNotifiedRepo.findDonateNotifiedFoMedicalInformation(medicalInformationId,statusList);
-            return new Response<>(true, StaticsText.MessageForTest("GetMyDonation", "Retrieved"), donateNotifiedList);
+            return new Response<>(true, StaticsText.MessageForTest("Requests", "Retrieved"), donateNotifiedList);
         }catch (Exception e){
             return new com.example.projectdeploy.Shared.Response<>(false, StaticsText.MessageForTestError());
         }

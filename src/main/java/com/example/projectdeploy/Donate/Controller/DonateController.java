@@ -40,7 +40,7 @@ public class DonateController {
     }
     @PutMapping(path="/UpdateStatus")
     public @ResponseBody
-    Response<DonateNotified> UpdateStatus(@RequestBody UpdateStatusRequest updateStatusRequest){
+    Response<Candidate> UpdateStatus(@RequestBody UpdateStatusRequest updateStatusRequest){
         return donateNotifiedUpdateStatus.UpdateStatus(updateStatusRequest);
     }
     @GetMapping(path="/GetCandidatesForRequestor")

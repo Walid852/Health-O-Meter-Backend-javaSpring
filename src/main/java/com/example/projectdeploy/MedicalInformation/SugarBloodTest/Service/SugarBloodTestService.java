@@ -72,17 +72,26 @@ public class SugarBloodTestService {
             SugarBloodTest updatedTest=new SugarBloodTest();
 
             if(testRepo.findById(testRequest.getTestId()).isPresent()){
-                updatedTest=testRepo.findById(testRequest.getTestId()).get();
+                updatedTest=testRepo.getSugarBloodTestById(testRequest.getTestId());
+                System.out.println(updatedTest.getDate());
                 if(testRequest.getPeriod()!=null)updatedTest.setTestPeriod(testRequest.getPeriod());
                 if(testRequest.getRead()!=-1){
                     updatedTest.setReadd(testRequest.getRead());
                     updatedTest.setSugarTestCategory(getDiabetesCategory(testRequest.getRead()));
                 }
-                if(testRequest.getDate()!=null)updatedTest.setDate(testRequest.getDate());
-                if(testRequest.getTime()!=null)updatedTest.setTime(testRequest.getTime());
+                System.out.println(testRequest.getDate());
+                System.out.println(testRequest.getTime());
+                if(testRequest.getDate()!=null){
+                    System.out.println(1);
+                    updatedTest.setDate(testRequest.getDate());
+                }
+                if(testRequest.getTime()!=null){
+                    System.out.println(2);
+                    updatedTest.setTime(testRequest.getTime());
+                }
                 updatedTest.setAm_pm(testRequest.getAm_pm());
-                testRepo.save(updatedTest);
             }
+            testRepo.saveAndFlush(updatedTest);
             List<SugarBloodTest> result = new ArrayList<>();
             result.add(updatedTest);
             return new Response<>(true, StaticsText.MessageForTest("Sugar Blood Test", "Updated"), result);

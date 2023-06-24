@@ -1,10 +1,7 @@
 package com.example.projectdeploy.Donate.Services;
 
 import com.example.projectdeploy.Donate.DTO.UpdateStatusRequest;
-import com.example.projectdeploy.Donate.Model.Donate;
-import com.example.projectdeploy.Donate.Model.DonateNotified;
-import com.example.projectdeploy.Donate.Model.LocationHierarchical;
-import com.example.projectdeploy.Donate.Model.Status;
+import com.example.projectdeploy.Donate.Model.*;
 import com.example.projectdeploy.Donate.Repo.DonateNotifiedRepo;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
 import com.example.projectdeploy.Notification.Model.ConstantMessage;
@@ -23,10 +20,21 @@ public class DonateNotifiedUpdateStatus {
     @Autowired
     DonateRepo donateRepo;
 
-    Response<DonateNotified> AuthorizationForUpdate(UpdateStatusRequest updateStatusRequest){
+    Response<Candidate> AuthorizationForUpdate(UpdateStatusRequest updateStatusRequest){
         DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
-        List<DonateNotified> result = new ArrayList<>();
-        result.add(donateNotified);
+        Candidate candidate=new Candidate();
+        candidate.setMedicalInformationId(donateNotified.getMedicalInformation().getId());
+        candidate.setBloodType(donateNotified.getMedicalInformation().getBloodType());
+        candidate.setDateOfArrival(donateNotified.getDateOfArrival());
+        candidate.setLastUpdateDate(donateNotified.getLastUpdateDate());
+        candidate.setStatus(donateNotified.getStatus());
+        candidate.setName(donateNotified.getMedicalInformation().getUser().getName());
+        candidate.setNationalId(donateNotified.getMedicalInformation().getUser().getNationalId());
+        candidate.setPhoto(donateNotified.getMedicalInformation().getUser().getPhoto());
+        candidate.setPhoneNumber(donateNotified.getMedicalInformation().getUser().getPhoneNumber());
+        candidate.setUsername(donateNotified.getMedicalInformation().getUser().getUserName());
+        List<Candidate> result = new ArrayList<>();
+        result.add(candidate);
         if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Agree)||updateStatusRequest.getStatus().equals(Status.Rejected))){
             if(     updateStatusRequest.getStatus().equals(Status.Agree)&&
@@ -55,9 +63,9 @@ public class DonateNotifiedUpdateStatus {
         }
         else return new Response<>(true, StaticsText.MessageForTest("change status", "Unsuccessfully"), result);
     }
-    public Response<DonateNotified> UpdateStatus(UpdateStatusRequest updateStatusRequest){
+    public Response<Candidate> UpdateStatus(UpdateStatusRequest updateStatusRequest){
         try {
-            Response<DonateNotified> donateNotifiedResponse=AuthorizationForUpdate(updateStatusRequest);
+            Response<Candidate> donateNotifiedResponse=AuthorizationForUpdate(updateStatusRequest);
             if(!donateNotifiedResponse.status)return donateNotifiedResponse;
             DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
             donateNotified.setStatus(updateStatusRequest.getStatus());
