@@ -27,7 +27,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.*;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -54,7 +58,7 @@ public class CreateDonate {
         for (MedicalInformation MI:medicalInformationList) {
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
-            DonateNotified donateNotified=new DonateNotified(MI,donate, Status.Pending, (java.sql.Date) DateNow);
+            DonateNotified donateNotified=new DonateNotified(MI,donate, Status.Pending, DateNow);
             donateNotifiedList.add(donateNotified);
             donateNotifiedRepo.save(donateNotified);
         }
@@ -72,7 +76,7 @@ public class CreateDonate {
                         ,donateNotified.getDonate().getId()
                         , TypeUrl.Donate
                         ,ConstantMessage.photoDonation
-                        , (java.sql.Date) DateNow);
+                        ,DateNow);
                 notificationServices.AddNotification(notificationRequest);
                 donateNotifiedRepo.save(donateNotified);
     }
@@ -151,10 +155,11 @@ public class CreateDonate {
                 medicalInformationList=crudServiceMedicalInformation.ValidateToDonate(donate.getBloodType(),
                         donate.getRequestorMedicalInformation().getUser().getLocation().getGovernment());
             }
-           Donate donate1=donateRepo.save(donate);
+            System.out.println(medicalInformationList);
+            Donate donate1=donateRepo.save(donate);
             System.out.println("Size2:  "+medicalInformationList.size());
             AddMedicalInformationValidateToDonate(medicalInformationList,donate);
-            ExpandingNotificationTransmission(donate.getId());
+            //ExpandingNotificationTransmission(donate.getId());
             System.out.println("LLLLLL");
             List<DonateResponse> result = new ArrayList<>();
             DonateResponse donateResponse=MapToDonateResponse(donate1);

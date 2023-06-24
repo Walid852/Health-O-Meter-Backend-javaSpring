@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/getGenderByUserId")
-    public @ResponseBody com.example.projectdeploy.Shared.Response<Gender> getGenderByUserId(UUID userId){
+    public @ResponseBody com.example.projectdeploy.Shared.Response<Gender> getGenderByUserId(@RequestParam UUID userId){
         return userServices.getGenderByUserId(userId);
     }
     @PutMapping(path="/SaveRegistrationToken")

@@ -4,6 +4,7 @@ import com.example.projectdeploy.Donate.Model.Status;
 import lombok.Data;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.UUID;
 
 @Data
@@ -13,4 +14,5 @@ public class UpdateStatusRequest {
     UUID donator=null;
     Status status;
     Date dateOfArrival=null;
+    Time time=null;
 }

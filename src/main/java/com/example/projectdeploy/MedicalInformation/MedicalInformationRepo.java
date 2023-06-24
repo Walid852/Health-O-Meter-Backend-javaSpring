@@ -25,7 +25,7 @@ public interface MedicalInformationRepo extends JpaRepository<MedicalInformation
     public List<MedicalInformation>  findAllMedicalInformationForWeight(int weight);
     @Query("select M from MedicalInformation M where M.bloodType in?1 and M.CurrentWeight>50" +
             " and M.haveAids=false and M.haveCancer=false and M.haveDiabetes=false and M.haveGeneticBloodDiseases=false " +
-            "and M.haveAbilityToDonate=false and M.haveHighBloodPressure=false and M.haveMalaria=false " +
+            "and M.haveAbilityToDonate=true and M.haveHighBloodPressure=false and M.haveMalaria=false " +
             "and M.haveSevereAnemia=false and M.haveSyphilis=false and M.hepatitis_B=false and M.hepatitis_C=false " +
             "and M.isFever=false and M.user.location.government=?2")
     public List<MedicalInformation> findAllMedicalInformationValidateToDonate(List<BloodType> bloodType,String government);
