@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 @Service
 public class CrudServices {
 
@@ -43,6 +46,7 @@ public class CrudServices {
                 post.setUser(user);
                 post.setFile(newUpdatePost.getFile());
                 post.setImage(newUpdatePost.getImage());
+                post.setCreationDate(new Date(System.currentTimeMillis()));
                 postRepo.save(post);
                 elasticService.addToElastic(post);
             }

@@ -5,11 +5,14 @@ import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Comment.Repo.CommentRepo;
 import com.example.projectdeploy.Community.Comment.Request.CommentRequest;
 import com.example.projectdeploy.Community.Like.Model.Likee;
+import com.example.projectdeploy.Community.Post.DTO.CommentResponse;
 import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.Notification.Model.NotificationRequest;
 import com.example.projectdeploy.Notification.Model.TypeUrl;
 import com.example.projectdeploy.Notification.Services.NotificationServices;
+import com.example.projectdeploy.Shared.Response;
+import com.example.projectdeploy.Shared.StaticsText;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +47,7 @@ public class CommentService {
         if(postRepo.findById(commentRequest.getPostId()).isPresent())
             comment.setPost(postRepo.findById(commentRequest.getPostId()).get());
         comment.setComment(commentRequest.getComment());
+        comment.setCreationDate(new Date(System.currentTimeMillis()));
         commentRepo.save(comment);
         Post post=comment.getPost();
         double noOfComments=commentRepo.getNoComment(post.getId());
@@ -93,6 +98,7 @@ public class CommentService {
             reply.setPost(postRepo.findById(commentRequest.getPostId()).get());*/
 
         mainComment.getReplies().add(reply);
+        reply.setCreationDate(new Date(System.currentTimeMillis()));
         commentRepo.save(reply);
         commentRepo.save(mainComment);
         String username=reply.getUser().getUserName();
@@ -104,11 +110,23 @@ public class CommentService {
     }
 
     @Transactional
-    public List<Comment> getRepliesForComment(UUID commentId){
+    public Response<CommentResponse> getRepliesForComment(UUID commentId){
+        List<CommentResponse> commentResponses=new ArrayList<>();
         Comment comment=new Comment();
         if(commentRepo.findById(commentId).isPresent())
             comment=commentRepo.findById(commentId).get();
-        return comment.getReplies();
+        for(Comment comment1:comment.getReplies()){
+            CommentResponse commentResponse= new CommentResponse();
+            commentResponse.setCommentId(comment1.getId());
+            commentResponse.setContent(comment1.getComment());
+            commentResponse.setPhoto(comment1.getUser().getPhoto());
+            commentResponse.setUserId(comment1.getUser().getId());
+            commentResponse.setName(comment1.getUser().getName());
+            commentResponse.setShowReplies(false);
+            commentResponses.add(commentResponse);
+
+        }
+        return new Response<>(true, StaticsText.MessageForTest("Replies", "are retrieved"), commentResponses);
     }
 
     @Transactional

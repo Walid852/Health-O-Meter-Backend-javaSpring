@@ -4,6 +4,8 @@ import com.example.projectdeploy.Community.Comment.Model.Comment;
 import com.example.projectdeploy.Community.Comment.Request.CommentRequest;
 import com.example.projectdeploy.Community.Comment.Service.CommentService;
 import com.example.projectdeploy.Community.Like.Model.Likee;
+import com.example.projectdeploy.Community.Post.DTO.CommentResponse;
+import com.example.projectdeploy.Shared.Response;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +38,7 @@ public class CommentController {
         return commentService.addReplyForComment(commentRequest);
     }
     @GetMapping(value = "getReplies")
-    public @ResponseBody List<Comment> getRepliesForComment(@RequestParam UUID commentId){
+    public @ResponseBody Response<CommentResponse> getRepliesForComment(@RequestParam UUID commentId){
         return commentService.getRepliesForComment(commentId);
     }
     @GetMapping(value = "/getLikes")

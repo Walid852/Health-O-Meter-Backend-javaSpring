@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.UUID;
 
 @Entity
@@ -52,6 +53,8 @@ public class Post implements Serializable {
     double numberOfLikes=0;
 
     double numberOfComment=0;
+
+    Date creationDate;
 
     /*public void addLike(Likee likeMe){
         likes.add(likeMe);

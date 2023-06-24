@@ -47,12 +47,13 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/userService/auth/register").permitAll()
+                .requestMatchers("/userService/auth/**").permitAll()
                 .requestMatchers("/MedicalInformation/createMedicalInformation").permitAll()
                 .requestMatchers("/Disease").permitAll()
                 .requestMatchers("/authenticate").permitAll()
                 .requestMatchers("/temp").permitAll()
                 .requestMatchers("/addRole").permitAll()
+                .requestMatchers("/uploads/files/**").permitAll()
                 .requestMatchers("/all").hasAuthority("ROLE_User")
                 .anyRequest().authenticated();
 

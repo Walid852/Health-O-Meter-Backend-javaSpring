@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +38,8 @@ public class Comment implements Serializable {
     double numberOfLikes;
 
     double numberOfReplies;
+
+    Date creationDate;
 
 
     public UUID getId() {
