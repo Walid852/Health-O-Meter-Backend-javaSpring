@@ -48,10 +48,10 @@ public class CommentService {
             comment.setPost(postRepo.findById(commentRequest.getPostId()).get());
         comment.setComment(commentRequest.getComment());
         comment.setCreationDate(new Date(System.currentTimeMillis()));
-        commentRepo.save(comment);
         Post post=comment.getPost();
         double noOfComments=commentRepo.getNoComment(post.getId());
-        post.setNumberOfLikes(noOfComments);
+        post.setNumberOfLikes(noOfComments+1);
+        commentRepo.save(comment);
         postRepo.save(post);
         String username=comment.getUser().getUserName();
         NotificationRequest notificationRequest=new NotificationRequest(comment.getUser().getId(),comment.getPost().getUser().getId(),

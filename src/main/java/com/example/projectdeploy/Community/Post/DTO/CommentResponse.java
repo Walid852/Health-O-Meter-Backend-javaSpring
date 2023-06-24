@@ -14,5 +14,6 @@ public class CommentResponse {
     UUID userId;
     String name;
     String photo;
+    double numberOfLikes;
     Boolean showReplies;
 }

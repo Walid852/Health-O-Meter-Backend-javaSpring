@@ -40,6 +40,7 @@ public class PostService {
             commentResponse.setPhoto(comment.getUser().getPhoto());
             commentResponse.setUserId(comment.getUser().getId());
             commentResponse.setName(comment.getUser().getName());
+            commentResponse.setNumberOfLikes(comment.getNumberOfLikes());
             commentResponse.setShowReplies(!comment.getReplies().isEmpty());
             commentResponses.add(commentResponse);
         }
