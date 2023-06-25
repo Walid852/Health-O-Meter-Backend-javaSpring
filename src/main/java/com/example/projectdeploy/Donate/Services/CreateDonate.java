@@ -156,7 +156,7 @@ public class CreateDonate {
             Donate donate1=donateRepo.save(donate);
             System.out.println("Size2:  "+medicalInformationList.size());
             AddMedicalInformationValidateToDonate(medicalInformationList,donate);
-            //ExpandingNotificationTransmission(donate.getId());
+            ExpandingNotificationTransmission(donate.getId());
             System.out.println("LLLLLL");
             List<DonateResponse> result = new ArrayList<>();
             DonateResponse donateResponse=MapToDonateResponse(donate1);
