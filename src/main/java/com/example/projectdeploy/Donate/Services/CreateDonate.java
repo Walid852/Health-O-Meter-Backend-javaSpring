@@ -139,8 +139,12 @@ public class CreateDonate {
             MedicalInformation medicalInformation=null;
             if(medicalInformationRepo.findById(donateRequest.getRequesterMedicalInformationId()).isPresent()){
                 medicalInformation= medicalInformationRepo.findMedicalInformationById(
-                        donateRequest.getRequesterMedicalInformationId()
-                );
+                        donateRequest.getRequesterMedicalInformationId());
+                if(medicalInformation.getUser().getLocation()==null){
+                    return new com.example.projectdeploy.Shared.Response<>(false,
+                            StaticsText.MessageForTest("user", "has no location"));
+                }
+
             }
             else {
                 return new com.example.projectdeploy.Shared.Response<>(false,
