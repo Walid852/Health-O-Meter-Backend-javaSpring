@@ -28,7 +28,6 @@ public class Phobia implements Serializable {
     private MedicalInformation medicalInformation;
     boolean isDeleted=false;
 
-    @Column(name = "date", nullable = false, updatable = false)
     private Date creationDate;
 
 
