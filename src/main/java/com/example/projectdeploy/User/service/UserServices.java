@@ -62,8 +62,8 @@ public class UserServices {
             user.setNationalId(registerDto.getNationalId());
             user.setPhoneNumber(registerDto.getPhoneNumber());
             user.setName(registerDto.getName());
-            UserLocation userLocation=locationService.SaveLocation(registerDto.getLating());
-            user.setLocation(userLocation);
+            //UserLocation userLocation=locationService.SaveLocation(registerDto.getLating());
+            //user.setLocation(userLocation);
             userRepo.save(user);
             Response response=jwtAuthenticationController.createAuthenticationToken(new JwtRequest(registerDto.getUsername(),registerDto.getPassword()));
             return ResponseEntity.ok(response);
@@ -77,7 +77,7 @@ public class UserServices {
             if (user== null) {
                 return ResponseEntity.badRequest().body(new Response(false, "user not found"));
             }
-            if (user.getPassword().equals(bcryptEncoder.encode((changePasswordDto.getOldPassword())))){
+            if (bcryptEncoder.matches(changePasswordDto.getOldPassword(),user.getPassword())){
                 user.setPassword(bcryptEncoder.encode((changePasswordDto.getNewPassword())));
             }
             else {
@@ -85,7 +85,7 @@ public class UserServices {
             }
             userRepo.save(user);
             return ResponseEntity.accepted().body(new Response(true, "Password changed"));
-        }catch (Exception e){
+        }  catch (Exception e){
             return ResponseEntity.badRequest().body(new Response(false, "Something wrong Make Ensure do Correct process and try agin"));
         }
     }
@@ -94,7 +94,7 @@ public class UserServices {
         User user=userRepo.findByUserId(userId);
         user.setLocation(userLocation);
         userRepo.save(user);
-        return ResponseEntity.ok("Successfully Update Location");
+        return ResponseEntity.ok("Successfully add Location");
     }
 
 
