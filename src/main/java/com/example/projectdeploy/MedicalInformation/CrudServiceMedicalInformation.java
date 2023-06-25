@@ -82,7 +82,7 @@ public class CrudServiceMedicalInformation {
             System.out.println(MI.hemoglobin);
             if(MI.getUser().getAge()<18
                     ||MI.getUser().getAge()>65
-                    ||(MI.getUser().getGender()== Gender.male&&(MI.hemoglobin>17||MI.hemoglobin<14))
+                    ||(MI.getUser().getGender()== Gender.male&&(MI.hemoglobin>17||MI.hemoglobin<10))
                     ||(MI.getUser().getGender()== Gender.female&&(MI.hemoglobin>14||MI.hemoglobin<12))
                     ||F==1){
                 System.out.println(true);
