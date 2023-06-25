@@ -29,7 +29,6 @@ public class Phobia implements Serializable {
     boolean isDeleted=false;
 
     @Column(name = "date", nullable = false, updatable = false)
-    @CreationTimestamp
     private Date creationDate;
 
 
