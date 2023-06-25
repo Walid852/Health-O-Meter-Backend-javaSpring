@@ -36,6 +36,7 @@ public class PhobiaService {
             }
             phobia.setName(phobiaRequest.getName());
             phobia.setMedicalInformation(medicalInformation);
+            phobia.setCreationDate(phobiaRequest.getDate());
             phobiaRepo.save(phobia);
             List<Phobia> result = new ArrayList<>();
             result.add(phobia);
@@ -51,6 +52,7 @@ public class PhobiaService {
             Phobia Phobia=phobiaRepo.getPhobiaById(phobiaUpdate.getPhobiaId());
             if(Phobia==null)return new Response<>(false, StaticsText.MessageForTest("error", "not have this Phobia"));
             Phobia.setName(phobiaUpdate.getName());
+            Phobia.setCreationDate(phobiaUpdate.getDate());
             phobiaRepo.save(Phobia);
             List<Phobia> result = new ArrayList<>();
             result.add(Phobia);
