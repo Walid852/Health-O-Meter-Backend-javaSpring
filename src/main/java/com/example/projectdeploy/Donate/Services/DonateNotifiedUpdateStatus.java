@@ -69,6 +69,7 @@ public class DonateNotifiedUpdateStatus {
             if(!donateNotifiedResponse.status)return donateNotifiedResponse;
             DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
             donateNotified.setStatus(updateStatusRequest.getStatus());
+            donateNotified.setAm_pm(updateStatusRequest.getAm_pm());
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
             donateNotified.setLastUpdateDate(DateNow);
