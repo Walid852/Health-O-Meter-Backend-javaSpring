@@ -78,6 +78,7 @@ public class LikeService {
 
     }
 
+    @Transactional
     public Comment addLikeComment(LikeRequest likeRequest){
         Likee like = new Likee();
         Comment c= new Comment();
@@ -109,6 +110,7 @@ public class LikeService {
         }
     }
 
+    @Transactional
     public Comment deleteLikeForComment(LikeRequest likeRequest){
         Comment c=new Comment();
         Likee deletedLike = likeRepo.getDeletedLikeForComment(likeRequest.getCommentId(), likeRequest.getUserId());
@@ -127,7 +129,7 @@ public class LikeService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "you should send comment");
     }
 
-
+    @Transactional
     public Post deleteLike(LikeRequest likeRequest){
         Post p=new Post();
         Likee deletedLike = likeRepo.getDeletedLike(likeRequest.getPostId(), likeRequest.getUserId());
