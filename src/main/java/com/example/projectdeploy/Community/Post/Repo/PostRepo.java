@@ -14,10 +14,10 @@ import java.util.UUID;
 @Repository
 public interface PostRepo extends JpaRepository<Post, UUID> {
 
-    @Query("SELECT O from Post O where O.user.id=?1")
+    @Query("SELECT O from Post O where O.user.id=?1 order by O.creationDate asc")
     List<Post> getUserPost(UUID userId,Pageable pageable);
 
-    @Query("SELECT O from Post O where O.community.id=?1")
+    @Query("SELECT O from Post O where O.community.id=?1 order by O.creationDate asc ")
     List<Post> getCommunityPost(UUID communityId, Pageable pageable);
 
     @Query("select p from Post p join Report r where r.post.id=p.id")
@@ -29,7 +29,7 @@ public interface PostRepo extends JpaRepository<Post, UUID> {
     @Query("select L from Likee L where L.post.id=?1")
     List<Likee> getPostLikes(UUID postId);
 
-    @Query("select C from Comment C where C.post.id=?1")
+    @Query("select C from Comment C where C.post.id=?1 order by C.creationDate asc")
     List<Comment> getPostComments(UUID postId);
 
 }
