@@ -86,6 +86,7 @@ public class LikeService {
         if(!likeBefore(likeRequest)) {
             if (likeRequest.getCommentId() != null) {
                 if (commentRepo.findById(likeRequest.getCommentId()).isPresent()) {
+                    c=commentRepo.findById(likeRequest.getCommentId()).get();
                     like.setComment(commentRepo.findById(likeRequest.getCommentId()).get());
                     flag++;
                 }
