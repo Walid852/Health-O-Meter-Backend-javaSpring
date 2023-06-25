@@ -105,7 +105,8 @@ public class LikeService {
                 notificationServices.AddNotification(notificationRequest);
             }
             return c;
-        }else{
+        }
+        else{
             return deleteLikeForComment(likeRequest);
         }
     }
