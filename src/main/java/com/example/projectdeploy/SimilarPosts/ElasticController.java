@@ -49,8 +49,10 @@ public class ElasticController {
         for(JsonParsing codebeautify:results){
             Post post;
             post= elasticService.getPost(codebeautify.PostidObject.getRaw());
-            if(!post.isDeleted()){
-                similarPosts.add(post);
+            if(post!=null) {
+                if (!post.isDeleted()) {
+                    similarPosts.add(post);
+                }
             }
         }
 
