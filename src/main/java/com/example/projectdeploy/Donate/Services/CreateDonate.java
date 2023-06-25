@@ -1,13 +1,10 @@
 package com.example.projectdeploy.Donate.Services;
 
 import com.example.projectdeploy.Donate.DTO.DonateRequest;
-import com.example.projectdeploy.Donate.DTO.Resultt;
 import com.example.projectdeploy.Donate.Model.*;
 
-import com.example.projectdeploy.Map.Model.Response;
 import com.example.projectdeploy.Donate.Repo.DonateNotifiedRepo;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
-import com.example.projectdeploy.Map.Model.Result;
 import com.example.projectdeploy.Map.Model.UserLocation;
 import com.example.projectdeploy.Map.Service.LocationService;
 import com.example.projectdeploy.MedicalInformation.CrudServiceMedicalInformation;
@@ -19,13 +16,9 @@ import com.example.projectdeploy.Notification.Model.TypeUrl;
 import com.example.projectdeploy.Notification.Repo.NotificationRepo;
 import com.example.projectdeploy.Notification.Services.NotificationServices;
 import com.example.projectdeploy.Shared.StaticsText;
-import com.example.projectdeploy.Test.Models.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -186,5 +179,47 @@ public class CreateDonate {
 
     }
 
+
+    @Scheduled(fixedRate = 300000)
+    public void ExpandingNotificationTransmission(){
+        List<Donate> donates=donateRepo.findAll();
+        for(Donate donate:donates) {
+            List<DonateNotified> donateNotifiedList = donateNotifiedRepo.findDonateNotifiedByDonateId(donate.getId());
+            if (donate.getDonatorMedicalInformation() != null) {
+            } else if (donate.getCurrent() == LocationHierarchical.street) {
+                for (DonateNotified DN : donateNotifiedList) {
+                    if (DN.getStatus() == Status.Pending &&
+                            donate.getLocation().getStreet().equals(DN.getMedicalInformation().getUser().getLocation().getStreet())) {
+                        SendNotification(DN);
+                    }
+                }
+                donate.setCurrent(LocationHierarchical.postal_code);
+            } else if (donate.getCurrent() == LocationHierarchical.postal_code) {
+                for (DonateNotified DN : donateNotifiedList) {
+                    if (DN.getStatus() == Status.Pending &&
+                            donate.getLocation().getPostal_code().equals(DN.getMedicalInformation().getUser().getLocation().getPostal_code())) {
+                        SendNotification(DN);
+                    }
+                }
+                donate.setCurrent(LocationHierarchical.city);
+            } else if (donate.getCurrent() == LocationHierarchical.city) {
+                for (DonateNotified DN : donateNotifiedList) {
+                    if (DN.getStatus() == Status.Pending &&
+                            donate.getLocation().getCity().equals(DN.getMedicalInformation().getUser().getLocation().getCity())) {
+                        SendNotification(DN);
+                    }
+                }
+                donate.setCurrent(LocationHierarchical.government);
+            } else if (donate.getCurrent() == LocationHierarchical.government) {
+                for (DonateNotified DN : donateNotifiedList) {
+                    if (DN.getStatus() == Status.Pending &&
+                            donate.getLocation().getGovernment().equals(DN.getMedicalInformation().getUser().getLocation().getGovernment())) {
+                        SendNotification(DN);
+                    }
+                }
+                donate.setCurrent(LocationHierarchical.Terminate);
+            }
+        }
+    }
 
 }
