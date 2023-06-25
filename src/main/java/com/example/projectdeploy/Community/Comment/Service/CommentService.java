@@ -50,7 +50,7 @@ public class CommentService {
         comment.setCreationDate(new Date(System.currentTimeMillis()));
         Post post=comment.getPost();
         double noOfComments=commentRepo.getNoComment(post.getId());
-        post.setNumberOfLikes(noOfComments+1);
+        post.setNumberOfComment(noOfComments+1);
         commentRepo.save(comment);
         postRepo.save(post);
         String username=comment.getUser().getUserName();
