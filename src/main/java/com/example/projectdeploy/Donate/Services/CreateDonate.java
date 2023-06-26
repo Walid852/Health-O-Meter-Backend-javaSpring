@@ -219,6 +219,7 @@ public class CreateDonate {
                 }
                 donate.setCurrent(LocationHierarchical.Terminate);
             }
+            donateRepo.save(donate);
         }
     }
 
