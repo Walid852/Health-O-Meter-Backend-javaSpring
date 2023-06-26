@@ -36,8 +36,7 @@ public class Surgery {
 
     boolean isDeleted=false;
 
-    @Column(name = "date", nullable = false, updatable = false)
-    @CreationTimestamp
+
     private Date creationDate;
 
     /*@Column(name = "date")
