@@ -33,7 +33,7 @@ public class CrudServiceSurgery {
             Surgery surgery=new Surgery();
             surgery.setMedicalInformation(medicalInformation);
             surgery.setBodyMember(createSurgery.getBodyMember());
-            //surgery.setSurgeryDate(createSurgery.getSurgeryDate());
+            surgery.setCreationDate(createSurgery.getDate());
             surgery.setName(createSurgery.getName());
             surgeryRepo.save(surgery);
             List<Surgery> result = new ArrayList<>();
@@ -52,6 +52,8 @@ public class CrudServiceSurgery {
             if(updateSurgery.getBodyMember()!=null)surgery.setBodyMember(updateSurgery.getBodyMember());
             //surgery.setSurgeryDate(updateSurgery.getSurgeryDate());
             if(updateSurgery.getName()!=null)surgery.setName(updateSurgery.getName());
+            if(updateSurgery.getDate()!=null)
+                surgery.setCreationDate(updateSurgery.getDate());
             surgeryRepo.save(surgery);
             List<Surgery> result = new ArrayList<>();
             result.add(surgery);
