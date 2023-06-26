@@ -30,8 +30,6 @@ public class SugarBloodTest implements Serializable {
     private MedicalInformation medicalInformation;
     @NotNull
     int readd;
-
-    @Column(name = "date", nullable = false, updatable = false)
     private Date date;
 
     private Time time;

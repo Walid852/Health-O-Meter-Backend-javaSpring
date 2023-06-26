@@ -97,6 +97,7 @@ public class CrudDiseasesService {
         }
 
     }
+    @Transactional
     public Response<Medicine> AddMedicine(MedicineDto M){
         try {
             Disease disease=diseaseRepo.findDiseaseById(M.getDiseaseId());
