@@ -82,6 +82,7 @@ public class DonateNotifiedUpdateStatus {
                 donateRepo.save(donate);
             }
             donateNotifiedRepo.save(donateNotified);
+            donateNotifiedResponse.data.get(0).setStatus(donateNotified.getStatus());
             return donateNotifiedResponse;
         }
         catch (Exception e){
