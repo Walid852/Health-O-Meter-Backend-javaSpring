@@ -34,7 +34,7 @@ public class Medicine implements Serializable {
     @JsonIgnore
     @Autowired
     @NotNull
-    @OneToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Disease disease;
 
     public Medicine(String name,Boolean isNotified, Date startDate,int numberOfDays, int numberOfTakesPerDay, Disease disease) {
