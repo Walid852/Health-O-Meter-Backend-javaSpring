@@ -37,31 +37,34 @@ public class DonateNotifiedUpdateStatus {
         result.add(candidate);
         if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Agree)||updateStatusRequest.getStatus().equals(Status.Rejected))){
-            if(     updateStatusRequest.getStatus().equals(Status.Agree)&&
+            System.out.println(1);
+            if(updateStatusRequest.getStatus().equals(Status.Agree)&&
                     (
                             updateStatusRequest.getDateOfArrival()==null||
                             updateStatusRequest.getDateOfArrival().after(donateNotified.getDonate().getDonateDate())
                     )
               ){
-                return new Response<>(false, StaticsText.MessageForTest("Can't do that make sure if agree add date before deadline ", ""),result);
+                System.out.println(2);
+                return new Response<>(false, StaticsText.MessageForTest("Can't do that make sure if agree add date before deadline ", ""),new ArrayList<>());
             }
             else return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
         }
         else if (updateStatusRequest.getRequstor().toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Approval)||updateStatusRequest.getStatus().equals(Status.Come)
                 ||updateStatusRequest.getStatus().equals(Status.DidNotCome))){
+            System.out.println(3);
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
             if(donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.Approval).size()>1) {
-                return new Response<>(false, StaticsText.MessageForTest("can't approval more than one", ""), result);
+                return new Response<>(false, StaticsText.MessageForTest("can't approval more than one", ""), new ArrayList<>());
             }
             if ((updateStatusRequest.getStatus().equals(Status.Come)
                     || updateStatusRequest.getStatus().equals(Status.DidNotCome)) && DateNow.after(donateNotified.getDateOfArrival())) {
-                return new Response<>(false, StaticsText.MessageForTest("can't choose come or didn't come before deadline", ""), result);
+                return new Response<>(false, StaticsText.MessageForTest("can't choose come or didn't come before deadline", ""), new ArrayList<>());
             }
             return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
         }
-        else return new Response<>(true, StaticsText.MessageForTest("change status", "Unsuccessfully"), result);
+        else return new Response<>(false, StaticsText.MessageForTest("change status", "Unsuccessfully"), new ArrayList<>());
     }
     public Response<Candidate> UpdateStatus(UpdateStatusRequest updateStatusRequest){
         try {
