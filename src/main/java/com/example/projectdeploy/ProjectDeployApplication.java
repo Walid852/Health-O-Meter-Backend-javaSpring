@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @SpringBootApplication
+@EnableScheduling
 public class ProjectDeployApplication {
 
     public static void main(String[] args) {
