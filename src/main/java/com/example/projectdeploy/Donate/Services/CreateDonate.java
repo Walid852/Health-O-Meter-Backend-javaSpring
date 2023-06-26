@@ -90,6 +90,7 @@ public class CreateDonate {
               }
           }
           donate.setCurrent(LocationHierarchical.postal_code);
+          donateRepo.save(donate);
           return new com.example.projectdeploy.Shared.Response<>(true, StaticsText.MessageForTest(ConstantMessage.SuccessExpand, ""),result);
       }
       else if(donate.getCurrent()== LocationHierarchical.postal_code){
