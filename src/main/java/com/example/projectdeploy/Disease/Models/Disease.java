@@ -24,12 +24,12 @@ public class Disease implements Serializable {
     @Column(name = "id", nullable = false)
     @GeneratedValue
     private UUID id;
+
+    @JsonIgnore
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
-    @JsonIgnore
     private MedicalInformation medicalInformation;
-
     @NotNull
     private String name;
     @NotNull
