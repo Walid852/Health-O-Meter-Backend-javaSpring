@@ -24,7 +24,7 @@ public class MedicineTime implements Serializable {
     private UUID id;
     @Autowired
     @NotNull
-    @OneToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Medicine medicine;
     private Date date;
 

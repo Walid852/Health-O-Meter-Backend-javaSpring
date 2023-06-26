@@ -1,5 +1,6 @@
 package com.example.projectdeploy.Disease.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class Medicine implements Serializable {
     private Date endDate;//لازم يقول تاريخ معين وبعدين يجدده عادى
     private int numberOfDays;//لو مش عايز يقول تاريخ انتهى يقول عدد الايام
     private int numberOfTakesPerDay;
+    @JsonIgnore
     @Autowired
     @NotNull
     @OneToOne(cascade = {CascadeType.ALL})

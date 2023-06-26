@@ -103,11 +103,13 @@ public class CrudDiseasesService {
             Medicine medicine=new Medicine(M.getName(),M.getIsNotified(),M.getStartDate(),M.getNumberOfDays(),
                     M.getNumberOfTakesPerDay(),disease);
             List<Date> intervals =Interval.CalculatedIntervals(medicine);
+            System.out.println(intervals.size());
+            medicineRepo.save(medicine);
+            System.out.println("lllll");
             for (Date D:intervals) {
                 MedicineTime medicineTime=new MedicineTime(medicine,D);
                 medicineTimeRepo.save(medicineTime);
             }
-            medicineRepo.save(medicine);
             List<Medicine> result = new ArrayList<>();
             result.add(medicine);
             return new Response<>(true, StaticsText.MessageForTest("medicine", "Added"), result);
