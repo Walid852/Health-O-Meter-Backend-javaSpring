@@ -37,7 +37,7 @@ public class ElasticController {
         headers.set("Authorization", "Bearer " + token);
         UriComponents uri = UriComponentsBuilder.newInstance()
                 .scheme("https")
-                .host("healthometer-d783e1.ent.uksouth.azure.elastic-cloud.com")
+                .host("helthometer.ent.uksouth.azure.elastic-cloud.com")
                 .path("/api/as/v1/engines/postsearch/search").
                 queryParam("query", description)
                 .build();
