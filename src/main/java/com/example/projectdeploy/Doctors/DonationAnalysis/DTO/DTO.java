@@ -1,6 +1,7 @@
 package com.example.projectdeploy.Doctors.DonationAnalysis.DTO;
 
 
+import com.example.projectdeploy.MedicalInformation.BloodType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import lombok.Setter;
 public class DTO {
 
     String city;
-    String bloodType;
+    BloodType bloodType;
     double bloodTypeCount;
     double canDonateCount;
     double cannotDonateCount;

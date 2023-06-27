@@ -26,7 +26,7 @@ public class CrudDiseaseController {
     }
     @PutMapping(path="/UpdateDisease")
     public @ResponseBody
-    Response<Disease> UpdateDisease(DiseaseDto creationDisease){
+    Response<Disease> UpdateDisease(@RequestBody DiseaseDto creationDisease){
         return crudDiseasesService.UpdateDisease(creationDisease);
     }
     @PostMapping(path="/AddMedicine")
@@ -36,22 +36,22 @@ public class CrudDiseaseController {
     }
     @PutMapping(path="/UpdateMedicine")
     public @ResponseBody
-    Response<Medicine> UpdateMedicine(MedicineDto creationMedicine){
+    Response<Medicine> UpdateMedicine(@RequestBody MedicineDto creationMedicine){
         return crudDiseasesService.UpdateMedicine(creationMedicine);
     }
     @DeleteMapping (path="/DeleteDisease")
     public @ResponseBody
-    Response<Disease> DeleteDisease(UUID diseaseId){
+    Response<Disease> DeleteDisease(@RequestParam UUID diseaseId){
         return crudDiseasesService.DeleteDisease(diseaseId);
     }
     @DeleteMapping (path="/DeleteMedicine")
     public @ResponseBody
-    Response<Medicine> DeleteMedicine(UUID medicineId){
+    Response<Medicine> DeleteMedicine(@RequestParam UUID medicineId){
         return crudDiseasesService.DeleteMedicine(medicineId);
     }
     @DeleteMapping (path="/DeleteMedicineTimes")
     public @ResponseBody
-    Response<Medicine> DeleteMedicineTimes(UUID medicineId){
+    Response<Medicine> DeleteMedicineTimes(@RequestParam UUID medicineId){
         return crudDiseasesService.DeleteMedicineTimes(medicineId);
     }
 

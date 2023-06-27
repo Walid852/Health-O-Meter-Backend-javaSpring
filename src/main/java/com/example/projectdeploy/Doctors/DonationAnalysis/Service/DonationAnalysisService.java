@@ -4,6 +4,7 @@ import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DateReq;
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DiseaseLocation;
 import com.example.projectdeploy.Doctors.DonationAnalysis.DTO.DTO;
 import com.example.projectdeploy.Doctors.DonationAnalysis.Repo.Repo;
+import com.example.projectdeploy.MedicalInformation.BloodType;
 import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
 import com.example.projectdeploy.Test.Models.Test;
@@ -24,15 +25,15 @@ public class DonationAnalysisService {
 
 
 
-    List<String> bloodTypes = new ArrayList<>(Arrays.asList(
-            "A_Positive",
-            "A_Negative",
-            "B_Positive",
-            "B_Negative",
-            "O_Positive",
-            "O_Negative",
-            "AB_Positive",
-            "AB_Negative"
+    List<BloodType> bloodTypes = new ArrayList<>(Arrays.asList(
+            BloodType.A_Positive,
+            BloodType.A_Negative,
+            BloodType.B_Negative,
+            BloodType.B_Positive,
+            BloodType.O_Negative,
+            BloodType.O_Positive,
+            BloodType.AB_Positive,
+            BloodType.AB_Negative
     ));
 
     @Transactional
@@ -43,7 +44,7 @@ public class DonationAnalysisService {
         LocalDate cutoffLocalDate = LocalDate.now().minusMonths(3);
         Date cutoffDate = Date.valueOf(cutoffLocalDate);
         for(String city: cities){
-            for(String bloodType: bloodTypes){
+            for(BloodType bloodType: bloodTypes){
                 DTO data= new DTO();
                 data.setCity(city);
                 data.setBloodType(bloodType);

@@ -101,6 +101,7 @@ public class AdminService {
     public Response<ActionResponse> takeAction(TakeAction takeAction){
         List<ActionResponse> result=new ArrayList<>();
         List<Report> reports=new ArrayList<>();
+        System.out.println(takeAction.getPostId());
         if(takeAction.getPostId()!=null){
             reports=reportRepo.findAllReportForSpecificPost(takeAction.getPostId());
             Post post = postRepo.findPostById(takeAction.getPostId());

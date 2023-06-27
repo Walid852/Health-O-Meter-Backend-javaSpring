@@ -1,6 +1,7 @@
 package com.example.projectdeploy.Disease.Models;
 
 import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,12 @@ public class Disease implements Serializable {
     @Column(name = "id", nullable = false)
     @GeneratedValue
     private UUID id;
+
+    @JsonIgnore
     @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     @Autowired
     private MedicalInformation medicalInformation;
-
     @NotNull
     private String name;
     @NotNull
