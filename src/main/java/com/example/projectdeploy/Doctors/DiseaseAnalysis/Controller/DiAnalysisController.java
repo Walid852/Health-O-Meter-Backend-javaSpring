@@ -10,6 +10,7 @@ import com.example.projectdeploy.Shared.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,13 +20,13 @@ public class DiAnalysisController {
     @Autowired
     DiAnalysisService diAnalysisService;
 
-    @GetMapping(path="/diInsights")
+    @PostMapping(path="/diInsights")
     public @ResponseBody
     Response<Data> getInsights(@RequestBody DateReq dateReq){
         return diAnalysisService.getInsights(dateReq);
     }
 
-    @GetMapping(path="/diseaseLocation")
+    @PostMapping(path="/diseaseLocation")
     public @ResponseBody
     Response<DiseaseLocation> getDiseaseLocation(@RequestBody DateReq dateReq){
         return diAnalysisService.getDiseaseLocation(dateReq);
