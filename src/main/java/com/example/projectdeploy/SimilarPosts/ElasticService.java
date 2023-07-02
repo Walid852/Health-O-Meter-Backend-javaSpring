@@ -40,7 +40,7 @@ public class ElasticService {
 
         UriComponents uri = UriComponentsBuilder.newInstance()
                 .scheme("https")
-                .host("healthometer-d783e1.ent.uksouth.azure.elastic-cloud.com")
+                .host("helthometer.ent.uksouth.azure.elastic-cloud.com")
                 .path("/api/as/v1/engines/postsearch/documents")
                 .build();
         HttpEntity<?> entity = new HttpEntity<>(payload,headers);

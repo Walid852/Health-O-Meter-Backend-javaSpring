@@ -12,6 +12,7 @@ import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.Community.Post.Request.Pagination;
 import com.example.projectdeploy.Community.Report.Model.Report;
 import com.example.projectdeploy.Community.Report.Repo.ReportRepo;
+import com.example.projectdeploy.Community.Report.dto.ReportAction;
 import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
 
@@ -103,12 +104,20 @@ public class AdminService {
         System.out.println(takeAction.getPostId());
         if(takeAction.getPostId()!=null){
             reports=reportRepo.findAllReportForSpecificPost(takeAction.getPostId());
+            Post post = postRepo.findPostById(takeAction.getPostId());
+            if(takeAction.getAction().equals(ReportAction.Deleted)){
+                post.setDeleted(true);
+            }
         }
         else if(takeAction.getCommentId()!=null){
             reports=reportRepo.findAllReportForSpecificComment(takeAction.getCommentId());
+                if(takeAction.getAction().equals(ReportAction.Deleted)){
+                    commentRepo.deletecomment(takeAction.getCommentId());
+            }
         }
         else if(takeAction.getUserId()!=null){
             reports=reportRepo.findAllReportByToUserId(takeAction.getUserId());
+            //TODO take action on user
         }else{
             return new Response<>(false, StaticsText.MessageForTest("Request", "is bad"), result);
         }
