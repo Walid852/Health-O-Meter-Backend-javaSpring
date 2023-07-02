@@ -42,6 +42,8 @@ public class User implements Serializable {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private UserLocation location ;
+    @JsonIgnore
+    private Boolean isSuspended=false;
 
     //private listOfDiseases;
     //private listOfWaterInfo;

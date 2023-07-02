@@ -48,6 +48,9 @@ public class JwtAuthenticationController {
             User user=userRepo.findByUsername(authenticationRequest.getUsername());
             Response response=new Response(false, "Username not found");
             if(user!=null) {
+                if(user.getIsSuspended()){
+                    return new Response(false, "You are suspended");
+                }
                 authenticate(user.getId().toString(), authenticationRequest.getPassword());
             }
             else {

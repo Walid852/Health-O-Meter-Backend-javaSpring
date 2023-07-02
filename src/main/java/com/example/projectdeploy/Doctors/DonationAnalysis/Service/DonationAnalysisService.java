@@ -3,6 +3,7 @@ package com.example.projectdeploy.Doctors.DonationAnalysis.Service;
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DateReq;
 import com.example.projectdeploy.Doctors.DiseaseAnalysis.Analysed.DiseaseLocation;
 import com.example.projectdeploy.Doctors.DonationAnalysis.DTO.DTO;
+import com.example.projectdeploy.Doctors.DonationAnalysis.DTO.DistinctCities;
 import com.example.projectdeploy.Doctors.DonationAnalysis.Repo.Repo;
 import com.example.projectdeploy.MedicalInformation.BloodType;
 import com.example.projectdeploy.Shared.Response;
@@ -36,15 +37,25 @@ public class DonationAnalysisService {
             BloodType.AB_Negative
     ));
 
+    public Response<DistinctCities> getDistinctCities(){
+        ArrayList<DistinctCities> distinctCities= new ArrayList<>();
+        ArrayList<String> cities=repo.getDistinctCities();
+        for(String city:cities){
+            DistinctCities distCity= new DistinctCities();
+            distCity.setCity(city);
+            distinctCities.add(distCity);
+        }
+        return new Response<>(true, StaticsText.MessageForTest("Distinct cities", "Returned"), distinctCities);
+    }
+
     @Transactional
-    public Response<DTO> getInsights(){
+    public Response<DTO> getInsights(String city,BloodType bloodType){
 
         ArrayList<String> cities= repo.getDistinctCities();
         List<DTO> result=new ArrayList<>();
         LocalDate cutoffLocalDate = LocalDate.now().minusMonths(3);
         Date cutoffDate = Date.valueOf(cutoffLocalDate);
-        for(String city: cities){
-            for(BloodType bloodType: bloodTypes){
+        if(cities.contains(city) && bloodTypes.contains(bloodType)){
                 DTO data= new DTO();
                 data.setCity(city);
                 data.setBloodType(bloodType);
@@ -61,7 +72,8 @@ public class DonationAnalysisService {
                 data.setHepatitis_BCount(repo.getCountOfhepatitis_B(bloodType,city));
                 data.setSyphilisCount(repo.getCountOfSyphilis(bloodType,city));
                 result.add(data);
-            }
+        }else{
+            return new Response<>(false, StaticsText.MessageForTest("City or blood type", "is not found"), result);
         }
         System.out.println(bloodTypes);
         return new Response<>(true, StaticsText.MessageForTest("Insights", "Returned"), result);

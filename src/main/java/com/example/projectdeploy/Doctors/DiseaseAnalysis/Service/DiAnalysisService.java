@@ -25,6 +25,9 @@ public class DiAnalysisService {
         for (String disease:diseases){
             Data data=new Data();
             data.setDisease(disease);
+            if(!diAnalysisRepo.hasData(dateReq.getFrom(),dateReq.getTo())){
+                continue;
+            }
             data.setCountOfPeople(diAnalysisRepo.getCountOfPeople(disease, dateReq.getFrom(),dateReq.getTo()));
             data.setCured(diAnalysisRepo.getCuredCount(disease, dateReq.getFrom(),dateReq.getTo()));
             data.setNotCured(data.getCountOfPeople()-data.getCured());

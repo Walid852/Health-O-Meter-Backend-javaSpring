@@ -14,6 +14,9 @@ public interface DiAnalysisRepo extends JpaRepository<Disease, UUID> {
     @Query("select distinct d.name from Disease d")
     ArrayList<String> getDistinctDisease();
 
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM Disease u where u.startDate between ?1 and ?2")
+    boolean hasData(Date from, Date to);
+
     @Query("select count(d.name) from Disease d where d.name=?1 and d.startDate between ?2 and ?3")
     int getCountOfPeople(String disease, Date from,Date to);
 

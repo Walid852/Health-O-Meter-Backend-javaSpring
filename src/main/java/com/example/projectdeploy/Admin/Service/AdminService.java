@@ -117,7 +117,10 @@ public class AdminService {
         }
         else if(takeAction.getUserId()!=null){
             reports=reportRepo.findAllReportByToUserId(takeAction.getUserId());
-            //TODO take action on user
+            User user=userRepo.findByUserId(takeAction.getUserId());
+            if(takeAction.getAction().equals(ReportAction.Deleted)){
+                user.setIsSuspended(true);
+            }
         }else{
             return new Response<>(false, StaticsText.MessageForTest("Request", "is bad"), result);
         }
