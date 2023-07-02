@@ -14,8 +14,8 @@ public interface CommunityRepo extends JpaRepository<Community, UUID> {
     public Community findCommunityById(UUID id);
     @Query("select C from Community C where C.name=?1")
     public Community findCommunityByName(String name);
-    @Query("select C from Community C ")
-    public List<Community> findAllCommunities();
+    @Query("select C from Community C where ?1 not member of C.users")
+    public List<Community> findAllCommunities(User user);
     @Query("select C.users from Community C where C.id=?1")
     public List<User> UsersForCommunity(UUID id);
     @Query("select C from Community C join C.users U where U.id=?1")

@@ -47,8 +47,9 @@ public class CommunityService {
         return CommunityRepo.findCommunityByName(name);
     }
     @Transactional
-    public List<Community> findAllCommunities(){
-        return CommunityRepo.findAllCommunities();
+    public List<Community> findAllCommunities(UUID userId){
+        User user=userRepo.findByUserId(userId);
+        return CommunityRepo.findAllCommunities(user);
     }
     @Transactional
     public List<User> UsersForCommunity(UUID communityId){

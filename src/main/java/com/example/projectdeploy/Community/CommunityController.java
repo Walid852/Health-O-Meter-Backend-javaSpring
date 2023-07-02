@@ -39,8 +39,8 @@ public class CommunityController {
     }
     @GetMapping(path = "/Communities")
     public @ResponseBody
-    List<Community> findAllCommunities(){
-        return communityService.findAllCommunities();
+    List<Community> findAllCommunities(@RequestParam UUID userId){
+        return communityService.findAllCommunities(userId);
     }
     @GetMapping(path = "/UsersForCommunity")
     public @ResponseBody

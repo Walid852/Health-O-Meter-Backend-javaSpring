@@ -30,4 +30,9 @@ public class FetchService {
         Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
         return postRepo.getCommunityPost(pagination.getCommunityId(),pageable);
     }
+
+    @Transactional
+    public Post findPostById(UUID postId){
+        return postRepo.findPostById(postId);
+    }
 }

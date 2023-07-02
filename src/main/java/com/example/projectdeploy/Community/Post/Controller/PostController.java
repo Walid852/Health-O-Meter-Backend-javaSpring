@@ -64,4 +64,8 @@ public class PostController {
     public @ResponseBody List<Post> getPostForCommunity(@RequestBody Pagination pagination){
         return fetchService.getPostForCommunity(pagination);
     }
+    @GetMapping(value = "/getPost")
+    public @ResponseBody Post getPost(@RequestParam UUID postId){
+        return fetchService.findPostById(postId);
+    }
 }
