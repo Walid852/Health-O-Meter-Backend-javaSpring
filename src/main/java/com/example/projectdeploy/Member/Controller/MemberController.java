@@ -3,6 +3,7 @@ package com.example.projectdeploy.Member.Controller;
 import com.example.projectdeploy.Member.Model.Member;
 import com.example.projectdeploy.Member.Request.MemberRequest;
 import com.example.projectdeploy.Member.Service.MemberService;
+import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.User.dto.RegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,27 +21,27 @@ public class MemberController {
 
     @PostMapping(value = "/addMember")
     public @ResponseBody
-    Member addMember(@RequestBody MemberRequest memberRequest){
+    Response<Member> addMember(@RequestBody MemberRequest memberRequest){
         return memberService.addMember(memberRequest);
     }
 
     @GetMapping(value = "/getUserMembers")
-    public @ResponseBody List<Member> getUserMembers(@RequestParam UUID userId){
+    public @ResponseBody Response<Member> getUserMembers(@RequestParam UUID userId){
         return memberService.getUserMembers(userId);
     }
 
     @PutMapping(value = "/updateMemberInfo")
-    public @ResponseBody Member updateMemberInfo(@RequestBody MemberRequest memberRequest){
+    public @ResponseBody Response<Member> updateMemberInfo(@RequestBody MemberRequest memberRequest){
         return memberService.updateMemberInfo(memberRequest);
     }
 
     @PutMapping(value = "/deleteMember")
-    public @ResponseBody Member deleteMember(@RequestParam UUID memberId){
+    public @ResponseBody Response<Member> deleteMember(@RequestParam UUID memberId){
         return memberService.deleteMember(memberId);
     }
 
     @PostMapping(value = "/memberToUser")
-    public @ResponseBody ResponseEntity<?> memberToUser(@RequestBody RegisterDto registerDto){
+    public @ResponseBody Response<Member> memberToUser(@RequestBody RegisterDto registerDto){
         return memberService.memberToUser(registerDto);
     }
 

@@ -90,6 +90,8 @@ public class NotificationServices {
     public ResponseForNotification OpenNotification(UUID notificationId){
         try {
             AppNotification appNotification=notificationRepo.FindNotificationById(notificationId);
+            appNotification.setReadd(true);
+            notificationRepo.save(appNotification);
             if(appNotification.getTypeUrl()==TypeUrl.Post){
                 return new ResponseForNotification(true, "successfully Retrieved Post",postRepo.findPostById(appNotification.getUrl()),null);
             }else if(appNotification.getTypeUrl()==TypeUrl.Donate) {
