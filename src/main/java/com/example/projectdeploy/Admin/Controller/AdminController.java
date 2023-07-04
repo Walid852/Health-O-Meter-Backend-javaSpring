@@ -21,19 +21,19 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @PostMapping(value = "/getPostReports")
+    @GetMapping(value = "/getPostReports")
     public @ResponseBody
     Response<PostReports> getPostReports(){
         return adminService.getPostsReports();
     }
 
-    @PostMapping(value = "/getCommentReports")
+    @GetMapping(value = "/getCommentReports")
     public @ResponseBody
     Response<CommentReports> getCommentReports(){
         return adminService.getCommentsReports();
     }
 
-    @PostMapping(value = "/getUserReports")
+    @GetMapping(value = "/getUserReports")
     public @ResponseBody
     Response<UserReports> getUserReports(){
         return adminService.getUsersReports();
