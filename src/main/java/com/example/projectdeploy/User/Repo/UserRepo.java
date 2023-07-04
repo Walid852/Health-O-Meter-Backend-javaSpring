@@ -23,7 +23,7 @@ public interface UserRepo extends JpaRepository<User, UUID> {
     User findByUserId(UUID userName);
 
     @Query("select u from User u join Report r on u.id=r.toUser.id")
-    List<User> getReportedUsers(Pageable pageable);
+    List<User> getReportedUsers();
 
 
 

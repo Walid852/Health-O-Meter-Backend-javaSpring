@@ -23,20 +23,20 @@ public class AdminController {
 
     @PostMapping(value = "/getPostReports")
     public @ResponseBody
-    Response<PostReports> getPostReports(@RequestBody Pagination pagination){
-        return adminService.getPostsReports(pagination);
+    Response<PostReports> getPostReports(){
+        return adminService.getPostsReports();
     }
 
     @PostMapping(value = "/getCommentReports")
     public @ResponseBody
-    Response<CommentReports> getCommentReports(@RequestBody Pagination pagination){
-        return adminService.getCommentsReports(pagination);
+    Response<CommentReports> getCommentReports(){
+        return adminService.getCommentsReports();
     }
 
     @PostMapping(value = "/getUserReports")
     public @ResponseBody
-    Response<UserReports> getUserReports(@RequestBody Pagination pagination){
-        return adminService.getUsersReports(pagination);
+    Response<UserReports> getUserReports(){
+        return adminService.getUsersReports();
     }
     @PostMapping(value = "/takeAction")
     public @ResponseBody

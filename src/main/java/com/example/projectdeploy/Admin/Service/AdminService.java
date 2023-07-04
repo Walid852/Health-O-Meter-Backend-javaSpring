@@ -41,9 +41,9 @@ public class AdminService {
     @Autowired
     UserRepo userRepo;
 
-    public Response<PostReports> getPostsReports(Pagination pagination){
-        Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
-        List<Post> posts=postRepo.getAllPosts(pageable);
+    public Response<PostReports> getPostsReports(){
+        //Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
+        List<Post> posts=postRepo.getAllPosts();
         List<PostReports> result=new ArrayList<>();
         for(Post post:posts){
             PostReports postReports=new PostReports();
@@ -60,9 +60,9 @@ public class AdminService {
         return new Response<>(true, StaticsText.MessageForTest("Reports", "Returned"), result);
     }
 
-    public Response<CommentReports> getCommentsReports(Pagination pagination){
-        Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
-        List<Comment> comments=commentRepo.getAllComments(pageable);
+    public Response<CommentReports> getCommentsReports(){
+        //Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
+        List<Comment> comments=commentRepo.getAllComments();
         List<CommentReports> result=new ArrayList<>();
         for(Comment comment:comments){
             CommentReports commentReports=new CommentReports();
@@ -78,9 +78,9 @@ public class AdminService {
         return new Response<>(true, StaticsText.MessageForTest("Reports", "Returned"), result);
     }
 
-    public Response<UserReports> getUsersReports(Pagination pagination){
-        Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
-        List<User> users=userRepo.getReportedUsers(pageable);
+    public Response<UserReports> getUsersReports(){
+        //Pageable pageable= PageRequest.of(pagination.getPage(),pagination.getPageSize());
+        List<User> users=userRepo.getReportedUsers();
         List<UserReports> result=new ArrayList<>();
         for(User user :users){
             UserReports userReports=new UserReports();
