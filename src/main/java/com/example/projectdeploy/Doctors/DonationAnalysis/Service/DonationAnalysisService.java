@@ -80,9 +80,9 @@ public class DonationAnalysisService {
 
     }
 
-    public Response<DiseaseLocation> getDonationLocation(DateReq dateReq){
+    public Response<DiseaseLocation> getDonationLocation(){
         List<DiseaseLocation> result= new ArrayList<>();
-        List<Object[]> locations= repo.getDonationLocation(dateReq.getFrom(),dateReq.getTo());
+        List<Object[]> locations= repo.getDonationLocation();
         for(Object[] location : locations){
             DiseaseLocation donationLocation= new DiseaseLocation();
             donationLocation.setLat((Double) location[0]);

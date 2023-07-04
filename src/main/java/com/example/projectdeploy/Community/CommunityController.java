@@ -63,4 +63,9 @@ public class CommunityController {
         return communityService.DeleteUserInCommunity(userId,communityId);
     }
 
+    @DeleteMapping(path = "/leaveCommunity")
+    public @ResponseBody
+    void leaveCommunity(@RequestParam UUID communityId, @RequestParam UUID userId){
+        communityService.leaveCommunity(userId,communityId);
+    }
 }
