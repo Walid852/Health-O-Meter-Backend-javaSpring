@@ -1,4 +1,5 @@
 package com.example.projectdeploy.User.controller;
+import com.example.projectdeploy.User.Model.Response;
 import com.example.projectdeploy.User.dto.RegisterDto;
 import com.example.projectdeploy.User.security.JwtTokenUtil;
 import com.example.projectdeploy.User.service.UserServices;
@@ -20,7 +21,7 @@ public class AuthController {
     @PostMapping("register")
 
     @ResponseBody
-    public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
+    public Response register(@RequestBody RegisterDto registerDto) {
      return userServices.register(registerDto);
     }
 

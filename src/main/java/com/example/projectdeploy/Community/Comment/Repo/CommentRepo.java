@@ -21,7 +21,7 @@ public interface CommentRepo extends JpaRepository<Comment, UUID> {
     double getNoComment(UUID postId);
 
     @Query("select c from Comment c join Report r on r.comment.id=c.id")
-    List<Comment> getAllComments(Pageable pageable);
+    List<Comment> getAllComments();
 
     @Modifying
     @Query("DELETE from Comment L where L.id=?1")

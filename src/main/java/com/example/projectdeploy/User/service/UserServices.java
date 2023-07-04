@@ -40,13 +40,13 @@ public class UserServices {
         user.setRegistrationToken(saveRegistrationTokenRequest.getRegistrationToken());
         userRepo.save(user);
     }
-    public ResponseEntity<?> register(RegisterDto registerDto) {
+    public Response register(RegisterDto registerDto) {
         try {
             if (userRepo.findByUsername(registerDto.getUsername()) != null) {
-                return ResponseEntity.badRequest().body(new Response(false, "userName is taken!"));
+                return new Response(false, "userName is taken!",null);
             }
             if (userRepo.findByEmail(registerDto.getEmail()) != null) {
-                return ResponseEntity.badRequest().body(new Response(false, "You have already have an email do you forget password?"));
+                return new Response(false, "You have already have an email do you forget password?");
             }
             User user = new User();
             if (registerDto.getMemberId() != null)
@@ -65,10 +65,9 @@ public class UserServices {
             //UserLocation userLocation=locationService.SaveLocation(registerDto.getLating());
             //user.setLocation(userLocation);
             userRepo.save(user);
-            Response response=jwtAuthenticationController.createAuthenticationToken(new JwtRequest(registerDto.getUsername(),registerDto.getPassword()));
-            return ResponseEntity.ok(response);
+            return jwtAuthenticationController.createAuthenticationToken(new JwtRequest(registerDto.getUsername(),registerDto.getPassword()));
         }catch (Exception e){
-            return ResponseEntity.badRequest().body(new Response(false, "Something wrong Make Ensure do Correct process and try agin"));
+            return new Response(false, "Something wrong Make Ensure do Correct process and try agin");
         }
     }
     public ResponseEntity<?> ChangePassword(ChangePasswordDto changePasswordDto) {

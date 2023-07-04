@@ -3,6 +3,7 @@ package com.example.projectdeploy.Notification.Services;
 import com.example.projectdeploy.Community.Post.Model.Post;
 import com.example.projectdeploy.Community.Post.Repo.PostRepo;
 import com.example.projectdeploy.Donate.Model.Donate;
+import com.example.projectdeploy.Donate.Repo.DonateNotifiedRepo;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
 import com.example.projectdeploy.Notification.EventListener.AppNotificationCreatedEvent;
 import com.example.projectdeploy.Notification.Model.*;
@@ -28,6 +29,8 @@ public class NotificationServices {
     PostRepo postRepo;
     @Autowired
     DonateRepo donateRepo;
+    @Autowired
+    DonateNotifiedRepo donateNotifiedRepo;
     @Autowired
     NotificationRepo notificationRepo;
     @Autowired
@@ -93,18 +96,21 @@ public class NotificationServices {
             appNotification.setReadd(true);
             notificationRepo.save(appNotification);
             if(appNotification.getTypeUrl()==TypeUrl.Post){
-                return new ResponseForNotification(true, "successfully Retrieved Post",postRepo.findPostById(appNotification.getUrl()),null);
+                return new ResponseForNotification(true, "successfully Retrieved Post",postRepo.findPostById(appNotification.getUrl()),null,null);
             }else if(appNotification.getTypeUrl()==TypeUrl.Donate) {
-                return new ResponseForNotification(true, "successfully Retrieved Donate", null, donateRepo.findDonateById(appNotification.getUrl()));
+                return new ResponseForNotification(true, "successfully Retrieved Donate", null, donateRepo.findDonateById(appNotification.getUrl()),null);
+            }
+            else if(appNotification.getTypeUrl()==TypeUrl.DonateRequest) {
+                return new ResponseForNotification(true, "successfully Retrieved Donate", null,null,donateNotifiedRepo.findDonateById(appNotification.getUrl()));
             }
             else if(appNotification.getTypeUrl()==TypeUrl.Non) {
-                return new ResponseForNotification(false, "not have reference for this notification",null,null);
+                return new ResponseForNotification(false, "not have reference for this notification",null,null,null);
             }
             else {
-                return new ResponseForNotification(true, "error",null,null);
+                return new ResponseForNotification(true, "error",null,null,null);
             }
         }catch (Exception e){
-            return new ResponseForNotification(false, StaticsText.MessageForTestError(),null,null);
+            return new ResponseForNotification(false, StaticsText.MessageForTestError(),null,null,null);
         }
     }
 }

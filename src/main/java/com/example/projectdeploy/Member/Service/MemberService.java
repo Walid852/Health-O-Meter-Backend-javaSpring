@@ -124,7 +124,7 @@ public class MemberService {
     public Response<Member> memberToUser(RegisterDto registerDto){
         try {
             Member member=new Member();
-            ResponseEntity<?> s=null;
+            com.example.projectdeploy.User.Model.Response s=null;
             if(memberRepo.findById(registerDto.getMemberId()).isPresent()) {
                 member = memberRepo.findById(registerDto.getMemberId()).get();
                 if(member.getUser().getId().equals(registerDto.getUid())) {
