@@ -41,6 +41,9 @@ public class CrudDiseasesService {
             if (medicalInformation==null) {
                 return new Response<>(false, StaticsText.MessageForTest("error", "not have a name"));
             }
+            if(creationDisease.getIsCured()&&creationDisease.getEndDate()==null){
+                return new Response<>(false, StaticsText.MessageForTest("error", "end date can not be null"));
+            }else if(creationDisease.getIsCured()&&creationDisease.getEndDate()!=null){
             long milliseconds1 = creationDisease.getStartDate().getTime();
             long milliseconds2 = creationDisease.getEndDate().getTime();
             long millisecondsDiff = milliseconds2 - milliseconds1;
@@ -51,7 +54,16 @@ public class CrudDiseasesService {
             diseaseRepo.save(disease);
             List<Disease> result = new ArrayList<>();
             result.add(disease);
-            return new Response<>(true, StaticsText.MessageForTest("Disease", "Created"), result);
+                return new Response<>(true, StaticsText.MessageForTest("Disease", "Created"), result);
+            }else{
+                Disease disease=new Disease(medicalInformation,creationDisease.getName()
+                        ,creationDisease.getDescription(),creationDisease.getStartDate()
+                        ,creationDisease.getEndDate(), creationDisease.getIsCured());
+                diseaseRepo.save(disease);
+                List<Disease> result = new ArrayList<>();
+                result.add(disease);
+                return new Response<>(true, StaticsText.MessageForTest("Disease", "Created"), result);
+            }
         }catch (Exception e){
             return new Response<>(false, StaticsText.MessageForTestError());
         }
