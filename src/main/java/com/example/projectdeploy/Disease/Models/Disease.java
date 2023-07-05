@@ -50,4 +50,13 @@ public class Disease implements Serializable {
         this.isCured = isCured;
         this.daysToCure=daysToCure;
     }
+    public Disease(MedicalInformation medicalInformation, String name, String description, Date startDate, Date endDate, Boolean isCured) {
+        this.medicalInformation = medicalInformation;
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isCured = isCured;
+
+    }
 }

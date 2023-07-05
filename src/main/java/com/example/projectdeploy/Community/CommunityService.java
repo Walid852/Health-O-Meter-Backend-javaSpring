@@ -1,5 +1,6 @@
 package com.example.projectdeploy.Community;
 
+import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.User.Model.User;
 import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +79,19 @@ public class CommunityService {
         communityObject.getUsers().remove(user);
         CommunityRepo.save(communityObject);
         return communityObject;
+    }
+
+    @Transactional
+    public void leaveCommunity(UUID communityId,UUID userId){
+        Community community=CommunityRepo.findCommunityById(communityId);
+        User user=userRepo.findByUserId(userId);
+        if(community.getUsers().contains(user)){
+            community.getUsers().remove(user);
+            CommunityRepo.save(community);
+            throw new ResponseStatusException(HttpStatus.OK, "You are out of this community");
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not in community");
+        }
+
     }
 }

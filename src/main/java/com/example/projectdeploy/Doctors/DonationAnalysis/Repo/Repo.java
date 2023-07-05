@@ -53,8 +53,8 @@ public interface Repo extends JpaRepository<Donate, UUID> {
     @Query("select distinct u.city from UserLocation u")
     ArrayList<String> getDistinctCities();
 
-    @Query("select u.user.location.lat,u.user.location.lng from MedicalInformation u ,Donate do where do.DonatorMedicalInformation.id=u.id and do.donateDate between ?1 and ?2")
-    List<Object[]> getDonationLocation(Date from, Date to);
+    @Query("select u.user.location.lat,u.user.location.lng from MedicalInformation u ,Donate do where do.DonatorMedicalInformation.id=u.id ")
+    List<Object[]> getDonationLocation();
 
 
 
