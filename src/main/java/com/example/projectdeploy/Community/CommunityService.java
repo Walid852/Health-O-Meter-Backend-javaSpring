@@ -85,7 +85,9 @@ public class CommunityService {
     public void leaveCommunity(UUID communityId,UUID userId){
         Community community=CommunityRepo.findCommunityById(communityId);
         User user=userRepo.findByUserId(userId);
-        if(community.getUsers().remove(user)){
+        boolean isDeleted=community.getUsers().remove(user);
+        if(isDeleted){
+            community.setUsers(community.getUsers());
             CommunityRepo.save(community);
             throw new ResponseStatusException(HttpStatus.OK, "You are out of this community");
         }else{
