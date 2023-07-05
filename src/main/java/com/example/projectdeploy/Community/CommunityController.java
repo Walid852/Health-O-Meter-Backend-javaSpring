@@ -66,6 +66,6 @@ public class CommunityController {
     @DeleteMapping(path = "/leaveCommunity")
     public @ResponseBody
     void leaveCommunity(@RequestParam UUID communityId, @RequestParam UUID userId){
-        communityService.leaveCommunity(userId,communityId);
+        communityService.leaveCommunity(communityId,userId);
     }
 }
