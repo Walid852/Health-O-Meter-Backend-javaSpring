@@ -53,5 +53,9 @@ public class FetchDiseaseController {
     Response<Disease> filterDiseaseByEndDate(@RequestParam UUID medicalInformationId,@RequestParam Date start,@RequestParam Date end){
         return fetchDiseasesService.filterDiseaseByEndDate(medicalInformationId,start,end);
     }
-
+    @GetMapping(path="/findDiseaseById")
+    public @ResponseBody
+    Response<Disease> findDiseaseById(@RequestParam UUID id){
+        return fetchDiseasesService.findDiseaseById(id);
+    }
 }

@@ -24,6 +24,7 @@ public class CrudDiseaseController {
     Response<Disease> AddDisease(@RequestBody DiseaseDto creationDisease){
         return crudDiseasesService.AddDisease(creationDisease);
     }
+
     @PutMapping(path="/UpdateDisease")
     public @ResponseBody
     Response<Disease> UpdateDisease(@RequestBody DiseaseDto creationDisease){
