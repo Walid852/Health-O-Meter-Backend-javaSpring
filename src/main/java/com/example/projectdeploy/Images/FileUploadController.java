@@ -21,6 +21,8 @@ public class FileUploadController {
             @RequestParam("userId") UUID id,
             @RequestParam("typeForImage") TypeForImage typeForImage
     ) {
+        System.out.println("we reached the api");
+        System.out.println(file.getName());
         return fileStorageService.storeFile(file,id,typeForImage);
 
     }

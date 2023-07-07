@@ -51,9 +51,8 @@ public class JwtAuthenticationController {
                 if(user.getIsSuspended()){
                     return new Response(false, "You are suspended");
                 }
-                authenticate(user.getId().toString(), authenticationRequest.getPassword());
-            }
-            else {
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId().toString(), authenticationRequest.getPassword()));
+            } else {
                 return response;
             }
             final UserDetails userDetails = userDetailsService
@@ -61,6 +60,10 @@ public class JwtAuthenticationController {
 
             final String token = jwtTokenUtil.generateToken(userDetails);
             return new Response(true, "Success Login in",new LoginResponse(user.getId(),token,user.getRoles().getName()));
+        }catch (DisabledException e) {
+            return new Response(false, "You can't login");
+        }catch (BadCredentialsException e) {
+            return new Response(false, "You entered wrong password");
         }catch (Exception error){
             return new Response(false, "Something wrong please try again ");
         }
