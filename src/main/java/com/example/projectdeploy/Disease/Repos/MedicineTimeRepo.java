@@ -20,5 +20,5 @@ public interface MedicineTimeRepo extends JpaRepository<MedicineTime, UUID> {
     @Query("select D from MedicineTime D where D.medicine.disease.medicalInformation.id=?1 and D.medicine.isNotified=true")
     public List<MedicineTime> findMedicineTimeByMedicalInformationIdAndNotified(UUID id);
     @Query("SELECT e FROM MedicineTime e WHERE e.date < ?1")
-    List<MedicineTime> findMedicineTimeBeforeDate(Date date)
+    List<MedicineTime> findMedicineTimeBeforeDate(Date date);
 }

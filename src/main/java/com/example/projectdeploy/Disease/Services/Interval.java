@@ -21,6 +21,7 @@ public class Interval {
         if(medicineDto.getEndDate()==null){
             medicineDto.setEndDate(CalculatedEndDate(medicineDto.getNumberOfDays()));
         }
+
         long now = System.currentTimeMillis();
         Date sqlDate = new Date(now);
         if(medicineDto.getStartDate()==null){
