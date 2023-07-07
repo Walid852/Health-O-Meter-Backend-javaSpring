@@ -143,6 +143,9 @@ public class CrudDiseasesService {
                 if (M.getNumberOfTakesPerDay() != -1) medicine.setNumberOfTakesPerDay(M.getNumberOfTakesPerDay());
                 medicineRepo.save(medicine);
                 List<MedicineTime> medicineTimes = medicineTimeRepo.findMedicineTimeByMedicineId(medicine.getId());
+                for(MedicineTime medicineTime:medicineTimes){
+                    medicineTime.setMedicine(null);
+                }
                 medicineTimeRepo.deleteAll(medicineTimes);
                 List<Date> intervals = Interval.CalculatedIntervals(medicine);
                 for (Date D : intervals) {
