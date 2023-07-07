@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,4 +19,6 @@ public interface MedicineTimeRepo extends JpaRepository<MedicineTime, UUID> {
     public List<MedicineTime> findMedicineTimeByDiseaseId(UUID id);
     @Query("select D from MedicineTime D where D.medicine.disease.medicalInformation.id=?1 and D.medicine.isNotified=true")
     public List<MedicineTime> findMedicineTimeByMedicalInformationIdAndNotified(UUID id);
+    @Query("SELECT e FROM MedicineTime e WHERE e.date < ?1")
+    List<MedicineTime> findMedicineTimeBeforeDate(Date date)
 }
