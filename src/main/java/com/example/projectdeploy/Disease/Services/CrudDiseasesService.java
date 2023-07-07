@@ -130,6 +130,7 @@ public class CrudDiseasesService {
             return new Response<>(false, StaticsText.MessageForTestError());
         }
     }
+    @Transactional
     public Response<Medicine> UpdateMedicine(MedicineDto M){
         try {
             int f=0;
@@ -157,13 +158,19 @@ public class CrudDiseasesService {
             return new Response<>(false, StaticsText.MessageForTestError());
         }
     }
+    @Transactional
     public Response<Medicine> DeleteMedicine(UUID medicineId){
         try {
             Medicine medicine=medicineRepo.findMedicineById(medicineId);
+            if (medicine == null) {
+                return new Response<>(false, "Medicine not found");
+            }
             List<MedicineTime> medicineTimes = medicineTimeRepo.findMedicineTimeByMedicineId(medicine.getId());
+            for(MedicineTime medicineTime:medicineTimes){
+                medicineTime.setMedicine(null);
+            }
             medicineTimeRepo.deleteAll(medicineTimes);
             medicine.setIsDeleted(true);
-            medicineRepo.save(medicine);
             List<Medicine> result = new ArrayList<>();
             result.add(medicine);
             return new Response<>(true, StaticsText.MessageForTest("medicine", "Deleted"), result);
@@ -171,6 +178,7 @@ public class CrudDiseasesService {
             return new Response<>(false, StaticsText.MessageForTestError());
         }
     }
+    @Transactional
     public Response<Medicine> DeleteMedicineTimes(UUID medicineId){
         try {
             Medicine medicine=medicineRepo.findMedicineById(medicineId);

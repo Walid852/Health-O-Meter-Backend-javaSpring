@@ -37,7 +37,7 @@ public class Controller {
     }
 
     @GetMapping(path="/donationLocation") public @ResponseBody Response<DiseaseLocation>
-    getDonationLocation(){
-        return donationAnalysisService.getDonationLocation();
+    getDonationLocation(@RequestParam String city){
+        return donationAnalysisService.getDonationLocation(city);
     }
 }
