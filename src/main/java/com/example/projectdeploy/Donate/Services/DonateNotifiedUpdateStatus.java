@@ -23,6 +23,7 @@ public class DonateNotifiedUpdateStatus {
     Response<Candidate> AuthorizationForUpdate(UpdateStatusRequest updateStatusRequest){
         DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
         Candidate candidate=new Candidate();
+        candidate.setDonateNotifiedId(donateNotified.getId());//
         candidate.setMedicalInformationId(donateNotified.getMedicalInformation().getId());
         candidate.setBloodType(donateNotified.getMedicalInformation().getBloodType());
         candidate.setDateOfArrival(donateNotified.getDateOfArrival());
@@ -72,7 +73,7 @@ public class DonateNotifiedUpdateStatus {
             if(!donateNotifiedResponse.status)return donateNotifiedResponse;
             DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
             donateNotified.setStatus(updateStatusRequest.getStatus());
-            donateNotified.setAm_pm(updateStatusRequest.getAm_pm());
+            if(updateStatusRequest.getAm_pm()!=null)donateNotified.setAm_pm(updateStatusRequest.getAm_pm());//
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
             donateNotified.setLastUpdateDate(DateNow);
@@ -82,6 +83,7 @@ public class DonateNotifiedUpdateStatus {
                 Donate donate=donateRepo.findDonateById(donateNotified.getDonate().getId());
                 donate.setDonatorMedicalInformation(donateNotified.getMedicalInformation());
                 donate.setCurrent(LocationHierarchical.Terminate);
+                donate.setIsDone(true);//
                 donateRepo.save(donate);
             }
             donateNotifiedRepo.save(donateNotified);
