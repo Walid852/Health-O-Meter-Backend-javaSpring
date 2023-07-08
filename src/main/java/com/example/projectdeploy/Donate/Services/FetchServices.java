@@ -75,7 +75,7 @@ public class FetchServices {
     }
     public Response<DonateNotified> GetRequestsForYou(UUID medicalInformationId){
         try{
-            List<Status> statusList= Arrays.asList(Status.Approval, Status.Rejected);
+            List<Status> statusList= Arrays.asList(Status.Pending, Status.Rejected);
             List<DonateNotified> donateNotifiedList=
                     donateNotifiedRepo.findDonateNotifiedFoMedicalInformation(medicalInformationId,statusList);
             return new Response<>(true, StaticsText.MessageForTest("Requests", "Retrieved"), donateNotifiedList);

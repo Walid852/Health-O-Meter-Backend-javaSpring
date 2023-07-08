@@ -47,8 +47,8 @@ public class DonateNotifiedUpdateStatus {
         List<Candidate> result = new ArrayList<>();
         result.add(candidate);
         System.out.println("WWW2");
-        //.toString().equals(donateNotified.getMedicalInformation().toString())
-        if(updateStatusRequest.getDonator()!=null&&
+
+        if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().getId().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Agree)||updateStatusRequest.getStatus().equals(Status.Rejected))){
             System.out.println(1);
             if(updateStatusRequest.getStatus().equals(Status.Agree)&&
@@ -62,8 +62,8 @@ public class DonateNotifiedUpdateStatus {
             }
             else return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
         }
-        //.toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().toString())
-        else if (updateStatusRequest.getRequstor()!=null&&
+        //
+        else if (updateStatusRequest.getRequstor().toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().getId().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Approval)||updateStatusRequest.getStatus().equals(Status.Come)
                 ||updateStatusRequest.getStatus().equals(Status.DidNotCome))){
             System.out.println(3);
