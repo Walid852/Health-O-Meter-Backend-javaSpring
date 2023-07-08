@@ -28,6 +28,7 @@ public class FetchMedicalTimesService {
     @Autowired
     NotificationServices notificationServices;
 
+
     public Response<MedicineTime>  findMedicineTimeById(UUID id){
         try {
             List<MedicineTime> result=new ArrayList<>();
@@ -79,7 +80,7 @@ public class FetchMedicalTimesService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 120000)
+    //@Scheduled(fixedRate = 120000)
     public void sendMedicineNotification(){
         List<MedicineTime> medicineTimes=medicineTimeRepo.findMedicineTimeBeforeDate(new Date(System.currentTimeMillis()));
         for(MedicineTime medicineTime:medicineTimes){
@@ -88,10 +89,13 @@ public class FetchMedicalTimesService {
                         "Medicine reminder",String.format("It is time to take %s",medicineTime.getMedicine().getName()),medicineTime.getId(), TypeUrl.Non,"",
                         java.sql.Date.valueOf(LocalDate.now()));
                 notificationServices.AddNotification(notificationRequest);
-                medicineTime.setMedicine(null);
-                medicineTimeRepo.delete(medicineTime);
+            System.out.println(medicineTime.getMedicine().getName());
+            medicineTime.setMedicine(null);
 
         }
+        System.out.println("i am here");
+        medicineTimeRepo.deleteAll(medicineTimes);
+
     }
 
 }
