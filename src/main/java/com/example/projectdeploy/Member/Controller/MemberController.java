@@ -1,5 +1,6 @@
 package com.example.projectdeploy.Member.Controller;
 
+import com.example.projectdeploy.MedicalInformation.MedicalInformation;
 import com.example.projectdeploy.Member.Model.Member;
 import com.example.projectdeploy.Member.Request.MemberRequest;
 import com.example.projectdeploy.Member.Service.MemberService;
@@ -43,6 +44,11 @@ public class MemberController {
     @PostMapping(value = "/memberToUser")
     public @ResponseBody Response<Member> memberToUser(@RequestBody RegisterDto registerDto){
         return memberService.memberToUser(registerDto);
+    }
+
+    @GetMapping(value= "/getMemberMedicalId")
+    public @ResponseBody Response<MedicalInformation> findMedicalInformationByMemberId(@RequestParam UUID memberId){
+        return memberService.findMedicalInformationByMemberId(memberId);
     }
 
 }
