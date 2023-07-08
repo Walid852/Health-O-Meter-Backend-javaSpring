@@ -26,22 +26,33 @@ public class CrudServiceBloodPressure {
     MedicalInformationRepo medicalInformationRepo;
     @Transactional
     public BloodPressureCategory CalculateCategory(int Systolic,int Diastolic){
-        if(Systolic<120&&Diastolic<80){
+        if((Systolic>=100&&Systolic<=120)&&
+                (Diastolic>=70&&Diastolic<=80)){
             return BloodPressureCategory.NORMAL;
         }
         else if((Systolic>=120&&Systolic<=129)&&Diastolic<80){
             return BloodPressureCategory.ELEVATED;
 
-        }else if ((Systolic>=130&&Systolic<=139)||
+        }else if ((Systolic>=130&&Systolic<=139)&&
                 (Diastolic>=80&&Diastolic<=89)){
             return BloodPressureCategory.HIGH_BLOOD_PRESSURE_STAGE_1;
 
-        }else if ((Systolic>=140&&Systolic<=180)||
+        }else if ((Systolic>=140&&Systolic<=180)&&
                 (Diastolic>=90&&Diastolic<=120)){
             return BloodPressureCategory.HIGH_BLOOD_PRESSURE_STAGE_2;
         }else if(Systolic>181||Diastolic>120){
             return BloodPressureCategory.HYPERTENSIVE_CRISIS;
-        }else {
+        }else if((Systolic>90&&Systolic<=100)&&
+                (Diastolic>60&&Diastolic<=70)){
+            return BloodPressureCategory.MILD_HYPOTENSION;
+        }else if((Systolic>70&&Systolic<=90)&&
+                (Diastolic>40&&Diastolic<=60)){
+            return BloodPressureCategory.MODERATE_HYPOTENSION;
+        }
+        else if(Systolic<70&&Diastolic<40){
+            return BloodPressureCategory.SEVERE_HYPOTENSION;
+        }
+        else {
             return null;
         }
     }
