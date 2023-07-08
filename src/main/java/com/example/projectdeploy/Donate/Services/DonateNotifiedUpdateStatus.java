@@ -5,12 +5,18 @@ import com.example.projectdeploy.Donate.Model.*;
 import com.example.projectdeploy.Donate.Repo.DonateNotifiedRepo;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
 import com.example.projectdeploy.Notification.Model.ConstantMessage;
+import com.example.projectdeploy.Notification.Model.NotificationRequest;
+import com.example.projectdeploy.Notification.Model.TypeUrl;
+import com.example.projectdeploy.Notification.Services.NotificationServices;
 import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
+import com.example.projectdeploy.User.Model.User;
+import com.example.projectdeploy.User.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -19,6 +25,10 @@ public class DonateNotifiedUpdateStatus {
     DonateNotifiedRepo donateNotifiedRepo;
     @Autowired
     DonateRepo donateRepo;
+    @Autowired
+    NotificationServices notificationServices;
+    @Autowired
+    UserRepo userRepo;
 
     Response<Candidate> AuthorizationForUpdate(UpdateStatusRequest updateStatusRequest){
         System.out.println(updateStatusRequest.getStatus());
@@ -51,8 +61,7 @@ public class DonateNotifiedUpdateStatus {
         if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().getId().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Agree)||updateStatusRequest.getStatus().equals(Status.Rejected))){
             System.out.println(1);
-            if(updateStatusRequest.getStatus().equals(Status.Agree)&&
-                    (
+            if(updateStatusRequest.getStatus().equals(Status.Agree)&& (
                             updateStatusRequest.getDateOfArrival()==null||
                             updateStatusRequest.getDateOfArrival().after(donateNotified.getDonate().getDonateDate())
                     )
@@ -60,7 +69,18 @@ public class DonateNotifiedUpdateStatus {
                 System.out.println(2);
                 return new Response<>(false, StaticsText.MessageForTest("Can't do that make sure if agree add date before deadline ", ""),new ArrayList<>());
             }
-            else return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
+            else{
+                if(updateStatusRequest.getStatus().equals(Status.Agree)) {
+                    User user = userRepo.findByUserId(updateStatusRequest.getDonator());
+                    if (user == null)
+                        return new Response<>(false, StaticsText.MessageForTest("User ", "not found"), new ArrayList<>());
+                    NotificationRequest notificationRequest = new NotificationRequest(updateStatusRequest.getDonator(), updateStatusRequest.getRequstor(),
+                            "Your Donation Request", String.format("%s agree your donation request", user.getUserName()), donateNotified.getDonate().getId(), TypeUrl.Donate, "",
+                            Date.valueOf(LocalDate.now()));
+                    notificationServices.AddNotification(notificationRequest);
+                }
+                return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
+            }
         }
         //
         else if (updateStatusRequest.getRequstor().toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().getId().toString())&&
@@ -76,6 +96,13 @@ public class DonateNotifiedUpdateStatus {
                     || updateStatusRequest.getStatus().equals(Status.DidNotCome)) && DateNow.after(donateNotified.getDateOfArrival())) {
                 return new Response<>(false, StaticsText.MessageForTest("can't choose come or didn't come before deadline", ""), new ArrayList<>());
             }
+            User user = userRepo.findByUserId(updateStatusRequest.getRequstor());
+            if (user == null)
+                return new Response<>(false, StaticsText.MessageForTest("User ", "not found"), new ArrayList<>());
+            NotificationRequest notificationRequest = new NotificationRequest(updateStatusRequest.getRequstor(), updateStatusRequest.getDonator(),
+                    "Your agreed donation application", String.format("%s submit %s on your donation application", user.getUserName(), updateStatusRequest.getStatus().toString()), donateNotified.getId(), TypeUrl.DonateRequest, "",
+                    Date.valueOf(LocalDate.now()));
+            notificationServices.AddNotification(notificationRequest);
             return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
         }
         else return new Response<>(false, StaticsText.MessageForTest("change status", "Unsuccessfully"), new ArrayList<>());

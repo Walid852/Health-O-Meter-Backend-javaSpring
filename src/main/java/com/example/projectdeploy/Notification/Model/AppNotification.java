@@ -26,12 +26,12 @@ public class AppNotification {
     private User FromUser;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @Autowired
     @JsonIgnore
     private User ToUser;
     private String title;
     private String message;
     private UUID url;
+    @Enumerated(EnumType.STRING)
     private TypeUrl typeUrl;
     private String photo;
     @Column(columnDefinition = "boolean default false")

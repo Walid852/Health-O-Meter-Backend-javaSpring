@@ -66,8 +66,8 @@ public class CreateDonate {
                         ,donateNotified.getMedicalInformation().getUser().getId()
                         ,ConstantMessage.titleDonation
                         ,donateNotified.getMedicalInformation().getUser().getName()+ConstantMessage.messageDonation
-                        ,donateNotified.getDonate().getId()
-                        , TypeUrl.Donate
+                        ,donateNotified.getId()
+                        , TypeUrl.DonateRequest
                         ,ConstantMessage.photoDonation
                         ,DateNow);
                 notificationServices.AddNotification(notificationRequest);
