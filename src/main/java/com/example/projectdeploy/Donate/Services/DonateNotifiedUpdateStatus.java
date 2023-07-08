@@ -71,7 +71,9 @@ public class DonateNotifiedUpdateStatus {
         try {
             Response<Candidate> donateNotifiedResponse=AuthorizationForUpdate(updateStatusRequest);
             if(!donateNotifiedResponse.status)return donateNotifiedResponse;
+            System.out.println("donateNotified");
             DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
+            System.out.println(donateNotified.getId());
             donateNotified.setStatus(updateStatusRequest.getStatus());
             if(updateStatusRequest.getAm_pm()!=null)donateNotified.setAm_pm(updateStatusRequest.getAm_pm());//
             long now = System.currentTimeMillis();
@@ -80,7 +82,9 @@ public class DonateNotifiedUpdateStatus {
             if(updateStatusRequest.getDateOfArrival()!=null)
                 donateNotified.setDateOfArrival(updateStatusRequest.getDateOfArrival());
             if(updateStatusRequest.getStatus().equals(Status.Approval)){
+                System.out.println("donate");
                 Donate donate=donateRepo.findDonateById(donateNotified.getDonate().getId());
+                System.out.println(donate.getId());
                 donate.setDonatorMedicalInformation(donateNotified.getMedicalInformation());
                 donate.setCurrent(LocationHierarchical.Terminate);
                 donate.setIsDone(true);//
