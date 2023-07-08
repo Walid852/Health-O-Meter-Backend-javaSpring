@@ -21,7 +21,16 @@ public class DonateNotifiedUpdateStatus {
     DonateRepo donateRepo;
 
     Response<Candidate> AuthorizationForUpdate(UpdateStatusRequest updateStatusRequest){
+        System.out.println(updateStatusRequest.getStatus());
+        System.out.println(updateStatusRequest.getDonateNotifiedId());
+        System.out.println(updateStatusRequest.getRequstor());
+        System.out.println(updateStatusRequest.getDonator());
+        System.out.println(updateStatusRequest.getAm_pm());
+        System.out.println(updateStatusRequest.getDateOfArrival());
+        System.out.println(updateStatusRequest.getTime());
+        System.out.println("WWWW");
         DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
+        System.out.println(donateNotified.getId());
         Candidate candidate=new Candidate();
         candidate.setDonateNotifiedId(donateNotified.getId());//
         candidate.setMedicalInformationId(donateNotified.getMedicalInformation().getId());
@@ -36,6 +45,7 @@ public class DonateNotifiedUpdateStatus {
         candidate.setUsername(donateNotified.getMedicalInformation().getUser().getUserName());
         List<Candidate> result = new ArrayList<>();
         result.add(candidate);
+        System.out.println("WWW2");
         if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Agree)||updateStatusRequest.getStatus().equals(Status.Rejected))){
             System.out.println(1);
