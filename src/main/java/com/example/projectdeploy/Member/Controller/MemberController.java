@@ -36,7 +36,7 @@ public class MemberController {
         return memberService.updateMemberInfo(memberRequest);
     }
 
-    @PutMapping(value = "/deleteMember")
+    @DeleteMapping(value = "/deleteMember")
     public @ResponseBody Response<Member> deleteMember(@RequestParam UUID memberId){
         return memberService.deleteMember(memberId);
     }
