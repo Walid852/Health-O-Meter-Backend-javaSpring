@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class FetchMedicalTimesService {
 
     public Response<MedicineTime>  findMedicineTimeById(UUID id){
         try {
-            List<MedicineTime> result=null;
+            List<MedicineTime> result=new ArrayList<>();
             MedicineTime medicineTime=medicineTimeRepo.findMedicineTimeById(id);
             if(medicineTime!=null) {
                 result.add(medicineTime);

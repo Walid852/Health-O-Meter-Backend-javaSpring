@@ -1,5 +1,7 @@
 package com.example.projectdeploy.Member.Service;
 
+import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.Member.Model.Member;
 import com.example.projectdeploy.Member.Repo.MemberRepo;
 import com.example.projectdeploy.Member.Request.MemberRequest;
@@ -15,7 +17,9 @@ import com.example.projectdeploy.User.service.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -32,21 +36,28 @@ public class MemberService {
     @Autowired
     UserServices userServices;
 
+    @Autowired
+    MedicalInformationRepo medicalInformationRepo;
+
+    @Transactional
     public Response<Member> addMember(MemberRequest memberRequest){
         try {
             Member member=new Member();
+            MedicalInformation medicalInformation=new MedicalInformation();
             User user= new User();
             if(userRepo.findById(memberRequest.getUserId()).isPresent()) {
                 user = userRepo.findById(memberRequest.getUserId()).get();
-
                 member.setAge(memberRequest.getAge());
                 member.setGender(memberRequest.getGender());
                 member.setTypeOfMember(memberRequest.getType());
                 member.setUser(user);
                 member.setName(memberRequest.getName());
                 member.setBirthDate(memberRequest.getBirthDate());
-
                 memberRepo.save(member);
+                medicalInformation.setMember(member);
+                medicalInformation.setBloodType(memberRequest.getBloodType());
+                medicalInformation.setCurrentHeight(memberRequest.getCurrentHeight());
+                medicalInformation.setCurrentWeight(memberRequest.getCurrentWeight());
             }
             List<Member> memberList=new LinkedList<>();
             memberList.add(member);
@@ -68,6 +79,7 @@ public class MemberService {
 
     }
 
+    @Transactional
     public Response<Member> updateMemberInfo(MemberRequest memberRequest){
         try {
             Member member=new Member();
@@ -103,6 +115,7 @@ public class MemberService {
 
     }
 
+    @Transactional
     public Response<Member> deleteMember(UUID memberId){
         try {
             Member member=new Member();
@@ -121,6 +134,7 @@ public class MemberService {
         }
     }
 
+    @Transactional
     public Response<Member> memberToUser(RegisterDto registerDto){
         try {
             Member member=new Member();
@@ -142,5 +156,16 @@ public class MemberService {
         catch (Exception e){
             return new Response<>(false, StaticsText.MessageForTestError());
         }
+    }
+
+    @Transactional
+    public Response<MedicalInformation> findMedicalInformationByMemberId(UUID memberId){
+        List<MedicalInformation> result=new ArrayList<>();
+        Member member=memberRepo.findMemberById(memberId);
+        if(member==null){
+            return new Response<>(true, StaticsText.MessageForTest("Member", "is not found"));
+        }
+        result.add(medicalInformationRepo.findMedicalInformationByMemberId(memberId));
+        return new Response<>(true, StaticsText.MessageForTest("Medical information returned", "Successfully"),result);
     }
 }

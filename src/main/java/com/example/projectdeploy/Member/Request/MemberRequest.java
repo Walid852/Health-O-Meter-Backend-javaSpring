@@ -1,5 +1,6 @@
 package com.example.projectdeploy.Member.Request;
 
+import com.example.projectdeploy.MedicalInformation.BloodType;
 import com.example.projectdeploy.Member.Type;
 import com.example.projectdeploy.User.Gender;
 import lombok.Data;
@@ -16,4 +17,7 @@ public class MemberRequest {
     int age;
     UUID userId;
     Date birthDate;
+    BloodType bloodType;
+    double currentWeight;
+    double currentHeight;
 }
