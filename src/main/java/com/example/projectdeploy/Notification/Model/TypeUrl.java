@@ -4,5 +4,6 @@ public enum TypeUrl {
     Donate,
     DonateRequest,
     Post,
-    Non
+    Noneeeee,
+    nono
 }

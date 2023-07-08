@@ -10,6 +10,7 @@ import com.example.projectdeploy.Shared.Response;
 import com.example.projectdeploy.Shared.StaticsText;
 import com.example.projectdeploy.User.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,22 +80,25 @@ public class FetchMedicalTimesService {
         }
     }
 
+
     @Transactional
-    //@Scheduled(fixedRate = 120000)
+    @Scheduled(fixedRate = 120000)
     public void sendMedicineNotification(){
-        List<MedicineTime> medicineTimes=medicineTimeRepo.findMedicineTimeBeforeDate(new Date(System.currentTimeMillis()));
+        List<MedicineTime> medicineTimes=medicineTimeRepo.findMedicineTimeBeforeDate(new Date(System.currentTimeMillis()+1));
+
         for(MedicineTime medicineTime:medicineTimes){
-                User toUser=medicineTime.getMedicine().getDisease().getMedicalInformation().getUser();
-                NotificationRequest notificationRequest=new NotificationRequest(toUser.getId(),toUser.getId(),
-                        "Medicine reminder",String.format("It is time to take %s",medicineTime.getMedicine().getName()),medicineTime.getId(), TypeUrl.Non,"",
-                        java.sql.Date.valueOf(LocalDate.now()));
-                notificationServices.AddNotification(notificationRequest);
-            System.out.println(medicineTime.getMedicine().getName());
+            User toUser=medicineTime.getMedicine().getDisease().getMedicalInformation().getUser();
+            String medicineName=medicineTime.getMedicine().getName();
+            UUID id=medicineTime.getId();
+            NotificationRequest notificationRequest=new NotificationRequest(toUser.getId(),toUser.getId(),
+                    "Medicine reminder",String.format("It is time to take %s",medicineName),id, null,"",
+                    java.sql.Date.valueOf(LocalDate.now()));
+            notificationServices.AddNotification(notificationRequest);
             medicineTime.setMedicine(null);
+            medicineTimeRepo.delete(medicineTime);
 
         }
-        System.out.println("i am here");
-        medicineTimeRepo.deleteAll(medicineTimes);
+
 
     }
 

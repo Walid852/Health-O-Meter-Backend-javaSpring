@@ -103,11 +103,11 @@ public class NotificationServices {
             else if(appNotification.getTypeUrl()==TypeUrl.DonateRequest) {
                 return new ResponseForNotification(true, "successfully Retrieved Donate", null,null,donateNotifiedRepo.findDonateById(appNotification.getUrl()));
             }
-            else if(appNotification.getTypeUrl()==TypeUrl.Non) {
+            else if(appNotification.getTypeUrl()==TypeUrl.Noneeeee) {
                 return new ResponseForNotification(false, "not have reference for this notification",null,null,null);
             }
             else {
-                return new ResponseForNotification(true, "error",null,null,null);
+                return new ResponseForNotification(false, "not have reference for this notification",null,null,null);
             }
         }catch (Exception e){
             return new ResponseForNotification(false, StaticsText.MessageForTestError(),null,null,null);
