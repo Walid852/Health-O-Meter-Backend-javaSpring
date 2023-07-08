@@ -31,6 +31,7 @@ public class DonateNotifiedUpdateStatus {
         System.out.println("WWWW");
         DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
         System.out.println(donateNotified.getId());
+        System.out.println(updateStatusRequest.getDonator());
         Candidate candidate=new Candidate();
         candidate.setDonateNotifiedId(donateNotified.getId());//
         candidate.setMedicalInformationId(donateNotified.getMedicalInformation().getId());
@@ -46,7 +47,8 @@ public class DonateNotifiedUpdateStatus {
         List<Candidate> result = new ArrayList<>();
         result.add(candidate);
         System.out.println("WWW2");
-        if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().toString())&&
+        //.toString().equals(donateNotified.getMedicalInformation().toString())
+        if(updateStatusRequest.getDonator()!=null&&
                 (updateStatusRequest.getStatus().equals(Status.Agree)||updateStatusRequest.getStatus().equals(Status.Rejected))){
             System.out.println(1);
             if(updateStatusRequest.getStatus().equals(Status.Agree)&&
@@ -60,7 +62,8 @@ public class DonateNotifiedUpdateStatus {
             }
             else return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
         }
-        else if (updateStatusRequest.getRequstor().toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().toString())&&
+        //.toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().toString())
+        else if (updateStatusRequest.getRequstor()!=null&&
                 (updateStatusRequest.getStatus().equals(Status.Approval)||updateStatusRequest.getStatus().equals(Status.Come)
                 ||updateStatusRequest.getStatus().equals(Status.DidNotCome))){
             System.out.println(3);
