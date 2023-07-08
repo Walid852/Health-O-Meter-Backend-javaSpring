@@ -29,8 +29,12 @@ public class BookMarkService {
         BookMark bookMarkObject=new BookMark();
         User user=userRepo.findByUserId(bookMark.userId);
         if(postRepo.findById(bookMark.postId).isPresent()) {
-            Post post = postRepo.findById(bookMark.postId).get();
-            bookMarkObject.setPost(post);
+            if(bookMarkRepo.isReported(user.getId(),bookMark.postId)==null) {
+                Post post = postRepo.findById(bookMark.postId).get();
+                bookMarkObject.setPost(post);
+            }else {
+                return null;
+            }
         }
         bookMarkObject.setUser(user);
         bookMarkRepo.save(bookMarkObject);

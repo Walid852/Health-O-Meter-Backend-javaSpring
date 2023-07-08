@@ -15,4 +15,6 @@ public interface BookMarkRepo extends JpaRepository<BookMark, UUID> {
     public BookMark findBookMarkById(UUID id);
     @Query("select B from BookMark B where B.user.id=?1")
     public List<BookMark> MyBookMark(UUID userId);
+    @Query("Select B from BookMark B where B.user.id=?1 and B.post.id=?2")
+    List<BookMark> isReported(UUID userId,UUID postId);
 }
