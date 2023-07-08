@@ -26,7 +26,8 @@ public class CrudServiceBloodPressure {
     MedicalInformationRepo medicalInformationRepo;
     @Transactional
     public BloodPressureCategory CalculateCategory(int Systolic,int Diastolic){
-        if(Systolic==120&&Diastolic==80){
+        if((Systolic>=100&&Systolic<=120)&&
+                (Diastolic>=70&&Diastolic<=80)){
             return BloodPressureCategory.NORMAL;
         }
         else if((Systolic>=120&&Systolic<=129)&&Diastolic<80){
