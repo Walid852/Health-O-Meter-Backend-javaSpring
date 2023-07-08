@@ -70,11 +70,11 @@ class FileStorageService {
                 user.setPhoto(fileName);
                 userRepo.save(user);
             }
-            else if(typeForImage==TypeForImage.Post) {
+           /* else if(typeForImage==TypeForImage.Post) {
                 Post post=postRepo.findPostById(id);
                 post.setImage(fileName);
                 postRepo.save(post);
-            }
+            }*/
             else{
                 return new Response<>(false, StaticsText.MessageForTest("Photo not Set to ", typeForImage.toString()),new LinkedList<>());
             }
