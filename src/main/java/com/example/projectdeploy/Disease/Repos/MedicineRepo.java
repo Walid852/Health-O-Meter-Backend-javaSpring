@@ -16,7 +16,7 @@ public interface MedicineRepo  extends JpaRepository<Medicine, UUID> {
     public List<Medicine> findMedicineByNameForMedicalInformationId(UUID id,String name);
     @Query("select D from Medicine D where D.disease.medicalInformation.id=?1")
     public List<Medicine> findMedicineForMedicalInformationId(UUID id);
-    @Query("select D from Medicine D where D.disease.id=?1")
+    @Query("select D from Medicine D where D.disease.id=?1 and D.isDeleted=false")
     public List<Medicine> findMedicineForDisease(UUID id);
     @Query("select D from Medicine D where D.disease.medicalInformation.id=?1 and D.isNotified=?1")
     public List<Medicine> findMedicineByIsNotifiedForMedicalInformationId(UUID id,Boolean isNotified);
