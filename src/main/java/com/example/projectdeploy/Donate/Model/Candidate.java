@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.util.UUID;
 @Data
 public class Candidate {
+    UUID donateNotifiedId;//
     UUID medicalInformationId;
     String nationalId;
     String name;

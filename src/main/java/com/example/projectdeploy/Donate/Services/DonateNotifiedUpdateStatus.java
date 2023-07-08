@@ -21,8 +21,19 @@ public class DonateNotifiedUpdateStatus {
     DonateRepo donateRepo;
 
     Response<Candidate> AuthorizationForUpdate(UpdateStatusRequest updateStatusRequest){
+        System.out.println(updateStatusRequest.getStatus());
+        System.out.println(updateStatusRequest.getDonateNotifiedId());
+        System.out.println(updateStatusRequest.getRequstor());
+        System.out.println(updateStatusRequest.getDonator());
+        System.out.println(updateStatusRequest.getAm_pm());
+        System.out.println(updateStatusRequest.getDateOfArrival());
+        System.out.println(updateStatusRequest.getTime());
+        System.out.println("WWWW");
         DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
+        System.out.println(donateNotified.getId());
+        System.out.println(updateStatusRequest.getDonator());
         Candidate candidate=new Candidate();
+        candidate.setDonateNotifiedId(donateNotified.getId());//
         candidate.setMedicalInformationId(donateNotified.getMedicalInformation().getId());
         candidate.setBloodType(donateNotified.getMedicalInformation().getBloodType());
         candidate.setDateOfArrival(donateNotified.getDateOfArrival());
@@ -35,7 +46,9 @@ public class DonateNotifiedUpdateStatus {
         candidate.setUsername(donateNotified.getMedicalInformation().getUser().getUserName());
         List<Candidate> result = new ArrayList<>();
         result.add(candidate);
-        if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().toString())&&
+        System.out.println("WWW2");
+
+        if(updateStatusRequest.getDonator().toString().equals(donateNotified.getMedicalInformation().getId().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Agree)||updateStatusRequest.getStatus().equals(Status.Rejected))){
             System.out.println(1);
             if(updateStatusRequest.getStatus().equals(Status.Agree)&&
@@ -49,7 +62,8 @@ public class DonateNotifiedUpdateStatus {
             }
             else return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
         }
-        else if (updateStatusRequest.getRequstor().toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().toString())&&
+        //
+        else if (updateStatusRequest.getRequstor().toString().equals(donateNotified.getDonate().getRequestorMedicalInformation().getId().toString())&&
                 (updateStatusRequest.getStatus().equals(Status.Approval)||updateStatusRequest.getStatus().equals(Status.Come)
                 ||updateStatusRequest.getStatus().equals(Status.DidNotCome))){
             System.out.println(3);
@@ -70,18 +84,23 @@ public class DonateNotifiedUpdateStatus {
         try {
             Response<Candidate> donateNotifiedResponse=AuthorizationForUpdate(updateStatusRequest);
             if(!donateNotifiedResponse.status)return donateNotifiedResponse;
+            System.out.println("donateNotified");
             DonateNotified donateNotified=donateNotifiedRepo.findDonateById(updateStatusRequest.getDonateNotifiedId());
+            System.out.println(donateNotified.getId());
             donateNotified.setStatus(updateStatusRequest.getStatus());
-            donateNotified.setAm_pm(updateStatusRequest.getAm_pm());
+            if(updateStatusRequest.getAm_pm()!=null)donateNotified.setAm_pm(updateStatusRequest.getAm_pm());//
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
             donateNotified.setLastUpdateDate(DateNow);
             if(updateStatusRequest.getDateOfArrival()!=null)
                 donateNotified.setDateOfArrival(updateStatusRequest.getDateOfArrival());
             if(updateStatusRequest.getStatus().equals(Status.Approval)){
+                System.out.println("donate");
                 Donate donate=donateRepo.findDonateById(donateNotified.getDonate().getId());
+                System.out.println(donate.getId());
                 donate.setDonatorMedicalInformation(donateNotified.getMedicalInformation());
                 donate.setCurrent(LocationHierarchical.Terminate);
+                donate.setIsDone(true);//
                 donateRepo.save(donate);
             }
             donateNotifiedRepo.save(donateNotified);
