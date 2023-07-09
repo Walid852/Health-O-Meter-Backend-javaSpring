@@ -25,6 +25,4 @@ public interface ReportRepo extends JpaRepository<Report, UUID> {
     @Modifying
     @Query("UPDATE Report r SET r.action = ?1 WHERE r.id IN ?2")
     void updatingAction(ReportAction action,List<UUID> reportsIds);
-
-
 }
