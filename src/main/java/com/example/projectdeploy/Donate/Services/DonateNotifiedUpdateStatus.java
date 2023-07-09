@@ -93,7 +93,7 @@ public class DonateNotifiedUpdateStatus {
                 return new Response<>(false, StaticsText.MessageForTest("can't approval more than one", ""), new ArrayList<>());
             }
             if ((updateStatusRequest.getStatus().equals(Status.Come)
-                    || updateStatusRequest.getStatus().equals(Status.DidNotCome)) && DateNow.after(donateNotified.getDateOfArrival())) {
+                    || updateStatusRequest.getStatus().equals(Status.DidNotCome)) && DateNow.before(donateNotified.getDateOfArrival())) {
                 return new Response<>(false, StaticsText.MessageForTest("can't choose come or didn't come before deadline", ""), new ArrayList<>());
             }
             User user = userRepo.findByUserId(updateStatusRequest.getRequstor());
