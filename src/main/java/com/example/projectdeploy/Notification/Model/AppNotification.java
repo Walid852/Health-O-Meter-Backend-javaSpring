@@ -31,7 +31,6 @@ public class AppNotification {
     private String title;
     private String message;
     private UUID url;
-    @Enumerated(EnumType.STRING)
     private TypeUrl typeUrl;
     private String photo;
     @Column(columnDefinition = "boolean default false")
