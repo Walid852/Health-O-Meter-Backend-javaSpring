@@ -21,6 +21,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class DonateNotifiedUpdateStatus {
     @Autowired
@@ -76,11 +78,12 @@ public class DonateNotifiedUpdateStatus {
             else{
                 if(updateStatusRequest.getStatus().equals(Status.Agree)) {
                     MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(updateStatusRequest.getDonator());
-                    User user = userRepo.findByUserId(medicalInformation.getUser().getId());
-                    if (user == null)
+                    User donator = userRepo.findByUserId(medicalInformation.getUser().getId());
+                    User requestor=donateNotified.getMedicalInformation().getUser();
+                    if (donator == null)
                         return new Response<>(false, StaticsText.MessageForTest("User ", "not found"), new ArrayList<>());
-                    NotificationRequest notificationRequest = new NotificationRequest(updateStatusRequest.getDonator(), updateStatusRequest.getRequstor(),
-                            "Your Donation Request", String.format("%s agree your donation request", user.getUserName()), donateNotified.getDonate().getId(), TypeUrl.Donate, "",
+                    NotificationRequest notificationRequest = new NotificationRequest(donator.getId(), requestor.getId(),
+                            "Your Donation Request", String.format("%s agree your donation request", donator.getUserName()), donateNotified.getDonate().getId(), TypeUrl.Donate, "",
                             Date.valueOf(LocalDate.now()));
                     notificationServices.AddNotification(notificationRequest);
                 }
@@ -102,11 +105,12 @@ public class DonateNotifiedUpdateStatus {
                 return new Response<>(false, StaticsText.MessageForTest("can't choose come or didn't come before deadline", ""), new ArrayList<>());
             }
             MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(updateStatusRequest.getRequstor());
-            User user = userRepo.findByUserId(medicalInformation.getUser().getId());
-            if (user == null)
+            User requestor = userRepo.findByUserId(medicalInformation.getUser().getId());
+            UUID donatorId=donateNotified.getDonate().getDonatorMedicalInformation().getUser().getId();
+            if (requestor == null)
                 return new Response<>(false, StaticsText.MessageForTest("User ", "not found"), new ArrayList<>());
-            NotificationRequest notificationRequest = new NotificationRequest(updateStatusRequest.getRequstor(), updateStatusRequest.getDonator(),
-                    "Your agreed donation application", String.format("%s submit %s on your donation application", user.getUserName(), updateStatusRequest.getStatus().toString()), donateNotified.getId(), TypeUrl.DonateRequest, "",
+            NotificationRequest notificationRequest = new NotificationRequest(requestor.getId(), donatorId,
+                    "Your agreed donation application", String.format("%s submit %s on your donation application", requestor.getUserName(), updateStatusRequest.getStatus().toString()), donateNotified.getId(), TypeUrl.DonateRequest, "",
                     Date.valueOf(LocalDate.now()));
             notificationServices.AddNotification(notificationRequest);
             return new Response<>(true, StaticsText.MessageForTest("change status", "successfully"), result);
