@@ -4,6 +4,8 @@ import com.example.projectdeploy.Donate.DTO.UpdateStatusRequest;
 import com.example.projectdeploy.Donate.Model.*;
 import com.example.projectdeploy.Donate.Repo.DonateNotifiedRepo;
 import com.example.projectdeploy.Donate.Repo.DonateRepo;
+import com.example.projectdeploy.MedicalInformation.MedicalInformation;
+import com.example.projectdeploy.MedicalInformation.MedicalInformationRepo;
 import com.example.projectdeploy.Notification.Model.ConstantMessage;
 import com.example.projectdeploy.Notification.Model.NotificationRequest;
 import com.example.projectdeploy.Notification.Model.TypeUrl;
@@ -29,6 +31,8 @@ public class DonateNotifiedUpdateStatus {
     NotificationServices notificationServices;
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    MedicalInformationRepo medicalInformationRepo;
 
     Response<Candidate> AuthorizationForUpdate(UpdateStatusRequest updateStatusRequest){
         System.out.println(updateStatusRequest.getStatus());
@@ -71,7 +75,8 @@ public class DonateNotifiedUpdateStatus {
             }
             else{
                 if(updateStatusRequest.getStatus().equals(Status.Agree)) {
-                    User user = userRepo.findByUserId(updateStatusRequest.getDonator());
+                    MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(updateStatusRequest.getDonator());
+                    User user = userRepo.findByUserId(medicalInformation.getUser().getId());
                     if (user == null)
                         return new Response<>(false, StaticsText.MessageForTest("User ", "not found"), new ArrayList<>());
                     NotificationRequest notificationRequest = new NotificationRequest(updateStatusRequest.getDonator(), updateStatusRequest.getRequstor(),
@@ -96,7 +101,8 @@ public class DonateNotifiedUpdateStatus {
                     || updateStatusRequest.getStatus().equals(Status.DidNotCome)) && DateNow.before(donateNotified.getDateOfArrival())) {
                 return new Response<>(false, StaticsText.MessageForTest("can't choose come or didn't come before deadline", ""), new ArrayList<>());
             }
-            User user = userRepo.findByUserId(updateStatusRequest.getRequstor());
+            MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(updateStatusRequest.getRequstor());
+            User user = userRepo.findByUserId(medicalInformation.getUser().getId());
             if (user == null)
                 return new Response<>(false, StaticsText.MessageForTest("User ", "not found"), new ArrayList<>());
             NotificationRequest notificationRequest = new NotificationRequest(updateStatusRequest.getRequstor(), updateStatusRequest.getDonator(),
