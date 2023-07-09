@@ -58,6 +58,7 @@ public class MemberService {
                 medicalInformation.setBloodType(memberRequest.getBloodType());
                 medicalInformation.setCurrentHeight(memberRequest.getCurrentHeight());
                 medicalInformation.setCurrentWeight(memberRequest.getCurrentWeight());
+                medicalInformationRepo.save(medicalInformation);
             }
             List<Member> memberList=new LinkedList<>();
             memberList.add(member);
