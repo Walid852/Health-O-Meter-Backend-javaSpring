@@ -98,7 +98,7 @@ public class DonateNotifiedUpdateStatus {
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
             if(donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.Approval).size()>1
-            && donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.Come).size()>1&&
+            || donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.Come).size()>1 ||
             donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.DidNotCome).size()>1) {
                 return new Response<>(false, StaticsText.MessageForTest("can't approval more than one", ""), new ArrayList<>());
             }
@@ -108,7 +108,7 @@ public class DonateNotifiedUpdateStatus {
             }
             MedicalInformation medicalInformation=medicalInformationRepo.findMedicalInformationById(updateStatusRequest.getRequstor());
             User requestor = userRepo.findByUserId(medicalInformation.getUser().getId());
-            UUID donatorId=donateNotified.getDonate().getDonatorMedicalInformation().getUser().getId();
+            UUID donatorId=donateNotified.getMedicalInformation().getUser().getId();
             if (requestor == null)
                 return new Response<>(false, StaticsText.MessageForTest("User ", "not found"), new ArrayList<>());
             NotificationRequest notificationRequest = new NotificationRequest(requestor.getId(), donatorId,
