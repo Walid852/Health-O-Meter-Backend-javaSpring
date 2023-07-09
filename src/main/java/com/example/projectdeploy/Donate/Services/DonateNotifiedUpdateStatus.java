@@ -97,7 +97,9 @@ public class DonateNotifiedUpdateStatus {
             System.out.println(3);
             long now = System.currentTimeMillis();
             Date DateNow = new Date(now);
-            if(donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.Approval).size()>1) {
+            if(donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.Approval).size()>1
+            && donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.Come).size()>1&&
+            donateNotifiedRepo.findDonateNotifiedFoMedicalInformationByStatus(donateNotified.getId(),Status.DidNotCome).size()>1) {
                 return new Response<>(false, StaticsText.MessageForTest("can't approval more than one", ""), new ArrayList<>());
             }
             if ((updateStatusRequest.getStatus().equals(Status.Come)
