@@ -48,6 +48,7 @@ public class AdminService {
         for(Post post:posts){
             PostReports postReports=new PostReports();
             List<Report> reports=reportRepo.findAllReportForSpecificPost(post.getId());
+            if(reports.size()==0)continue;
             List<String> reasons = reports.stream()
                     .map(Report::getReason) // Map each Report object to its id attribute
                     .collect(Collectors.toList());
@@ -67,6 +68,7 @@ public class AdminService {
         for(Comment comment:comments){
             CommentReports commentReports=new CommentReports();
             List<Report> reports=reportRepo.findAllReportForSpecificComment(comment.getId());
+            if(reports.size()==0)continue;
             List<String> reasons = reports.stream()
                     .map(Report::getReason) // Map each Report object to its id attribute
                     .collect(Collectors.toList());
@@ -85,6 +87,7 @@ public class AdminService {
         for(User user :users){
             UserReports userReports=new UserReports();
             List<Report> reports=reportRepo.findAllReportByToUserId(user.getId());
+            if(reports.size()==0)continue;
             List<String> reasons = reports.stream()
                     .map(Report::getReason) // Map each Report object to its id attribute
                     .collect(Collectors.toList());
@@ -107,6 +110,7 @@ public class AdminService {
             Post post = postRepo.findPostById(takeAction.getPostId());
             if(takeAction.getAction().equals(ReportAction.Deleted)){
                 post.setDeleted(true);
+                postRepo.save(post);
             }
         }
         else if(takeAction.getCommentId()!=null){
@@ -120,6 +124,7 @@ public class AdminService {
             User user=userRepo.findByUserId(takeAction.getUserId());
             if(takeAction.getAction().equals(ReportAction.Deleted)){
                 user.setIsSuspended(true);
+                userRepo.save(user);
             }
         }else{
             return new Response<>(false, StaticsText.MessageForTest("Request", "is bad"), result);
